@@ -1,0 +1,31 @@
+[gd_scene format=2]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -4.0
+margin_right = -4.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="name" type="Label" parent="HBoxContainer"]
+margin_top = 13.0
+margin_right = 50.0
+margin_bottom = 27.0
+text = "Cocaine"
+
+[node name="price" type="Label" parent="HBoxContainer"]
+margin_left = 54.0
+margin_top = 13.0
+margin_right = 102.0
+margin_bottom = 27.0
+text = "$18000"
+
+[node name="quantity" type="Label" parent="HBoxContainer"]
+margin_left = 106.0
+margin_top = 13.0
+margin_right = 122.0
+margin_bottom = 27.0
+text = "32"

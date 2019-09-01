@@ -1,0 +1,165 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://atAPlace.gd" type="Script" id=1]
+[ext_resource path="res://drugList.tscn" type="PackedScene" id=2]
+[ext_resource path="res://buySellDropPopup.tscn" type="PackedScene" id=3]
+[ext_resource path="res://chooseBuySellPopup.tscn" type="PackedScene" id=4]
+[ext_resource path="res://jetPopup.tscn" type="PackedScene" id=5]
+[ext_resource path="res://msgPopup.tscn" type="PackedScene" id=6]
+[ext_resource path="res://choicePopup.tscn" type="PackedScene" id=7]
+
+[node name="AtAPlace" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 20
+alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
+margin_top = 181.0
+margin_right = 1024.0
+margin_bottom = 249.0
+
+[node name="stats" type="GridContainer" parent="VBoxContainer/CenterContainer"]
+editor/display_folded = true
+margin_left = 398.0
+margin_right = 625.0
+margin_bottom = 68.0
+custom_constants/hseparation = 13
+columns = 4
+
+[node name="cashLbl" type="Label" parent="VBoxContainer/CenterContainer/stats"]
+margin_right = 46.0
+margin_bottom = 14.0
+text = "Cash:"
+
+[node name="cashDisp" type="Label" parent="VBoxContainer/CenterContainer/stats"]
+margin_left = 59.0
+margin_right = 112.0
+margin_bottom = 14.0
+text = "$0"
+
+[node name="gunsLbl" type="Label" parent="VBoxContainer/CenterContainer/stats"]
+margin_left = 125.0
+margin_right = 177.0
+margin_bottom = 14.0
+text = "Guns:"
+
+[node name="gunsDisp" type="Label" parent="VBoxContainer/CenterContainer/stats"]
+margin_left = 190.0
+margin_right = 227.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="debtLbl" type="Label" parent="VBoxContainer/CenterContainer/stats"]
+margin_top = 18.0
+margin_right = 46.0
+margin_bottom = 32.0
+text = "Debt:"
+
+[node name="debtDisp" type="Label" parent="VBoxContainer/CenterContainer/stats"]
+margin_left = 59.0
+margin_top = 18.0
+margin_right = 112.0
+margin_bottom = 32.0
+text = "$3500"
+
+[node name="bitchesLbl" type="Label" parent="VBoxContainer/CenterContainer/stats"]
+margin_left = 125.0
+margin_top = 18.0
+margin_right = 177.0
+margin_bottom = 32.0
+text = "Bitches:"
+
+[node name="bitchesDisp" type="Label" parent="VBoxContainer/CenterContainer/stats"]
+margin_left = 190.0
+margin_top = 18.0
+margin_right = 227.0
+margin_bottom = 32.0
+text = "0"
+
+[node name="spaceLbl" type="Label" parent="VBoxContainer/CenterContainer/stats"]
+margin_top = 36.0
+margin_right = 46.0
+margin_bottom = 50.0
+text = "Space:"
+
+[node name="spaceDisp" type="Label" parent="VBoxContainer/CenterContainer/stats"]
+margin_left = 59.0
+margin_top = 36.0
+margin_right = 112.0
+margin_bottom = 50.0
+text = "99 / 100"
+
+[node name="bankLbl" type="Label" parent="VBoxContainer/CenterContainer/stats"]
+margin_left = 125.0
+margin_top = 36.0
+margin_right = 177.0
+margin_bottom = 50.0
+text = "Bank:"
+
+[node name="bankDisp" type="Label" parent="VBoxContainer/CenterContainer/stats"]
+margin_left = 190.0
+margin_top = 36.0
+margin_right = 227.0
+margin_bottom = 50.0
+text = "$0"
+
+[node name="healthLbl" type="Label" parent="VBoxContainer/CenterContainer/stats"]
+margin_top = 54.0
+margin_right = 46.0
+margin_bottom = 68.0
+text = "Health:"
+
+[node name="healthDisp" type="Label" parent="VBoxContainer/CenterContainer/stats"]
+margin_left = 59.0
+margin_top = 54.0
+margin_right = 112.0
+margin_bottom = 68.0
+text = "99"
+
+[node name="dayLbl" type="Label" parent="VBoxContainer/CenterContainer/stats"]
+margin_left = 125.0
+margin_top = 54.0
+margin_right = 177.0
+margin_bottom = 68.0
+text = "Day:"
+
+[node name="dayDisp" type="Label" parent="VBoxContainer/CenterContainer/stats"]
+margin_left = 190.0
+margin_top = 54.0
+margin_right = 227.0
+margin_bottom = 68.0
+text = "1 / 30"
+
+[node name="list" parent="VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 269.0
+margin_bottom = 379.0
+
+[node name="jetButton" type="Button" parent="VBoxContainer"]
+margin_top = 399.0
+margin_right = 1024.0
+margin_bottom = 419.0
+text = "Jet"
+
+[node name="buySellDropPopup" parent="." instance=ExtResource( 3 )]
+visible = false
+
+[node name="chooseBuySellPopup" parent="." instance=ExtResource( 4 )]
+visible = false
+
+[node name="jetPopup" parent="." instance=ExtResource( 5 )]
+visible = false
+
+[node name="msgPopup" parent="." instance=ExtResource( 6 )]
+visible = false
+
+[node name="choicePopup" parent="." instance=ExtResource( 7 )]
+[connection signal="drugButtonPressed" from="VBoxContainer/list" to="." method="_on_list_drugButtonPressed"]
+[connection signal="pressed" from="VBoxContainer/jetButton" to="." method="_on_jetButton_pressed"]
+[connection signal="buyPressed" from="chooseBuySellPopup" to="." method="_on_chooseBuySellPopup_buyPressed"]
+[connection signal="sellPressed" from="chooseBuySellPopup" to="." method="_on_chooseBuySellPopup_sellPressed"]
