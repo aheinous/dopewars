@@ -19,7 +19,7 @@ func editorPreview():
 func populate(drugs = null):
 
 	if drugs == null:
-		drugs = gameModel.drugsHereAndOwned()
+		drugs = gameModel.drugsHere() + gameModel.drugsOwnedAndNotHere()
 
 	for child in self.get_children():
 		child.queue_free()

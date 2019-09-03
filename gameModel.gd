@@ -1,63 +1,70 @@
 extends Node
 
-
-signal updated
-signal msgsAvail
-signal choicesAvail
-
-var cash
-var debt
-var availSpace
-var totalSpace
-var health
-var guns
-var bitches
-var bank
-var day
-var finalDay
+enum State {DRUG_MENU, MSG_QUEUE, LOANSHARK, COP_FIGHT, BANK, GUNSTORE, PUB}
 
 
-var curPlace
+class Stats:
+	var cash
+	var debt
+	var availSpace
+	var totalSpace
+	var health
+	var guns
+	var bitches
+	var bank
+	var day
+	var finalDay
+	var curPlace
+
+	func _init():
+		cash = 2000
+		debt = 5500
+		availSpace = 100
+		totalSpace = 100
+		health = 100
+		guns = 0
+		bitches = 8
+		bank = 0
+		day = 1
+		finalDay = 31
+		curPlace = "Bronx"
 
 
-var drugsHerePrices
-var drugsOwnedQuantities
+var _stats
 
-var rng
+var _curState
 
-var msgs = []
-
-
-func _ready():
-	reset()
+var _rng
 
 
+####################### Drug Menu
+
+var _drugsHerePrices = {}
+var _drugsOwnedQuantities = {}
 
 func here(drug):
-	return drug in drugsHerePrices
+	return drug in _drugsHerePrices
 
 func price(drug):
-	if not drug in drugsHerePrices:
+	if not drug in _drugsHerePrices:
 		return -1
-	return drugsHerePrices[drug]
-
-
+	return _drugsHerePrices[drug]
 
 func canAfford(drug):
 	if price(drug) == -1:
 		return -1
-	return (cash/price(drug)) as int
+	return (_stats.cash/price(drug)) as int
 
 func quantity(drug):
-	if not drug in drugsOwnedQuantities:
+	if not drug in _drugsOwnedQuantities:
 		return 0
-	return drugsOwnedQuantities[drug]
+	return _drugsOwnedQuantities[drug]
 
 func mostCanBuy(drug):
-	return min(availSpace, canAfford(drug))
+	return min(_stats.availSpace, canAfford(drug))
 
 func canBuy(drug, amnt=1):
-	return here(drug) and cash >= amnt*price(drug) and availSpace >= amnt
+	return here(drug) and _stats.cash >= amnt*price(drug) and _stats.availSpace >= amnt
 
 func canSell(drug, amnt=1):
 	return here(drug) and quantity(drug) >= amnt
@@ -68,76 +75,51 @@ func canDrop(drug, amnt=1):
 func buy(drug, amnt : int):
 	print('buying %s of %s' % [amnt, drug])
 	assert(canBuy(drug, amnt))
-	cash -= price(drug)*amnt
-	availSpace -= amnt
-	assert(cash >= 0)
-	assert(availSpace >= 0)
-	if not drug in drugsOwnedQuantities:
-		drugsOwnedQuantities[drug] = 0
-	drugsOwnedQuantities[drug] += amnt
-	emit_signal("updated")
+	_stats.cash -= price(drug)*amnt
+	_stats.availSpace -= amnt
+	assert(_stats.cash >= 0)
+	assert(_stats.availSpace >= 0)
+	if not drug in _drugsOwnedQuantities:
+		_drugsOwnedQuantities[drug] = 0
+	_drugsOwnedQuantities[drug] += amnt
+	# emit_signal("updated")
 
 func sell(drug, amnt : int):
 	print('sell %s of %s' % [amnt, drug])
 	assert(canSell(drug, amnt))
-	cash += price(drug)*amnt
-	drugsOwnedQuantities[drug] -= amnt
-	availSpace += amnt
-	assert(drugsOwnedQuantities[drug] >= 0)
-	assert(availSpace <= totalSpace)
-	if drugsOwnedQuantities[drug] == 0:
-		drugsOwnedQuantities.erase(drug)
-	emit_signal("updated")
+	_stats.cash += price(drug)*amnt
+	_drugsOwnedQuantities[drug] -= amnt
+	_stats.availSpace += amnt
+	assert(_drugsOwnedQuantities[drug] >= 0)
+	assert(_stats.availSpace <= _stats.totalSpace)
+	if _drugsOwnedQuantities[drug] == 0:
+		_drugsOwnedQuantities.erase(drug)
+	# emit_signal("updated")
 
 func drop(drug, amnt : int):
 	print('drop %s of %s' % [amnt, drug])
-	drugsOwnedQuantities[drug] -= amnt
-	availSpace += amnt
-	assert(drugsOwnedQuantities[drug] >= 0)
-	if drugsOwnedQuantities[drug] == 0:
-		drugsOwnedQuantities.erase(drug)
-	emit_signal("updated")
+	_drugsOwnedQuantities[drug] -= amnt
+	_stats.availSpace += amnt
+	assert(_drugsOwnedQuantities[drug] >= 0)
+	if _drugsOwnedQuantities[drug] == 0:
+		_drugsOwnedQuantities.erase(drug)
+	# emit_signal("updated")
 
-
-
-
-func reset():
-	cash = 2000
-	debt = 5500
-	availSpace = 100
-	totalSpace = 100
-	health = 100
-	guns = 0
-	bitches = 8
-	bank = 0
-	day = 1
-	finalDay = 31
-	curPlace = "Bronx"
-	drugsOwnedQuantities = {}
-
-	rng = RandomNumberGenerator.new()
-	rng.randomize()
-	msgs = []
-
-	setupNewPlace()
-
-
-
-func nRandDrugNamesOtherThan(n, except):
+func _nRandDrugNamesOtherThan(n, except):
 	var outputDrugNames = []
 #	var possibleDrugNames = config.drugsByName.keys()
 	while outputDrugNames.size() < n:
-		var i = rng.randi_range(0, config.drugs.size()-1)
+		var i = _rng.randi_range(0, config.drugs.size()-1)
 #		var name = possibleDrugNames[i]
 		if not config.drugs[i].drugName in outputDrugNames and not config.drugs[i].drugName in except:
 			outputDrugNames.append(config.drugs[i].drugName )
 	return outputDrugNames
 
-func nRandSpecialPriceableDrugNames(n):
+func _nRandSpecialPriceableDrugNames(n):
 	var outputDrugNames = []
 #	var possibleDrugNames = config.drugsByName.keys()
 	while outputDrugNames.size() < n:
-		var i = rng.randi_range(0, config.drugs.size()-1)
+		var i = _rng.randi_range(0, config.drugs.size()-1)
 #		var name = possibleDrugNames[i]
 		if not config.drugs[i].drugName in outputDrugNames and (config.drugs[i].canBeLow or config.drugs[i].canBeHigh):
 			outputDrugNames.append(config.drugs[i].drugName)
@@ -145,7 +127,7 @@ func nRandSpecialPriceableDrugNames(n):
 
 
 func _calcNSpecialPricedDrugs():
-	var i = rng.randi_range(0, 1000)
+	var i = _rng.randi_range(0, 1000)
 	if i < 14:
 		return 3
 	if i < 280:
@@ -155,135 +137,145 @@ func _calcNSpecialPricedDrugs():
 	return 0
 
 
-func showMsg(s):
-	print('msg: "%s"' % s)
-	msgs.append(s)
 
-func clearMsgs():
-	msgs = []
-
-func setupNewPlace():
-	var numDrugs = rng.randi_range(config.placesByName[curPlace].minDrugs, config.placesByName[curPlace].maxDrugs)
+func _setupDrugsHere():
+	var numDrugs = _rng.randi_range(config.placesByName[_stats.curPlace].minDrugs, config.placesByName[_stats.curPlace].maxDrugs)
 	print("num drugs: ", numDrugs)
 
-#	var numSp
-	msgs = []
-	drugsHerePrices = {}
+	_drugsHerePrices = {}
 
 
 
-	for drugName in nRandSpecialPriceableDrugNames(_calcNSpecialPricedDrugs()):
+	for drugName in _nRandSpecialPriceableDrugNames(_calcNSpecialPricedDrugs()):
 		var minPrice = config.drugsByName[drugName].minPrice
 		var maxPrice = config.drugsByName[drugName].maxPrice
-		var price = rng.randi_range(minPrice, maxPrice)
+		var price = _rng.randi_range(minPrice, maxPrice)
 
-		print('speical drug price: ', price)
+		print('specical drug price: ', price)
 
 		if config.drugsByName[drugName].canBeLow:
 			price /= 4
-			showMsg(config.drugsByName[drugName].lowString)
+			_pushMsg(config.drugsByName[drugName].lowString)
 		else:
 			price *= 4
-			if rng.randi() % 2 == 0:
-				showMsg("Cops made a big %s bust! Prices are outrageous!" % drugName)
+			if _rng.randi() % 2 == 0:
+				_pushMsg("Cops made a big %s bust! Prices are outrageous!" % drugName)
 			else:
-				showMsg("Addicts are buying %s at ridiculous prices!" % drugName)
-		drugsHerePrices[drugName] = price
+				_pushMsg("Addicts are buying %s at ridiculous prices!" % drugName)
+		_drugsHerePrices[drugName] = price
 		print('-> ', price)
 
-
-
-
-	for drugName in nRandDrugNamesOtherThan(numDrugs - drugsHerePrices.size(), drugsHerePrices.keys()):
+	for drugName in _nRandDrugNamesOtherThan(numDrugs - _drugsHerePrices.size(), _drugsHerePrices.keys()):
 		print(drugName)
 		var minPrice = config.drugsByName[drugName].minPrice
 		var maxPrice = config.drugsByName[drugName].maxPrice
-		var price = rng.randi_range(minPrice, maxPrice)
-		drugsHerePrices[drugName] = price
-
-	emit_signal("updated")
-	if msgs.size() > 0:
-		emit_signal("msgsAvail")
+		var price = _rng.randi_range(minPrice, maxPrice)
+		_drugsHerePrices[drugName] = price
 
 
 
-
-func drugsHereAndOwned():
-#	var drugs := [	structs.DrugData.new('Weed', 720, 10),
-#					structs.DrugData.new('MDMA', 2400, 10),
-#					structs.DrugData.new('Cocaine', 18223, 3),
-#					structs.DrugData.new('Heroin', -1, 1)
-#					]
-#	return drugs
-
+func drugsHere():
 	var drugs = []
 
-#
 	for cfgDrug in config.drugs:
-		if cfgDrug.drugName in drugsHerePrices:
-			drugs.append(structs.DrugData.new(cfgDrug.drugName, price(cfgDrug.drugName), quantity(cfgDrug.drugName)))
-	for cfgDrug in config.drugs:
-		if cfgDrug.drugName in drugsOwnedQuantities and not cfgDrug.drugName in drugsHerePrices:
+		if cfgDrug.drugName in _drugsHerePrices:
 			drugs.append(structs.DrugData.new(cfgDrug.drugName, price(cfgDrug.drugName), quantity(cfgDrug.drugName)))
 
-	# for drugName  in drugsHerePrices.keys():
-	# 	drugs.append(structs.DrugData.new(drugName, price(drugName), quantity(drugName)))
-	# for drugName in drugsOwnedQuantities.keys():
-	# 	if not drugName in drugsHerePrices:
-	# 		drugs.append(structs.DrugData.new(drugName, price(drugName), quantity(drugName)))
 	return drugs
 
 
-func places():
-#	return config.places.keys()
-	return config.placeNamesList
+func drugsOwnedAndNotHere():
+	var drugs = []
+
+	for cfgDrug in config.drugs:
+		if cfgDrug.drugName in _drugsOwnedQuantities and not cfgDrug.drugName in _drugsHerePrices:
+			drugs.append(structs.DrugData.new(cfgDrug.drugName, price(cfgDrug.drugName), quantity(cfgDrug.drugName)))
+
+	return drugs
 
 
-func jet(place):
-	print("Jetting to ", place)
-	curPlace = place
-	day += 1
-	if place == "Ghetto":
-		pushChoice("Would you like to visit Dan's House of Guns?", funcref(self, "visitGunStore"))
-		pushChoice("Would you like to visit the pub?", funcref(self, "visitPub"))
-	setupNewPlace()
+######### Msg Queue
 
 
 
-func visitGunStore():
-	print("visiting gun store")
-
-func visitPub():
-	print("visiting pub")
+var _queue = []
 
 
-class Choice:
-	var desc
+class MsgChoice:
+	var text
 	var onYes
 
-	func _init(desc, onYes):
-		self.desc = desc
+	func _init(text, onYes=null):
+		self.text = text
 		self.onYes = onYes
 
 
+func _pushMsg(s):
+	print("pushMsg('%s')" % s)
+	_queue.push_back(MsgChoice.new(s))
+	_curState = State.MSG_QUEUE
 
-var choiceQueue = []
+func _pushChoice(s, onYes):
+	_queue.push_back(MsgChoice.new(s, onYes))
+	_curState = State.MSG_QUEUE
 
+func isOnMsg():
+	return _queue[0].onYes == null
 
-func isChoiceAvail():
-	return choiceQueue.size() > 0
+func getMsgText():
+	return _queue[0].text
 
-func curChoiceDesc():
-	return choiceQueue[0].desc
+func chooseOkay():
+	_queue.pop_front()
+	_maybeChangeState()
 
 func chooseYes():
-	choiceQueue[0].onYes.call_func()
-	choiceQueue.pop_front()
+	_queue[0].onYes.call_func()
+	_queue.pop_front()
+	_maybeChangeState()
 
 func chooseNo():
-	choiceQueue.pop_front()
+	_queue.pop_front()
+	_maybeChangeState()
 
-func pushChoice(desc, onYes):
-	choiceQueue.push_back(Choice.new(desc, onYes))
-	emit_signal("choicesAvail")
+func _maybeChangeState():
+	if _queue.size() == 0:
+		_curState = State.DRUG_MENU
+
+
+
+
+
+
+########### General
+
+
+
+func _ready():
+	reset()
+
+func curState():
+	return _curState
+
+
+func stats():
+	return _stats
+
+
+func reset():
+	_stats = Stats.new()
+	_curState = State.DRUG_MENU
+	_rng = RandomNumberGenerator.new()
+	_rng.randomize()
+
+
+	_pushMsg("Hello.")
+
+	_setupDrugsHere()
+
+
+
+func killIt():
+	print("killing it")
+
 

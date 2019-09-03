@@ -1,9 +1,14 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://drugsList.gd" type="Script" id=1]
+[ext_resource path="res://game.gd" type="Script" id=1]
 [ext_resource path="res://drugList.tscn" type="PackedScene" id=2]
+[ext_resource path="res://buySellDropPopup.tscn" type="PackedScene" id=3]
+[ext_resource path="res://chooseBuySellPopup.tscn" type="PackedScene" id=4]
+[ext_resource path="res://jetPopup.tscn" type="PackedScene" id=5]
+[ext_resource path="res://msgPopup.tscn" type="PackedScene" id=6]
+[ext_resource path="res://choicePopup.tscn" type="PackedScene" id=7]
 
-[node name="Control" type="Control"]
+[node name="Game" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
@@ -12,10 +17,12 @@ script = ExtResource( 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_constants/separation = 20
+alignment = 1
 
 [node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
+margin_top = 181.0
 margin_right = 1024.0
-margin_bottom = 68.0
+margin_bottom = 249.0
 
 [node name="stats" type="GridContainer" parent="VBoxContainer/CenterContainer"]
 editor/display_folded = true
@@ -130,15 +137,33 @@ margin_bottom = 68.0
 text = "1 / 30"
 
 [node name="list" parent="VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 269.0
+margin_bottom = 379.0
 
-[node name="PopupPanel" type="PopupPanel" parent="."]
-visible = true
-margin_right = 8.0
-margin_bottom = 8.0
+[node name="jetButton" type="Button" parent="VBoxContainer"]
+margin_top = 399.0
+margin_right = 1024.0
+margin_bottom = 419.0
+text = "Jet"
 
-[node name="Label" type="Label" parent="PopupPanel"]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 66.0
-margin_bottom = 18.0
-text = "Buy coke:"
+[node name="buySellDropPopup" parent="." instance=ExtResource( 3 )]
+visible = false
+
+[node name="chooseBuySellPopup" parent="." instance=ExtResource( 4 )]
+visible = false
+
+[node name="jetPopup" parent="." instance=ExtResource( 5 )]
+visible = false
+
+[node name="msgPopup" parent="." instance=ExtResource( 6 )]
+visible = false
+
+[node name="choicePopup" parent="." instance=ExtResource( 7 )]
+[connection signal="drugButtonPressed" from="VBoxContainer/list" to="." method="_on_list_drugButtonPressed"]
+[connection signal="pressed" from="VBoxContainer/jetButton" to="." method="_on_jetButton_pressed"]
+[connection signal="buySellDropPressed" from="buySellDropPopup" to="." method="_on_buySellDropPopup_buySellDropPressed"]
+[connection signal="buyPressed" from="chooseBuySellPopup" to="." method="_on_chooseBuySellPopup_buyPressed"]
+[connection signal="sellPressed" from="chooseBuySellPopup" to="." method="_on_chooseBuySellPopup_sellPressed"]
+[connection signal="okayPressed" from="msgPopup" to="." method="_on_msgPopup_okayPressed"]
+[connection signal="noPressed" from="choicePopup" to="." method="_on_choicePopup_noPressed"]
+[connection signal="yesPressed" from="choicePopup" to="." method="_on_choicePopup_yesPressed"]

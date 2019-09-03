@@ -8,6 +8,8 @@ var verb = "Buy"
 var drug = "drug"
 
 
+signal buySellDropPressed
+
 #func _ready():
 #	popup.show()
 
@@ -35,7 +37,7 @@ func setupAndShow(verb, drug):
 	match verb:
 		"Buy":
 			text.text = "Buy %s at $%s\nCan afford: %s\nAvailable Space: %s" \
-					% [drug, gameModel.price(drug), gameModel.canAfford(drug), gameModel.availSpace]
+					% [drug, gameModel.price(drug), gameModel.canAfford(drug), gameModel.stats().availSpace]
 			amntChooser.setup(verb, gameModel.mostCanBuy(drug))
 		"Drop":
 			text.text = "Drop %s.\nAvailable Space: %s" \
@@ -43,7 +45,7 @@ func setupAndShow(verb, drug):
 			amntChooser.setup(verb, gameModel.quantity(drug))
 		"Sell":
 			text.text = "Sell %s at $%s\nYou have: %s\nAvailable Space: %s" \
-					% [drug, gameModel.price(drug), gameModel.quantity(drug), gameModel.availSpace]
+					% [drug, gameModel.price(drug), gameModel.quantity(drug), gameModel.stats().availSpace]
 			amntChooser.setup(verb, gameModel.quantity(drug))
 		_:
 			assert(false)
@@ -76,3 +78,4 @@ func _on_okayButton_pressed():
 		_:
 			assert(false)
 	hide()
+	emit_signal("buySellDropPressed")
