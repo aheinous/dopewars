@@ -164,6 +164,7 @@ visible = false
 [connection signal="buySellDropPressed" from="buySellDropPopup" to="." method="_on_buySellDropPopup_buySellDropPressed"]
 [connection signal="buyPressed" from="chooseBuySellPopup" to="." method="_on_chooseBuySellPopup_buyPressed"]
 [connection signal="sellPressed" from="chooseBuySellPopup" to="." method="_on_chooseBuySellPopup_sellPressed"]
+[connection signal="placeButtonPressed" from="jetPopup" to="." method="_on_jetPopup_placeButtonPressed"]
 [connection signal="okayPressed" from="msgPopup" to="." method="_on_msgPopup_okayPressed"]
 [connection signal="noPressed" from="choicePopup" to="." method="_on_choicePopup_noPressed"]
 [connection signal="yesPressed" from="choicePopup" to="." method="_on_choicePopup_yesPressed"]

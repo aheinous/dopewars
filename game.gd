@@ -154,3 +154,8 @@ func _on_choicePopup_yesPressed():
 
 func _on_buySellDropPopup_buySellDropPressed():
 	set_process(true)
+
+
+func _on_jetPopup_placeButtonPressed(place):
+	gameModel.jet(place)
+	set_process(true)

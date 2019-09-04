@@ -1,7 +1,7 @@
 extends CenterContainer
 
 
-#signal placeButtonPressed
+signal placeButtonPressed
 
 onready var placesContainer = $PanelContainer/VBoxContainer/places
 
@@ -26,7 +26,7 @@ func go():
 		var button = Button.new()
 		button.text = place
 #		print(place, ", ", gameModel.curPlace)
-		if place == gameModel.curPlace:
+		if place == gameModel.stats().curPlace:
 #			print("disabl;ed")
 			button.disabled = true
 		placesContainer.add_child(button)
@@ -37,7 +37,7 @@ func go():
 
 func onPlaceButtonPressed(place):
 	hide()
-	gameModel.jet(place)
+	emit_signal("placeButtonPressed", place)
 
 
 func _on_cancelButton_pressed():

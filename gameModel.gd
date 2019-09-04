@@ -1,5 +1,7 @@
 extends Node
 
+var Util = preload("res://util.gd")
+
 enum State {DRUG_MENU, MSG_QUEUE, LOANSHARK, COP_FIGHT, BANK, GUNSTORE, PUB}
 
 
@@ -194,6 +196,20 @@ func drugsOwnedAndNotHere():
 	return drugs
 
 
+
+func jet(place):
+	print("Jetting to ", place)
+	_stats.curPlace = place
+	_stats.day += 1
+	if place == "Ghetto":
+		_pushChoice("Would you like to visit Dan's House of Guns?", funcref(self, "visitGunStore"))
+		_pushChoice("Would you like to visit the pub?", funcref(self, "visitPub"))
+	elif place == "Bronx":
+		_pushChoice("Would you like to visit the loan shark?", funcref(self, "visitLoanShark"))
+		_pushChoice("Would you like to visit the bank?", funcref(self, "visitBank"))
+	_setupDrugsHere()
+
+
 ######### Msg Queue
 
 
@@ -219,6 +235,12 @@ func _pushChoice(s, onYes):
 	_queue.push_back(MsgChoice.new(s, onYes))
 	_curState = State.MSG_QUEUE
 
+func _pushChoiceFront(s, onYes):
+	_queue.push_front(MsgChoice.new(s, onYes))
+	_curState = State.MSG_QUEUE
+
+
+
 func isOnMsg():
 	return _queue[0].onYes == null
 
@@ -243,9 +265,25 @@ func _maybeChangeState():
 		_curState = State.DRUG_MENU
 
 
+########## Pub
+
+func visitPub():
+	print("visitPub()")
+	var price = _rng.randi_range(50000, 150000)
+	_pushChoice(	"Would you like to hire a bitch for $%s?" % Util.toCommaSepStr(price),
+					Util.Curry.new(self, "buyBitch", [price]) )
 
 
 
+func buyBitch(price):
+	print("buyBitch(%s)" % price)
+	if _stats.cash < price:
+		print("insufficent funds")
+		return
+	_stats.cash -= price
+	_stats.availSpace += 10
+	_stats.totalSpace += 10
+	_stats.bitches += 1
 
 ########### General
 
@@ -262,6 +300,10 @@ func stats():
 	return _stats
 
 
+func places():
+	return config.placeNamesList
+
+
 func reset():
 	_stats = Stats.new()
 	_curState = State.DRUG_MENU
@@ -275,7 +317,20 @@ func reset():
 
 
 
-func killIt():
-	print("killing it")
+func visitGunStore():
+	print("visitGunStore()")
+
+
+
+
+func visitBank():
+	print("visitBank()")
+
+
+func visitLoanShark():
+	print("visitLoanShark()")
+
+
+
 
 
