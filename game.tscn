@@ -4,11 +4,11 @@
 [ext_resource path="res://stats.tscn" type="PackedScene" id=2]
 [ext_resource path="res://drugList.tscn" type="PackedScene" id=3]
 [ext_resource path="res://buySellDropPopup.tscn" type="PackedScene" id=4]
-[ext_resource path="res://chooseBuySellPopup.tscn" type="PackedScene" id=5]
-[ext_resource path="res://jetPopup.tscn" type="PackedScene" id=6]
-[ext_resource path="res://msgPopup.tscn" type="PackedScene" id=7]
-[ext_resource path="res://choicePopup.tscn" type="PackedScene" id=8]
-[ext_resource path="res://loansharkPopup.tscn" type="PackedScene" id=9]
+[ext_resource path="res://jetPopup.tscn" type="PackedScene" id=5]
+[ext_resource path="res://msgPopup.tscn" type="PackedScene" id=6]
+[ext_resource path="res://choicePopup.tscn" type="PackedScene" id=7]
+[ext_resource path="res://loansharkPopup.tscn" type="PackedScene" id=8]
+[ext_resource path="res://chooseBuySellPopup.tscn" type="PackedScene" id=9]
 
 [node name="Game" type="Control"]
 anchor_right = 1.0
@@ -44,28 +44,28 @@ margin_bottom = 256.0
 text = "Jet"
 
 [node name="buySellDropPopup" parent="." instance=ExtResource( 4 )]
+
+[node name="jetPopup" parent="." instance=ExtResource( 5 )]
 visible = false
 
-[node name="chooseBuySellPopup" parent="." instance=ExtResource( 5 )]
+[node name="msgPopup" parent="." instance=ExtResource( 6 )]
 visible = false
 
-[node name="jetPopup" parent="." instance=ExtResource( 6 )]
+[node name="choicePopup" parent="." instance=ExtResource( 7 )]
 visible = false
 
-[node name="msgPopup" parent="." instance=ExtResource( 7 )]
+[node name="loansharkPopup" parent="." instance=ExtResource( 8 )]
 visible = false
 
-[node name="choicePopup" parent="." instance=ExtResource( 8 )]
+[node name="chooseBuySellPopup" parent="." instance=ExtResource( 9 )]
 visible = false
-
-[node name="loansharkPopup" parent="." instance=ExtResource( 9 )]
 [connection signal="drugButtonPressed" from="MarginContainer/VBoxContainer/list" to="." method="_on_list_drugButtonPressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/jetButton" to="." method="_on_jetButton_pressed"]
 [connection signal="buySellDropPressed" from="buySellDropPopup" to="." method="_on_buySellDropPopup_buySellDropPressed"]
-[connection signal="buyPressed" from="chooseBuySellPopup" to="." method="_on_chooseBuySellPopup_buyPressed"]
-[connection signal="sellPressed" from="chooseBuySellPopup" to="." method="_on_chooseBuySellPopup_sellPressed"]
 [connection signal="placeButtonPressed" from="jetPopup" to="." method="_on_jetPopup_placeButtonPressed"]
 [connection signal="okayPressed" from="msgPopup" to="." method="_on_msgPopup_okayPressed"]
 [connection signal="noPressed" from="choicePopup" to="." method="_on_choicePopup_noPressed"]
 [connection signal="yesPressed" from="choicePopup" to="." method="_on_choicePopup_yesPressed"]
 [connection signal="loansharkClosed" from="loansharkPopup" to="." method="_on_loansharkPopup_loansharkClosed"]
+[connection signal="buyPressed" from="chooseBuySellPopup" to="." method="_on_chooseBuySellPopup_buyPressed"]
+[connection signal="sellPressed" from="chooseBuySellPopup" to="." method="_on_chooseBuySellPopup_sellPressed"]

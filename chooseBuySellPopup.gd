@@ -1,36 +1,20 @@
-
-extends CenterContainer
+extends "res://listChoosePopup.gd"
 
 var drug = "drug"
-
-onready var text = $PanelContainer/VBoxContainer/text
 
 signal buyPressed
 signal sellPressed
 
-func _ready():
-	hide()
-
-
 
 func setupAndShow(drug):
-	self.drug = drug
-	text.text = "Buy or sell %s?" % drug
-	show()
+    self.drug = drug
+    _setupAndShow("Buy or sell %s?" % drug, "Buy", "Sell")
 
 
-func _on_buyButton_pressed():
-	print('buy pressed ', drug)
+func _on_buttonA_pressed():
 	emit_signal("buyPressed", drug)
 	hide()
 
-
-func _on_sellButton_pressed():
-	print('sell pressed ', drug)
+func _on_buttonB_pressed():
 	emit_signal("sellPressed", drug)
 	hide()
-
-
-func _on_cancelButton_pressed():
-	hide()
-
