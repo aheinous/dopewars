@@ -22,6 +22,9 @@ onready var chooseBuySellPopup = $chooseBuySellPopup
 onready var jetPopup = $jetPopup
 onready var choicePopup = $choicePopup
 onready var loansharkPopup = $loansharkPopup
+onready var bankPopup = $bankPopup
+onready var bankChoosePopup = $bankChoosePopup
+
 
 #onready var MsgPopup = preload("res://msgPopup.tscn")
 onready var msgPopup = $msgPopup
@@ -131,16 +134,13 @@ func _process(delta):
 
 
 func state_bank():
-	pass
+	bankChoosePopup.setupAndShow()
 
 func state_loanshark():
 	loansharkPopup.setupAndShow()
 
-
 func state_drugMenu():
-	print("DRUG MENU")
 	list.populate()
-
 
 func state_msgQueue():
 	if gameModel.isOnMsg():
@@ -172,7 +172,21 @@ func _on_jetPopup_placeButtonPressed(place):
 	set_process(true)
 
 
-
-
 func _on_loansharkPopup_loansharkClosed():
 	set_process(true)
+
+
+func _on_bankPopup_done():
+	set_process(true)
+
+
+func _on_popupDone():
+	set_process(true)
+
+
+func _on_bankChoosePopup_withdrawPressed():
+	bankPopup.setupAndShow("Withdraw")
+
+
+func _on_bankChoosePopup_despositPressed():
+	bankPopup.setupAndShow("Deposit")

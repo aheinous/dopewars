@@ -202,6 +202,8 @@ func jet(place):
 	_stats.curPlace = place
 	_stats.day += 1
 	_stats.debt += ((_stats.debt / 10) as int)
+	_stats.bank += ((_stats.bank / 20) as int)
+
 	if place == "Ghetto":
 		_pushChoice("Would you like to visit Dan's House of Guns?", funcref(self, "visitGunStore"))
 		_pushChoice("Would you like to visit the pub?", funcref(self, "visitPub"))
@@ -307,7 +309,7 @@ func mostCanPayback():
 func payback(amnt):
 	_stats.cash -= amnt
 	_stats.debt -= amnt
-	_maybeMsgQueueState()
+	leaveLoanshark()
 
 
 func leaveLoanshark():
@@ -321,13 +323,15 @@ func visitBank():
 	_curState = State.BANK
 
 
-func deposite(amnt):
+func deposit(amnt):
 	_stats.cash -= amnt
 	_stats.bank += amnt
+	leaveBank()
 
-func withdrawl(amnt):
+func withdraw(amnt):
 	_stats.cash += amnt
 	_stats.bank -= amnt
+	leaveBank()
 
 func leaveBank():
 	_maybeMsgQueueState()

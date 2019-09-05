@@ -31,7 +31,7 @@ func setup(verb, max_value, start=-1):
 
 	start = clamp(start, 0, max_value)
 
-	if verb == "Pay":
+	if verb == "Pay" or verb == "Deposit" or verb == "Withdraw":
 			label.text = verb + " how much?"
 	else:
 		label.text = verb + " how many?"
