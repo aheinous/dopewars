@@ -42,12 +42,20 @@ var drugs = [
 
 
 var places = [
-    structs.PlaceConfig.new("Bronx", 7, 13),
-    structs.PlaceConfig.new("Ghetto", 8, 13),
-    structs.PlaceConfig.new("Central Park", 6, 13),
-    structs.PlaceConfig.new("Manhattan", 4, 11),
-    structs.PlaceConfig.new("Coney Island", 6, 13),
-    structs.PlaceConfig.new("Brooklyn", 4, 12),
-    structs.PlaceConfig.new("Queens", 6, 13),
-    structs.PlaceConfig.new("Staten Island", 6, 13)
+    structs.PlaceConfig.new("Bronx", 7, 13, 10),
+    structs.PlaceConfig.new("Ghetto", 8, 13, 5),
+    structs.PlaceConfig.new("Central Park", 6, 13, 15),
+    structs.PlaceConfig.new("Manhattan", 4, 11, 90),
+    structs.PlaceConfig.new("Coney Island", 6, 13, 20),
+    structs.PlaceConfig.new("Brooklyn", 4, 12, 70),
+    structs.PlaceConfig.new("Queens", 6, 13, 50),
+    structs.PlaceConfig.new("Staten Island", 6, 13, 20)
+]
+
+
+var guns = [
+    structs.GunConfig.new("Baretta", 3000, 4, 5),
+    structs.GunConfig.new(".38 Special", 3500, 4, 9),
+    structs.GunConfig.new("Ruger", 2900, 4, 4),
+    structs.GunConfig.new("Saturday Night Special", 3100, 4, 7),
 ]

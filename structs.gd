@@ -54,3 +54,16 @@ class PlaceConfig:
 		self.minDrugs = minDrugs
 		self.maxDrugs = maxDrugs
 		self.police = police
+
+
+class GunConfig:
+	var name : String
+	var price : int
+	var space : int
+	var damage int
+
+	func init(name, price, space, damage):
+		self.name = name
+		self.price = price
+		self.space = space
+		self.damage = damage
