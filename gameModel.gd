@@ -142,7 +142,7 @@ func _calcNSpecialPricedDrugs():
 
 func _setupDrugsHere():
 	var numDrugs = _rng.randi_range(config.placesByName[_stats.curPlace].minDrugs, config.placesByName[_stats.curPlace].maxDrugs)
-	print("num drugs: ", numDrugs)
+	# print("num drugs: ", numDrugs)
 
 	_drugsHerePrices = {}
 
@@ -153,7 +153,7 @@ func _setupDrugsHere():
 		var maxPrice = config.drugsByName[drugName].maxPrice
 		var price = _rng.randi_range(minPrice, maxPrice)
 
-		print('specical drug price: ', price)
+		# print('specical drug price: ', price)
 
 		if config.drugsByName[drugName].canBeLow:
 			price /= 4
@@ -165,10 +165,10 @@ func _setupDrugsHere():
 			else:
 				_pushMsg("Addicts are buying %s at ridiculous prices!" % drugName)
 		_drugsHerePrices[drugName] = price
-		print('-> ', price)
+		# print('-> ', price)
 
 	for drugName in _nRandDrugNamesOtherThan(numDrugs - _drugsHerePrices.size(), _drugsHerePrices.keys()):
-		print(drugName)
+		# print(drugName)
 		var minPrice = config.drugsByName[drugName].minPrice
 		var maxPrice = config.drugsByName[drugName].maxPrice
 		var price = _rng.randi_range(minPrice, maxPrice)
@@ -201,6 +201,7 @@ func jet(place):
 	print("Jetting to ", place)
 	_stats.curPlace = place
 	_stats.day += 1
+	_stats.debt += ((_stats.debt / 10) as int)
 	if place == "Ghetto":
 		_pushChoice("Would you like to visit Dan's House of Guns?", funcref(self, "visitGunStore"))
 		_pushChoice("Would you like to visit the pub?", funcref(self, "visitPub"))
@@ -249,20 +250,23 @@ func getMsgText():
 
 func chooseOkay():
 	_queue.pop_front()
-	_maybeChangeState()
+	_maybeMsgQueueState()
 
 func chooseYes():
-	_queue[0].onYes.call_func()
-	_queue.pop_front()
-	_maybeChangeState()
+	var onYes = _queue.pop_front().onYes
+	_maybeMsgQueueState()
+	onYes.call_func()
+
 
 func chooseNo():
 	_queue.pop_front()
-	_maybeChangeState()
+	_maybeMsgQueueState()
 
-func _maybeChangeState():
+func _maybeMsgQueueState():
 	if _queue.size() == 0:
 		_curState = State.DRUG_MENU
+	else:
+		_curState = State.MSG_QUEUE
 
 
 ########## Pub
@@ -270,9 +274,8 @@ func _maybeChangeState():
 func visitPub():
 	print("visitPub()")
 	var price = _rng.randi_range(50000, 150000)
-	_pushChoice(	"Would you like to hire a bitch for $%s?" % Util.toCommaSepStr(price),
-					Util.Curry.new(self, "buyBitch", [price]) )
-
+	_pushChoiceFront( 	"Would you like to hire a bitch for $%s?" % Util.toCommaSepStr(price),
+						Util.Curry.new(self, "buyBitch", [price]) )
 
 
 func buyBitch(price):
@@ -284,6 +287,50 @@ func buyBitch(price):
 	_stats.availSpace += 10
 	_stats.totalSpace += 10
 	_stats.bitches += 1
+
+
+########### Loanshark
+
+
+
+func visitLoanShark():
+	print("visitLoanShark()")
+	_curState = State.LOANSHARK
+
+
+func mostCanPayback():
+	return min(_stats.debt, _stats.cash)
+
+
+
+func payback(amnt):
+	_stats.cash -= amnt
+	_stats.debt -= amnt
+	_maybeMsgQueueState()
+
+
+func leaveLoanshark():
+	_maybeMsgQueueState()
+
+
+########### Bank
+
+func visitBank():
+	print("visitBank()")
+	_curState = State.BANK
+
+
+func deposite(amnt):
+	_stats.cash -= amnt
+	_stats.bank += amnt
+
+func withdrawl(amnt):
+	_stats.cash += amnt
+	_stats.bank -= amnt
+
+func leaveBank():
+	_maybeMsgQueueState()
+
 
 ########### General
 
@@ -322,13 +369,6 @@ func visitGunStore():
 
 
 
-
-func visitBank():
-	print("visitBank()")
-
-
-func visitLoanShark():
-	print("visitLoanShark()")
 
 
 

@@ -1,9 +1,7 @@
 tool
 extends VBoxContainer
 
-
 signal drugButtonPressed
-
 
 var Util = preload("res://util.gd")
 
@@ -52,10 +50,9 @@ func _addHeader():
 	var font = header.get_font("font")
 #	var Util = load("res://util.gd")
 	header.text = "%s %s %s" % [
-									Util.rpad_pixels(font, config.colWidths[0], "Name"),
-									Util.rpad_pixels(font, config.colWidths[1], "Price"),
-									Util.lpad_pixels(font, config.colWidths[2], "Quantity")
-									]
+			Util.rpad_pixels(font, config.colWidths[0], "Name"),
+			Util.rpad_pixels(font, config.colWidths[1], "Price"),
+			Util.lpad_pixels(font, config.colWidths[2], "Quantity") ]
 	header.align = Label.ALIGN_CENTER
 	self.add_child(header)
 
@@ -71,7 +68,8 @@ func _addButton(drug):
 
 		button.text = "%s %s %s" % [
 									Util.rpad_pixels(font, config.colWidths[0], drug.name),
-									Util.lpad_pixels(font, config.colWidths[1], "$"+str(drug.price) if drug.price != -1 else "Ain't here"),
+									Util.lpad_pixels(font, config.colWidths[1],
+										"$"+Util.toCommaSepStr(drug.price) if drug.price != -1 else "Ain't here"),
 									Util.lpad_pixels(font, config.colWidths[2], str(drug.quantity))
 									]
 		self.add_child(button)

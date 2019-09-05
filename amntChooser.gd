@@ -29,10 +29,12 @@ func setup(verb, max_value, start=-1):
 	if start == -1:
 		start = max_value
 
-	label.text = verb + " how many?"
 	start = clamp(start, 0, max_value)
 
-	label.text = verb + " how many?"
+	if verb == "Pay":
+			label.text = verb + " how much?"
+	else:
+		label.text = verb + " how many?"
 
 	slider.max_value = max_value
 	slider.value = start

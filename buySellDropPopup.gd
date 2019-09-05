@@ -1,34 +1,11 @@
-extends CenterContainer
+extends "res://amntPopup.gd"
 
-onready var text = $PanelContainer/VBoxContainer/text
-onready var okayButton = $PanelContainer/VBoxContainer/HBoxContainer/okayButton
-onready var amntChooser = $PanelContainer/VBoxContainer/AmntChooser
 
 var verb = "Buy"
 var drug = "drug"
 
 
 signal buySellDropPressed
-
-#func _ready():
-#	popup.show()
-
-func _ready():
-	hide()
-
-#func setVerb(newVerb):
-#	if not newVerb in ["Buy", "Sell", "Drop"]:
-#		print("invalid newVerb: ", newVerb)
-#		assert(false)
-#		return
-#	verb = newVerb
-#
-#func getVerb():
-#	return verb
-#
-#
-#func setDrug(newDrug):
-#	drug = newDrug
 
 
 func setupAndShow(verb, drug):
@@ -53,14 +30,6 @@ func setupAndShow(verb, drug):
 	okayButton.text = verb
 
 	show()
-
-
-
-
-
-
-
-
 
 
 func _on_cancelButton_pressed():
