@@ -119,16 +119,19 @@ func _process(delta):
 		gameModel.State.COP_FIGHT:
 			pass
 		gameModel.State.BANK:
-			pass
+			state_bank()
 		gameModel.State.GUNSTORE:
 			pass
 		gameModel.State.PUB:
-			pass
+			state_msgQueue()
 		_:
 			print("curState: ",gameModel.curState())
 			assert(false)
 	set_process(false)
 
+
+func state_bank():
+	pass
 
 func state_loanshark():
 	loansharkPopup.setupAndShow()

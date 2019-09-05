@@ -276,6 +276,7 @@ func visitPub():
 	var price = _rng.randi_range(50000, 150000)
 	_pushChoiceFront( 	"Would you like to hire a bitch for $%s?" % Util.toCommaSepStr(price),
 						Util.Curry.new(self, "buyBitch", [price]) )
+	_curState = State.PUB
 
 
 func buyBitch(price):
