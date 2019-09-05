@@ -6,16 +6,6 @@ var Util = preload("res://util.gd")
 onready var list = $MarginContainer/VBoxContainer/list
 onready var stats = $MarginContainer/VBoxContainer/stats
 
-#onready var cashDisp =    $VBoxContainer/CenterContainer/stats/cashDisp
-#onready var gunsDisp =    $VBoxContainer/CenterContainer/stats/gunsDisp
-#onready var debtDisp =    $VBoxContainer/CenterContainer/stats/debtDisp
-#onready var bitchesDisp = $VBoxContainer/CenterContainer/stats/bitchesDisp
-#onready var spaceDisp =   $VBoxContainer/CenterContainer/stats/spaceDisp
-#onready var bankDisp =    $VBoxContainer/CenterContainer/stats/bankDisp
-#onready var healthDisp =  $VBoxContainer/CenterContainer/stats/healthDisp
-#onready var dayDisp =     $VBoxContainer/CenterContainer/stats/dayDisp
-
-
 
 onready var buySellDropPopup = $buySellDropPopup
 onready var chooseBuySellPopup = $chooseBuySellPopup
@@ -25,54 +15,7 @@ onready var loansharkPopup = $loansharkPopup
 onready var bankPopup = $bankPopup
 onready var bankChoosePopup = $bankChoosePopup
 
-
-#onready var MsgPopup = preload("res://msgPopup.tscn")
 onready var msgPopup = $msgPopup
-
-#func populateStats():
-#	var stats = gameModel.stats()
-#	cashDisp.text = "$" + Util.toCommaSepStr(stats.cash)
-#	gunsDisp.text = str(stats.guns)
-#	debtDisp.text = "$" + Util.toCommaSepStr(stats.debt)
-#	bitchesDisp.text = str(stats.bitches)
-#	spaceDisp.text = str(stats.availSpace) + " / " + str(stats.totalSpace)
-#	bankDisp.text = "$" + str(stats.bank)
-#	healthDisp.text = str(stats.health)
-#	dayDisp.text = str(stats.day) + " / " + str(stats.finalDay)
-
-
-
-func _ready():
-
-	pass
-	# loop()
-
-	# print("hiding")
-	# buySellDropPopup.hide()
-
-	# gameModel.connect("updated", self, "on_gameModel_updated")
-	# gameModel.connect("msgsAvail", self, "on_gameModel_msgsAvail")
-	# gameModel.connect("choicesAvail", self, "on_gameModel_choicesAvail")
-	# on_gameModel_updated()
-
-
-# func on_gameModel_choicesAvail():
-# 	choicePopup.setupAndShow(gameModel.curChoiceDesc(), gameModel, "chooseYes")
-
-
-
-# # func on_gameModel_updated():
-# # 	list.populate()
-# # 	populateStats()
-# # #	pass
-
-# func on_gameModel_msgsAvail():
-# 	if gameModel.msgs.size() > 0:
-# #		var msgPopup = MsgPopup.instance()
-# #		add_child(msgPopup)
-# 		msgPopup.setupAndShow(gameModel.msgs)
-# 	pass
-
 
 
 func buyDrug(drug):
@@ -93,8 +36,6 @@ func _on_list_drugButtonPressed(drug):
 		chooseBuySellPopup.setupAndShow(drug)
 	elif gameModel.canDrop(drug):
 		# drop
-#		buySellDropPopup.verb = "Drop"
-#		buySellDropPopup.drug = drug
 		buySellDropPopup.setupAndShow("Drop", drug)
 
 
@@ -163,20 +104,8 @@ func _on_choicePopup_yesPressed():
 	set_process(true)
 
 
-func _on_buySellDropPopup_buySellDropPressed():
-	set_process(true)
-
-
 func _on_jetPopup_placeButtonPressed(place):
 	gameModel.jet(place)
-	set_process(true)
-
-
-func _on_loansharkPopup_loansharkClosed():
-	set_process(true)
-
-
-func _on_bankPopup_done():
 	set_process(true)
 
 
