@@ -204,6 +204,8 @@ func jet(place):
 	_stats.debt += ((_stats.debt / 10) as int)
 	_stats.bank += ((_stats.bank / 20) as int)
 
+	possibleSaying()
+
 	if place == "Ghetto":
 		_pushChoice("Would you like to visit Dan's House of Guns?", funcref(self, "visitGunStore"))
 		_pushChoice("Would you like to visit the pub?", funcref(self, "visitPub"))
@@ -374,6 +376,21 @@ func sellGun(name):
 
 
 ########### General
+
+
+func possibleSaying():
+	if _rng.randi_range(0, 99) < 15:
+		if _rng.randi() % 2 == 0:
+			var s = "The lady next to you on the subway said,\n"
+			s += "\"%s\"\n(at least, you -think- that's what she said)"
+			s = s % config.subwaySayings[_rng.randi_range(0, config.subwaySayings.size()-1)]
+			_pushMsg(s)
+		else:
+			var s = "You hear someone playing %s"
+			s = s % config.songs[_rng.randi_range(0, config.songs.size()-1)]
+			_pushMsg(s)
+
+
 
 
 
