@@ -1,8 +1,8 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://game.gd" type="Script" id=1]
 [ext_resource path="res://stats.tscn" type="PackedScene" id=2]
-[ext_resource path="res://drugList.tscn" type="PackedScene" id=3]
+[ext_resource path="res://drugList.gd" type="Script" id=3]
 [ext_resource path="res://jetPopup.tscn" type="PackedScene" id=4]
 [ext_resource path="res://msgPopup.tscn" type="PackedScene" id=5]
 [ext_resource path="res://choicePopup.tscn" type="PackedScene" id=6]
@@ -11,6 +11,7 @@
 [ext_resource path="res://buySellDropPopup.tscn" type="PackedScene" id=9]
 [ext_resource path="res://bankPopup.tscn" type="PackedScene" id=10]
 [ext_resource path="res://bankChoosePopup.tscn" type="PackedScene" id=11]
+[ext_resource path="res://gunStorePopup.tscn" type="PackedScene" id=12]
 
 [node name="Game" type="Control"]
 anchor_right = 1.0
@@ -23,26 +24,27 @@ anchor_bottom = 1.0
 custom_constants/margin_top = 30
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-margin_left = 391.0
+margin_left = 398.0
 margin_top = 30.0
-margin_right = 633.0
+margin_right = 625.0
 margin_bottom = 600.0
 size_flags_horizontal = 4
 custom_constants/separation = 20
 
 [node name="stats" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
-margin_right = 242.0
+margin_right = 227.0
 margin_bottom = 86.0
 
-[node name="list" parent="MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
+[node name="drugList" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
 margin_top = 106.0
-margin_right = 242.0
-margin_bottom = 216.0
+margin_right = 227.0
+margin_bottom = 106.0
+script = ExtResource( 3 )
 
 [node name="jetButton" type="Button" parent="MarginContainer/VBoxContainer"]
-margin_top = 236.0
-margin_right = 242.0
-margin_bottom = 256.0
+margin_top = 126.0
+margin_right = 227.0
+margin_bottom = 146.0
 text = "Jet"
 
 [node name="jetPopup" parent="." instance=ExtResource( 4 )]
@@ -64,9 +66,14 @@ visible = false
 visible = false
 
 [node name="bankPopup" parent="." instance=ExtResource( 10 )]
+visible = false
 
 [node name="bankChoosePopup" parent="." instance=ExtResource( 11 )]
-[connection signal="drugButtonPressed" from="MarginContainer/VBoxContainer/list" to="." method="_on_list_drugButtonPressed"]
+visible = false
+
+[node name="gunStorePopup" parent="." instance=ExtResource( 12 )]
+visible = false
+[connection signal="itemButtonPressed" from="MarginContainer/VBoxContainer/drugList" to="." method="_on_drugList_itemButtonPressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/jetButton" to="." method="_on_jetButton_pressed"]
 [connection signal="placeButtonPressed" from="jetPopup" to="." method="_on_jetPopup_placeButtonPressed"]
 [connection signal="okayPressed" from="msgPopup" to="." method="_on_msgPopup_okayPressed"]
@@ -80,3 +87,4 @@ visible = false
 [connection signal="cancelPressed" from="bankChoosePopup" to="." method="_on_popupDone"]
 [connection signal="despositPressed" from="bankChoosePopup" to="." method="_on_bankChoosePopup_despositPressed"]
 [connection signal="withdrawPressed" from="bankChoosePopup" to="." method="_on_bankChoosePopup_withdrawPressed"]
+[connection signal="done" from="gunStorePopup" to="." method="_on_popupDone"]

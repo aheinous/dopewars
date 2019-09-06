@@ -3,7 +3,7 @@ extends Control
 
 var Util = preload("res://util.gd")
 
-onready var list = $MarginContainer/VBoxContainer/list
+onready var drugList = $MarginContainer/VBoxContainer/drugList
 onready var stats = $MarginContainer/VBoxContainer/stats
 
 
@@ -14,6 +14,7 @@ onready var choicePopup = $choicePopup
 onready var loansharkPopup = $loansharkPopup
 onready var bankPopup = $bankPopup
 onready var bankChoosePopup = $bankChoosePopup
+onready var gunStorePopup = $gunStorePopup
 
 onready var msgPopup = $msgPopup
 
@@ -24,7 +25,7 @@ func buyDrug(drug):
 func sellDrug(drug):
 	buySellDropPopup.setupAndShow("Sell", drug)
 
-func _on_list_drugButtonPressed(drug):
+func _on_drugList_itemButtonPressed(drug):
 	print("_on_list_drugButtonPressed(%s)" % [drug])
 
 	if gameModel.canBuy(drug) and not gameModel.canSell(drug):
@@ -65,7 +66,7 @@ func _process(delta):
 		gameModel.State.BANK:
 			state_bank()
 		gameModel.State.GUNSTORE:
-			pass
+			state_gunStore()
 		gameModel.State.PUB:
 			state_msgQueue()
 		_:
@@ -74,6 +75,9 @@ func _process(delta):
 	set_process(false)
 
 
+func state_gunStore():
+	gunStorePopup.setupAndShow()
+
 func state_bank():
 	bankChoosePopup.setupAndShow()
 
@@ -81,7 +85,7 @@ func state_loanshark():
 	loansharkPopup.setupAndShow()
 
 func state_drugMenu():
-	list.populate()
+	drugList.populate()
 
 func state_msgQueue():
 	if gameModel.isOnMsg():
@@ -119,3 +123,4 @@ func _on_bankChoosePopup_withdrawPressed():
 
 func _on_bankChoosePopup_despositPressed():
 	bankPopup.setupAndShow("Deposit")
+

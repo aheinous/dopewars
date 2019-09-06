@@ -181,7 +181,7 @@ func drugsHere():
 
 	for cfgDrug in config.drugs:
 		if cfgDrug.drugName in _drugsHerePrices:
-			drugs.append(structs.DrugData.new(cfgDrug.drugName, price(cfgDrug.drugName), quantity(cfgDrug.drugName)))
+			drugs.append(structs.StoreItem.new(cfgDrug.drugName, price(cfgDrug.drugName), quantity(cfgDrug.drugName)))
 
 	return drugs
 
@@ -191,7 +191,7 @@ func drugsOwnedAndNotHere():
 
 	for cfgDrug in config.drugs:
 		if cfgDrug.drugName in _drugsOwnedQuantities and not cfgDrug.drugName in _drugsHerePrices:
-			drugs.append(structs.DrugData.new(cfgDrug.drugName, price(cfgDrug.drugName), quantity(cfgDrug.drugName)))
+			drugs.append(structs.StoreItem.new(cfgDrug.drugName, price(cfgDrug.drugName), quantity(cfgDrug.drugName)))
 
 	return drugs
 
@@ -337,6 +337,42 @@ func leaveBank():
 	_maybeMsgQueueState()
 
 
+########### Gun Store
+
+var gunQuantities = {}
+
+func visitGunStore():
+	print("visitGunStore()")
+	_curState = State.GUNSTORE
+
+
+func leaveGunStore():
+	_maybeMsgQueueState()
+
+func guns():
+	var items = []
+	for gun in config.guns:
+		items.append(structs.StoreItem.new(gun.name, gun.price, gunQuantities.get(gun.name, 0)))
+	return items
+
+func canBuyGun(name):
+	return config.gunsByName[name].price <= _stats.cash and config.gunsByName[name].space <= _stats.availSpace
+
+func canSellGun(name):
+	return gunQuantities.get(name, 0) > 0
+
+
+func buyGun(name):
+	gunQuantities[name] = gunQuantities.get(name, 0) + 1
+	_stats.cash -= config.gunsByName[name].price
+	_stats.availSpace -= config.gunsByName[name].space
+
+func sellGun(name):
+	gunQuantities[name] -= 1
+	_stats.cash += config.gunsByName[name].price
+	_stats.availSpace += config.gunsByName[name].space
+
+
 ########### General
 
 
@@ -361,16 +397,9 @@ func reset():
 	_curState = State.DRUG_MENU
 	_rng = RandomNumberGenerator.new()
 	_rng.randomize()
-
-
-	_pushMsg("Hello.")
-
 	_setupDrugsHere()
 
 
-
-func visitGunStore():
-	print("visitGunStore()")
 
 
 

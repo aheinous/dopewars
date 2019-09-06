@@ -1,20 +1,20 @@
 extends "res://listChoosePopup.gd"
 
-var drug = "drug"
+var item = "item"
 
 signal buyPressed
 signal sellPressed
 
 
-func setupAndShow(drug):
-    self.drug = drug
-    _setupAndShow("Buy or sell %s?" % drug, "Buy", "Sell")
+func setupAndShow(item):
+    self.item = item
+    _setupAndShow("Buy or sell %s?" % item, "Buy", "Sell")
 
 
 func _on_buttonA_pressed():
-	emit_signal("buyPressed", drug)
+	emit_signal("buyPressed", item)
 	hide()
 
 func _on_buttonB_pressed():
-	emit_signal("sellPressed", drug)
+	emit_signal("sellPressed", item)
 	hide()

@@ -1,10 +1,14 @@
 extends Node
 
 
-const colWidths = [100,62,55]
+const colWidths_drugs = [100,62,55]
+const colWidths_guns = [150,42,55]
+
+
 
 var drugsByName
 var placesByName
+var gunsByName
 
 var placeNamesList
 
@@ -12,6 +16,7 @@ var placeNamesList
 func _ready():
 	drugsByName = {}
 	placesByName = {}
+	gunsByName = {}
 	placeNamesList = []
 	for drugCfg in drugs:
 		drugsByName[drugCfg.drugName] = drugCfg
@@ -19,6 +24,9 @@ func _ready():
 	for placeCfg in places:
 		placesByName[placeCfg.placeName] = placeCfg
 		placeNamesList.append(placeCfg.placeName)
+
+	for gunCfg in guns:
+		gunsByName[gunCfg.name] = gunCfg
 
 
 

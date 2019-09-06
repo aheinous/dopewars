@@ -1,6 +1,6 @@
 extends Node
 
-class DrugData:
+class StoreItem:
 	var name : String
 	var price : int
 	var quantity : int
@@ -60,9 +60,9 @@ class GunConfig:
 	var name : String
 	var price : int
 	var space : int
-	var damage int
+	var damage : int
 
-	func init(name, price, space, damage):
+	func _init(name, price, space, damage):
 		self.name = name
 		self.price = price
 		self.space = space
