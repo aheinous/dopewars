@@ -131,3 +131,7 @@ var stoppedTo = [
 	"smoke a Djarum",
 	"smoke a cigarette"
 ]
+
+
+const bitchPrice_low = 50000
+const bitchPrice_high = 150000

@@ -74,7 +74,7 @@ func canSell(drug, amnt=1):
 func canDrop(drug, amnt=1):
 	return not here(drug) and quantity(drug) >= 1
 
-func buy(drug, amnt : int):
+func buy(drug, amnt:int):
 	print('buying %s of %s' % [amnt, drug])
 	assert(canBuy(drug, amnt))
 	_stats.cash -= price(drug)*amnt
@@ -85,6 +85,18 @@ func buy(drug, amnt : int):
 		_drugsOwnedQuantities[drug] = 0
 	_drugsOwnedQuantities[drug] += amnt
 	# emit_signal("updated")
+
+func _receive(drug, amnt):
+	_stats.availSpace -= amnt
+	if not drug in _drugsOwnedQuantities:
+		_drugsOwnedQuantities[drug] = 0
+	_drugsOwnedQuantities[drug] += amnt
+
+func _give(drug, amnt):
+	_stats.availSpace += amnt
+	_drugsOwnedQuantities[drug] -= amnt
+	if _drugsOwnedQuantities[drug] == 0:
+		_drugsOwnedQuantities.erase(drug)
 
 func sell(drug, amnt : int):
 	print('sell %s of %s' % [amnt, drug])
@@ -100,12 +112,7 @@ func sell(drug, amnt : int):
 
 func drop(drug, amnt : int):
 	print('drop %s of %s' % [amnt, drug])
-	_drugsOwnedQuantities[drug] -= amnt
-	_stats.availSpace += amnt
-	assert(_drugsOwnedQuantities[drug] >= 0)
-	if _drugsOwnedQuantities[drug] == 0:
-		_drugsOwnedQuantities.erase(drug)
-	# emit_signal("updated")
+	_give(drug, amnt)
 
 func _nRandDrugNamesOtherThan(n, except):
 	var outputDrugNames = []
@@ -205,6 +212,7 @@ func jet(place):
 	_stats.bank += ((_stats.bank / 20) as int)
 
 	possibleSaying()
+	possibleCopsOfferOrEvent()
 
 	if place == "Ghetto":
 		_pushChoice("Would you like to visit Dan's House of Guns?", funcref(self, "visitGunStore"))
@@ -277,7 +285,7 @@ func _maybeMsgQueueState():
 
 func visitPub():
 	print("visitPub()")
-	var price = _rng.randi_range(50000, 150000)
+	var price = _rng.randi_range(config.bitchPrice_low, config.bitchPrice_high)
 	_pushChoiceFront( 	"Would you like to hire a bitch for $%s?" % Util.toCommaSepStr(price),
 						Util.Curry.new(self, "buyBitch", [price]) )
 	_curState = State.PUB
@@ -364,15 +372,22 @@ func canSellGun(name):
 	return gunQuantities.get(name, 0) > 0
 
 
-func buyGun(name):
+func buyGun(name, price=null):
+	if price == null:
+		price = config.gunsByName[name].price
 	gunQuantities[name] = gunQuantities.get(name, 0) + 1
-	_stats.cash -= config.gunsByName[name].price
+	_stats.cash -= price
 	_stats.availSpace -= config.gunsByName[name].space
 
 func sellGun(name):
 	gunQuantities[name] -= 1
 	_stats.cash += config.gunsByName[name].price
 	_stats.availSpace += config.gunsByName[name].space
+
+########### Cop Fight
+
+func copFight():
+	print("COP FIGHT!!")
 
 
 ########### General
@@ -391,7 +406,117 @@ func possibleSaying():
 			_pushMsg(s)
 
 
+func randomOffer():
+	print("randomOffer()")
+	if _rng.randi() % 2 == 0:
+		print("offer bitch")
+		var price = (_rng.randi_range(config.bitchPrice_low, config.bitchPrice_high) / 10) as int
+		var s = "Hey dude! I'll help carry your drugs for a mere $%s. Yes or no?"
+		s %= Util.toCommaSepStr(price)
+		_pushChoice(s, Util.Curry.new(self, "buyBitch", [price]))
+	else:
+		print("offer gun")
+		var gun = config.guns[_rng.randi_range(0, config.guns.size()-1)]
+		var price = gun.price / 10
+		var s = "Would you like to buy a %s for $%s?"
+		s %= [gun.name, Util.toCommaSepStr(price)]
+		_pushChoice(s, Util.Curry.new(self, "buyGun", [gun.name, price]))
 
+
+func _randDrugWithAtLeastAmnt(amnt):
+	for i in range(5):
+		var name = _randElem(config.drugs).drugName
+		if _drugsOwnedQuantities.get(name, 0) >= amnt:
+			return name
+	return null
+
+func _randDrug():
+	return config.drugs[ _rng.randi_range(0, config.drugs.size()-1)].drugName
+
+
+
+func randomEvent():
+	print("randomEvent()")
+	var r = _rng.randi_range(0,99)
+	if r < 10:
+		_mugged()
+	elif r < 50:
+		_giveOrReceiveDrugs()
+	elif r < 60 and ("Weed" in _drugsOwnedQuantities or "Hashish" in _drugsOwnedQuantities):
+		_brownies()
+	elif r < 65:
+		_paraquatWeed()
+	else:
+		_stopToDoSomething()
+
+
+func _paraquatWeed():
+	var s = "There is some weed that smells like paraquat here!\nIt looks good! Will you smoke it?"
+	var cb = Util.Curry.new(self, "_endGame",["You hallucinated for three days on the wildest trip you ever imagined!\nThen you died because your brain disintegrated!"])
+	_pushChoice(s, cb)
+
+
+func _brownies():
+	var drug = "Weed" if _drugsOwnedQuantities.get("Weed", 0) > _drugsOwnedQuantities.get("Hashish",0) else "Hashish"
+	_pushMsg("Your mama made brownies with some of your %s! They were great!" % drug)
+	_give(drug, min(_rng.randi_range(2,5), _drugsOwnedQuantities[drug]))
+
+func _giveOrReceiveDrugs():
+	var amnt = _rng.randi_range(3, 6)
+	var drug = _randDrugWithAtLeastAmnt(amnt)
+	if drug == null and amnt > _stats.availSpace:
+		return
+	elif drug == null:
+		drug = _randDrug()
+		var fmt = "You meet a friend! He gives you %s %s." if _rng.randi()%2 == 0 else "You find %s %s on a dead dude in the subway."
+		_pushMsg(fmt % [amnt, drug])
+		_receive(drug, amnt)
+	else:
+		if _rng.randi()%2 == 0:
+			var fmt = "You meet a friend! You give him %s %s."
+			_pushMsg(fmt % [amnt, drug])
+		else:
+			var fmt = "Police chased you for %s blocks! You dropped some %s! That's a drag man."
+			_pushMsg(fmt % [_rng.randi_range(3,6), drug])
+		_give(drug, amnt)
+
+func _mugged():
+	_pushMsg("You were mugged in the subway!")
+	_stats.cash = (_stats.cash * _rng.randf_range(.8, .95)) as int
+
+func _randElem(list):
+	return list[_rng.randi_range(0, list.size()-1)]
+
+func _stopToDoSomething():
+	_pushMsg("You stopped to %s." % _randElem(config.stoppedTo))
+	_stats.cash -= _rng.randi_range(1, min(10, _stats.cash))
+
+func _endGame(msg):
+	print("END GAME: \"%s\"" % msg)
+
+
+func possibleCopsOfferOrEvent():
+	print("possibleCopsOfferOrEvent()")
+
+	var i = 99
+	if totalMoney() >   3000000:
+		i = 129
+	elif totalMoney() > 1000000:
+		i = 114
+	if _rng.randi_range(0,i) <= 75:
+		return
+
+	i = _rng.randi_range(0, 79 + config.placesByName[_stats.curPlace].police)
+	if i < 33:
+		randomOffer()
+	elif i < 50:
+		randomEvent()
+	else:
+		copFight()
+
+
+func totalMoney():
+	return _stats.cash + _stats.bank - _stats.debt
 
 
 func _ready():
@@ -415,13 +540,6 @@ func reset():
 	_rng = RandomNumberGenerator.new()
 	_rng.randomize()
 	_setupDrugsHere()
-
-
-
-
-
-
-
 
 
 
