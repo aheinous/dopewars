@@ -89,7 +89,7 @@ var subwaySayings = [
   "I think hemorrhoid commercials are really neat!",
   "We\'re winning the war for drugs!",
   "A day without dope is like night",
-  "We only use 20%% of our brains, so why not burn out the other 80%%",
+  "We only use 20% of our brains, so why not burn out the other 80%",
   "I\'m soliciting contributions for Zombies for Christ",
   "I\'d like to sell you an edible poodle",
   "Winners don\'t do drugs... unless they do",
