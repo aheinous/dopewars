@@ -44,7 +44,7 @@ var drugs = [
     structs.DrugConfig.new( "Peyote", 220, 700),
     structs.DrugConfig.new( "Shrooms", 630, 1300),
     structs.DrugConfig.new( "Speed", 90, 250, false, true),
-    structs.DrugConfig.new( "Viagra", 30, 80, true, false, "viagra cheap"),
+    structs.DrugConfig.new( "Viagra", 30, 80, true, false),
     structs.DrugConfig.new( "Weed", 315, 890, true, false, "Columbian freighter dusted the Coast Guard! Weed prices have bottomed out!")
 ]
 

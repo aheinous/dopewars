@@ -147,11 +147,7 @@ func _calcNSpecialPricedDrugs():
 
 func _setupDrugsHere():
 	var numDrugs = _rng.randi_range(config.placesByName[_stats.curPlace].minDrugs, config.placesByName[_stats.curPlace].maxDrugs)
-	# print("num drugs: ", numDrugs)
-
 	_drugsHerePrices = {}
-
-
 
 	for drugName in _nRandSpecialPriceableDrugNames(_calcNSpecialPricedDrugs()):
 		var minPrice = config.drugsByName[drugName].minPrice
@@ -162,7 +158,8 @@ func _setupDrugsHere():
 
 		if config.drugsByName[drugName].canBeLow:
 			price /= 4
-			_pushMsg(config.drugsByName[drugName].lowString)
+			if config.drugsByName[drugName].lowString != "":
+				_pushMsg(config.drugsByName[drugName].lowString)
 		else:
 			price *= 4
 			if _rng.randi() % 2 == 0:
