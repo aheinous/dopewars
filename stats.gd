@@ -21,6 +21,6 @@ func populate():
 	debtDisp.text = "$" + util.toCommaSepStr(stats.debt)
 	bitchesDisp.text = str(stats.bitches)
 	spaceDisp.text = str(stats.availSpace) + " / " + str(stats.totalSpace)
-	bankDisp.text = "$" + str(stats.bank)
+	bankDisp.text = "$" + util.toCommaSepStr(stats.bank)
 	healthDisp.text = str(stats.health)
 	dayDisp.text = str(stats.day) + " / " + str(stats.finalDay)
