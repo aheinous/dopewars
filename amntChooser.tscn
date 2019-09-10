@@ -18,6 +18,7 @@ verb = "Encabulate"
 margin_right = 1024.0
 margin_bottom = 14.0
 text = "Encabulate how many?"
+align = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_top = 18.0
@@ -25,16 +26,19 @@ margin_right = 1024.0
 margin_bottom = 42.0
 
 [node name="HSlider" type="HSlider" parent="HBoxContainer"]
-margin_right = 946.0
+margin_right = 920.0
 margin_bottom = 16.0
+rect_min_size = Vector2( 200, 0 )
 size_flags_horizontal = 3
 value = 73.0
 ticks_on_borders = true
 
 [node name="SpinBox" type="SpinBox" parent="HBoxContainer"]
-margin_left = 950.0
+margin_left = 924.0
 margin_right = 1024.0
 margin_bottom = 24.0
+rect_min_size = Vector2( 100, 0 )
 value = 73.0
+rounded = true
 [connection signal="value_changed" from="HBoxContainer/HSlider" to="." method="_on_valueChanged"]
 [connection signal="value_changed" from="HBoxContainer/SpinBox" to="." method="_on_valueChanged"]
