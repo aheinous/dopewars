@@ -217,7 +217,8 @@ func jet(place):
 		_pushChoice("Would you like to visit Dan's House of Guns?", funcref(self, "visitGunStore"))
 		_pushChoice("Would you like to visit the pub?", funcref(self, "visitPub"))
 	elif place == "Bronx":
-		_pushChoice("Would you like to visit the loan shark?", funcref(self, "visitLoanShark"))
+		if _stats.debt > 0:
+			_pushChoice("Would you like to visit the loan shark?", funcref(self, "visitLoanShark"))
 		_pushChoice("Would you like to visit the bank?", funcref(self, "visitBank"))
 	_setupDrugsHere()
 
