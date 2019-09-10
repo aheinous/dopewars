@@ -1,6 +1,5 @@
 extends CenterContainer
 
-const Util = preload("res://util.gd")
 
 onready var locationDisp = $VBoxContainer/locationLbl
 
@@ -17,9 +16,9 @@ func populate():
 
 	var stats = gameModel.stats()
 	locationDisp.text = "-- %s --" % stats.curPlace
-	cashDisp.text = "$" + Util.toCommaSepStr(stats.cash)
+	cashDisp.text = "$" + util.toCommaSepStr(stats.cash)
 	gunsDisp.text = str(stats.guns)
-	debtDisp.text = "$" + Util.toCommaSepStr(stats.debt)
+	debtDisp.text = "$" + util.toCommaSepStr(stats.debt)
 	bitchesDisp.text = str(stats.bitches)
 	spaceDisp.text = str(stats.availSpace) + " / " + str(stats.totalSpace)
 	bankDisp.text = "$" + str(stats.bank)

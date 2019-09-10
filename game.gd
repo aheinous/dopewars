@@ -1,8 +1,5 @@
 extends Control
 
-
-var Util = preload("res://util.gd")
-
 onready var drugList = $MarginContainer/VBoxContainer/drugList
 onready var stats = $MarginContainer/VBoxContainer/stats
 
@@ -15,6 +12,7 @@ onready var loansharkPopup = $loansharkPopup
 onready var bankPopup = $bankPopup
 onready var bankChoosePopup = $bankChoosePopup
 onready var gunStorePopup = $gunStorePopup
+onready var highscoresPopup = $highscoresPopup
 
 onready var msgPopup = $msgPopup
 
@@ -69,11 +67,15 @@ func _process(delta):
 			state_gunStore()
 		gameModel.State.PUB:
 			state_msgQueue()
+		gameModel.State.HIGHSCORES:
+			state_highscores()
 		_:
 			print("curState: ",gameModel.curState())
 			assert(false)
 	set_process(false)
 
+func state_highscores():
+	highscoresPopup.setupAndShow()
 
 func state_gunStore():
 	gunStorePopup.setupAndShow()

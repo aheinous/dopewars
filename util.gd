@@ -1,5 +1,7 @@
 extends Node
 
+
+
 static func _lrpad_spaces(font, tgt_width, s):
 	var space = " "
 	var s_width = font.get_string_size(s).x
@@ -16,8 +18,29 @@ static func _lrpad_spaces(font, tgt_width, s):
 static func rpad_pixels(font, tgt_width, s):
 	return s + _lrpad_spaces(font,tgt_width, s)
 
-static func lpad_pixels(font, tgt_width, s):
+static func lpad_pixels(font, tgt_width : int, s : String ):
 	return _lrpad_spaces(font,tgt_width, s) + s
+
+
+static func lpadColumnStr(font, cols):
+	for col in cols:
+		var colWidth = 0
+		for s in col:
+			print(colWidth, ", " ,s,", ", font, ", ",font.get_string_size(s))
+			colWidth = max(colWidth, font.get_string_size(s).x)
+		for i in range(col.size()):
+			col[i] = lpad_pixels(font, colWidth, col[i])
+
+	var output = ""
+	for rowIdx in range(cols[0].size()):
+		for colIdx in range(cols.size()):
+			output += cols[colIdx][rowIdx]
+		output += "\n"
+	return output
+
+
+
+
 
 static func toCommaSepStr(number):
     var string = str(number)

@@ -1,6 +1,5 @@
 extends CenterContainer
 
-var Util = preload("res://util.gd")
 
 onready var text = $PanelContainer/VBoxContainer/text
 onready var okayButton = $PanelContainer/VBoxContainer/HBoxContainer/okayButton

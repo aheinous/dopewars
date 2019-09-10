@@ -5,7 +5,7 @@ var verb = "Buy"
 var drug = "drug"
 
 
-signal buySellDropPressed
+signal done
 
 
 func setupAndShow(verb, drug):
@@ -47,4 +47,4 @@ func _on_okayButton_pressed():
 		_:
 			assert(false)
 	hide()
-	emit_signal("buySellDropPressed")
+	emit_signal("done")

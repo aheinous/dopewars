@@ -8,8 +8,8 @@ func setupAndShow(mode):
 	self.mode = mode
 	text.text = "%s how much?\nCash: %s\nBank balance: %s" \
 			% 	[mode,
-				Util.toCommaSepStr(gameModel.stats().cash),
-				Util.toCommaSepStr(gameModel.stats().bank) ]
+				util.toCommaSepStr(gameModel.stats().cash),
+				util.toCommaSepStr(gameModel.stats().bank) ]
 
 	if mode == "Deposit":
 		amntChooser.setup("Deposit", gameModel.stats().cash)

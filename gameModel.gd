@@ -1,9 +1,9 @@
 extends Node
 
-var Util = preload("res://util.gd")
 
-enum State {DRUG_MENU, MSG_QUEUE, LOANSHARK, COP_FIGHT, BANK, GUNSTORE, PUB}
+enum State {DRUG_MENU, MSG_QUEUE, LOANSHARK, COP_FIGHT, BANK, GUNSTORE, PUB, HIGHSCORES}
 
+var _finished = false
 
 class Stats:
 	var cash
@@ -41,8 +41,8 @@ var _rng
 
 ####################### Drug Menu
 
-var _drugsHerePrices = {}
-var _drugsOwnedQuantities = {}
+var _drugsHerePrices
+var _drugsOwnedQuantities
 
 func here(drug):
 	return drug in _drugsHerePrices
@@ -58,9 +58,7 @@ func canAfford(drug):
 	return (_stats.cash/price(drug)) as int
 
 func quantity(drug):
-	if not drug in _drugsOwnedQuantities:
-		return 0
-	return _drugsOwnedQuantities[drug]
+	return _drugsOwnedQuantities.get(drug, 0)
 
 func mostCanBuy(drug):
 	return min(_stats.availSpace, canAfford(drug))
@@ -206,13 +204,17 @@ func drugsOwnedAndNotHere():
 
 func jet(place):
 	print("Jetting to ", place)
+	if _stats.day == _stats.finalDay:
+		_endGame("Your dealing time is up...")
+		return
+
 	_stats.curPlace = place
 	_stats.day += 1
 	_stats.debt += ((_stats.debt / 10) as int)
 	_stats.bank += ((_stats.bank / 20) as int)
 
-	possibleSaying()
-	possibleCopsOfferOrEvent()
+	_possibleSaying()
+	_possibleCopsOfferOrEvent()
 
 	if place == "Ghetto":
 		_pushChoice("Would you like to visit Dan's House of Guns?", funcref(self, "visitGunStore"))
@@ -227,7 +229,7 @@ func jet(place):
 
 
 
-var _queue = []
+var _queue
 
 
 class MsgChoice:
@@ -238,6 +240,8 @@ class MsgChoice:
 		self.text = text
 		self.onYes = onYes
 
+func _clearMsgQueue():
+	_queue = []
 
 func _pushMsg(s):
 	print("pushMsg('%s')" % s)
@@ -276,7 +280,7 @@ func chooseNo():
 
 func _maybeMsgQueueState():
 	if _queue.size() == 0:
-		_curState = State.DRUG_MENU
+		_curState = State.DRUG_MENU if not _finished else State.HIGHSCORES
 	else:
 		_curState = State.MSG_QUEUE
 
@@ -286,8 +290,8 @@ func _maybeMsgQueueState():
 func visitPub():
 	print("visitPub()")
 	var price = _rng.randi_range(config.bitchPrice_low, config.bitchPrice_high)
-	_pushChoiceFront( 	"Would you like to hire a bitch for $%s?" % Util.toCommaSepStr(price),
-						Util.Curry.new(self, "buyBitch", [price]) )
+	_pushChoiceFront( 	"Would you like to hire a bitch for $%s?" % util.toCommaSepStr(price),
+						util.Curry.new(self, "buyBitch", [price]) )
 	_curState = State.PUB
 
 
@@ -349,7 +353,7 @@ func leaveBank():
 
 ########### Gun Store
 
-var gunQuantities = {}
+var _gunQuantities
 
 func visitGunStore():
 	print("visitGunStore()")
@@ -362,38 +366,38 @@ func leaveGunStore():
 func guns():
 	var items = []
 	for gun in config.guns:
-		items.append(structs.StoreItem.new(gun.name, gun.price, gunQuantities.get(gun.name, 0)))
+		items.append(structs.StoreItem.new(gun.name, gun.price, _gunQuantities.get(gun.name, 0)))
 	return items
 
 func canBuyGun(name):
 	return config.gunsByName[name].price <= _stats.cash and config.gunsByName[name].space <= _stats.availSpace
 
 func canSellGun(name):
-	return gunQuantities.get(name, 0) > 0
+	return _gunQuantities.get(name, 0) > 0
 
 
 func buyGun(name, price=null):
 	if price == null:
 		price = config.gunsByName[name].price
-	gunQuantities[name] = gunQuantities.get(name, 0) + 1
+	_gunQuantities[name] = _gunQuantities.get(name, 0) + 1
 	_stats.cash -= price
 	_stats.availSpace -= config.gunsByName[name].space
 
 func sellGun(name):
-	gunQuantities[name] -= 1
+	_gunQuantities[name] -= 1
 	_stats.cash += config.gunsByName[name].price
 	_stats.availSpace += config.gunsByName[name].space
 
 ########### Cop Fight
 
-func copFight():
+func _copFight():
 	print("COP FIGHT!!")
 
 
 ########### General
 
 
-func possibleSaying():
+func _possibleSaying():
 	if _rng.randi_range(0, 99) < 15:
 		if _rng.randi() % 2 == 0:
 			var s = "The lady next to you on the subway said,\n"
@@ -406,37 +410,37 @@ func possibleSaying():
 			_pushMsg(s)
 
 
-func randomOffer():
-	print("randomOffer()")
+func _randomOffer():
+	print("_randomOffer()")
 	if _rng.randi() % 2 == 0:
 		print("offer bitch")
 		var price = (_rng.randi_range(config.bitchPrice_low, config.bitchPrice_high) / 10) as int
 		var s = "Hey dude! I'll help carry your drugs for a mere $%s. Yes or no?"
-		s %= Util.toCommaSepStr(price)
-		_pushChoice(s, Util.Curry.new(self, "buyBitch", [price]))
+		s %= util.toCommaSepStr(price)
+		_pushChoice(s, util.Curry.new(self, "buyBitch", [price]))
 	else:
 		print("offer gun")
 		var gun = config.guns[_rng.randi_range(0, config.guns.size()-1)]
 		var price = gun.price / 10
 		var s = "Would you like to buy a %s for $%s?"
-		s %= [gun.name, Util.toCommaSepStr(price)]
-		_pushChoice(s, Util.Curry.new(self, "buyGun", [gun.name, price]))
+		s %= [gun.name, util.toCommaSepStr(price)]
+		_pushChoice(s, util.Curry.new(self, "buyGun", [gun.name, price]))
 
 
 func _randDrugWithAtLeastAmnt(amnt):
 	for i in range(5):
-		var name = _randElem(config.drugs).drugName
-		if _drugsOwnedQuantities.get(name, 0) >= amnt:
-			return name
+		var drug = _randDrug()
+		if quantity(drug) >= amnt:
+			return drug
 	return null
 
 func _randDrug():
-	return config.drugs[ _rng.randi_range(0, config.drugs.size()-1)].drugName
+	return _randElem(config.drugs).drugName
 
 
 
-func randomEvent():
-	print("randomEvent()")
+func _randomEvent():
+	print("_randomEvent()")
 	var r = _rng.randi_range(0,99)
 	if r < 10:
 		_mugged()
@@ -452,12 +456,12 @@ func randomEvent():
 
 func _paraquatWeed():
 	var s = "There is some weed that smells like paraquat here!\nIt looks good! Will you smoke it?"
-	var cb = Util.Curry.new(self, "_endGame",["You hallucinated for three days on the wildest trip you ever imagined!\nThen you died because your brain disintegrated!"])
+	var cb = util.Curry.new(self, "_endGame",["You hallucinated for three days on the wildest trip you ever imagined!\nThen you died because your brain disintegrated!"])
 	_pushChoice(s, cb)
 
 
 func _brownies():
-	var drug = "Weed" if _drugsOwnedQuantities.get("Weed", 0) > _drugsOwnedQuantities.get("Hashish",0) else "Hashish"
+	var drug = "Weed" if quantity("Weed") > quantity("Hashish") else "Hashish"
 	_pushMsg("Your mama made brownies with some of your %s! They were great!" % drug)
 	_give(drug, min(_rng.randi_range(2,5), _drugsOwnedQuantities[drug]))
 
@@ -493,10 +497,15 @@ func _stopToDoSomething():
 
 func _endGame(msg):
 	print("END GAME: \"%s\"" % msg)
+	_clearMsgQueue()
+	_pushMsg(msg)
+	_finished = true
+	_addHighscore(totalMoney())
 
 
-func possibleCopsOfferOrEvent():
-	print("possibleCopsOfferOrEvent()")
+
+func _possibleCopsOfferOrEvent():
+	print("_possibleCopsOfferOrEvent()")
 
 	var i = 99
 	if totalMoney() >   3000000:
@@ -508,11 +517,11 @@ func possibleCopsOfferOrEvent():
 
 	i = _rng.randi_range(0, 79 + config.placesByName[_stats.curPlace].police)
 	if i < 33:
-		randomOffer()
+		_randomOffer()
 	elif i < 50:
-		randomEvent()
+		_randomEvent()
 	else:
-		copFight()
+		_copFight()
 
 
 func totalMoney():
@@ -537,9 +546,48 @@ func places():
 func reset():
 	_stats = Stats.new()
 	_curState = State.DRUG_MENU
+	_finished = false
+	_clearMsgQueue()
+	_gunQuantities = {}
+	_drugsHerePrices = {}
+	_drugsOwnedQuantities = {}
+
 	_rng = RandomNumberGenerator.new()
 	_rng.randomize()
 	_setupDrugsHere()
 
 
 
+var highscores = [
+	10000000,
+	1000000,
+	100000,
+	10000,
+	1000,
+	100,
+	1,
+
+]
+var highscoreIndex = -1
+
+
+func _insertScoreAt(i, score):
+	highscores.insert(i, score)
+	highscoreIndex = i
+	printHighscores()
+
+func _addHighscore(score):
+	if highscores.size() == 0:
+		_insertScoreAt(0, score)
+		return
+	for i in range(highscores.size()-1):
+		if score >= highscores[i]:
+			_insertScoreAt(i, score)
+			return
+	_insertScoreAt(highscores.size()-1, score)
+
+
+func printHighscores():
+	print("HIGHSCORES:")
+	for i in range(highscores.size()-1):
+		print("\t%s %10s" % ["*" if i==highscoreIndex else " ", highscores[i]])
