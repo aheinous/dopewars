@@ -622,6 +622,7 @@ func _playerLosesBitch():
 		# drop item
 		if items[itemIdx].type == ItemType.DRUG:
 			drop(items[itemIdx].name, 1)
+			# TODO drop adjacent
 		else:
 			dropGun(items[itemIdx].name)
 		spaceRecovered += items[itemIdx].space
@@ -716,6 +717,12 @@ func _copFight():
 	_copsAttackPlayer()
 
 
+func _visitDoctor(price):
+	if _stats.cash < price:
+		print("insufficent funds")
+		return
+	_stats.cash -= price
+	_stats.health = 100
 
 
 func curCop():
@@ -738,6 +745,11 @@ func finishFight():
 	if _gameFinished:
 		_setState(State.HIGHSCORES)
 	else:
+		if _rng.randi_range(0,99) > config.placesByName[_stats.curPlace].police:
+			var randBitchPrice = _rng.randi_range(config.bitchPrice_low, config.bitchPrice_high-1)
+			var doctorPrice = randBitchPrice * _stats.health / 500
+			_pushChoiceFront("Do you pay a doctor $%s to sew you up?" % util.toCommaSepStr(doctorPrice),
+								util.Curry.new(self, '_visitDoctor', [doctorPrice]))
 		_setState(State.DRUG_MENU)
 
 func fight():
