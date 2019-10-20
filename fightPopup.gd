@@ -19,9 +19,7 @@ func _ready():
 func setupAndShow():
 	var bitches = gameModel.stats().bitches
 	bitchesCounter.text = "%s bitch%s" % [bitches, "" if bitches==1 else "es"]
-
 	youHealth.value = gameModel.stats().health
-
 	officerLabel.text = gameModel.curCop()
 
 	var deputies = gameModel.numDeputies()
@@ -30,7 +28,6 @@ func setupAndShow():
 	copHealth.value = gameModel.fightData.copHealth
 
 	text.text = gameModel.getFightText()
-
 
 	if gameModel.fightOver():
 		runDealDrugsButton.text = "View Highscores" if gameModel.gameFinished() else "Deal Drugs"
