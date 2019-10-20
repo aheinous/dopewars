@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://game.gd" type="Script" id=1]
 [ext_resource path="res://stats.tscn" type="PackedScene" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://bankChoosePopup.tscn" type="PackedScene" id=11]
 [ext_resource path="res://gunStorePopup.tscn" type="PackedScene" id=12]
 [ext_resource path="res://highscoresPopup.tscn" type="PackedScene" id=13]
+[ext_resource path="res://fightPopup.tscn" type="PackedScene" id=14]
 
 [node name="Game" type="Control"]
 anchor_right = 1.0
@@ -77,6 +78,8 @@ visible = false
 
 [node name="highscoresPopup" parent="." instance=ExtResource( 13 )]
 visible = false
+
+[node name="fightPopup" parent="." instance=ExtResource( 14 )]
 [connection signal="itemButtonPressed" from="MarginContainer/VBoxContainer/drugList" to="." method="_on_drugList_itemButtonPressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/jetButton" to="." method="_on_jetButton_pressed"]
 [connection signal="placeButtonPressed" from="jetPopup" to="." method="_on_jetPopup_placeButtonPressed"]
@@ -93,3 +96,4 @@ visible = false
 [connection signal="withdrawPressed" from="bankChoosePopup" to="." method="_on_bankChoosePopup_withdrawPressed"]
 [connection signal="done" from="gunStorePopup" to="." method="_on_popupDone"]
 [connection signal="done" from="highscoresPopup" to="." method="_on_popupDone"]
+[connection signal="done" from="fightPopup" to="." method="_on_popupDone"]

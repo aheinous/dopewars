@@ -69,6 +69,13 @@ var guns = [
 ]
 
 
+var cops = [
+	structs.CopConfig.new("Officer Hardass", 4, 3, 30, 30, 2, 8, 0, 1, 1),
+	structs.CopConfig.new("Officer Bob", 15, 4, 30, 20, 4, 10, 0, 2, 1),
+	structs.CopConfig.new("Agent Smith", 50, 6, 20, 20, 6, 18, 1, 3, 2)
+]
+
+
 var subwaySayings = [
   "Wouldn\'t it be funny if everyone suddenly quacked at once?",
   "The Pope was once Jewish, you know",

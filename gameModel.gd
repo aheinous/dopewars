@@ -1,9 +1,11 @@
 extends Node
 
 
+var faithfulToOriginal = true
+
 enum State {DRUG_MENU, MSG_QUEUE, LOANSHARK, COP_FIGHT, BANK, GUNSTORE, PUB, HIGHSCORES}
 
-var _finished = false
+var _gameFinished = false
 
 class Stats:
 	var cash
@@ -17,6 +19,8 @@ class Stats:
 	var day
 	var finalDay
 	var curPlace
+	var copsKilled
+
 
 	func _init():
 		cash = 2000
@@ -30,6 +34,7 @@ class Stats:
 		day = 1
 		finalDay = 31
 		curPlace = "Bronx"
+		copsKilled = 0
 
 
 var _stats
@@ -244,16 +249,15 @@ func _clearMsgQueue():
 func _pushMsg(s):
 	print("pushMsg('%s')" % s)
 	_queue.push_back(MsgChoice.new(s))
-	_curState = State.MSG_QUEUE
+	_maybeMsgQueueState()
 
 func _pushChoice(s, onYes):
 	_queue.push_back(MsgChoice.new(s, onYes))
-	_curState = State.MSG_QUEUE
+	_maybeMsgQueueState()
 
 func _pushChoiceFront(s, onYes):
 	_queue.push_front(MsgChoice.new(s, onYes))
-	_curState = State.MSG_QUEUE
-
+	_maybeMsgQueueState()
 
 
 func isOnMsg():
@@ -276,11 +280,38 @@ func chooseNo():
 	_queue.pop_front()
 	_maybeMsgQueueState()
 
+# func _msgQueue_nextState():
+# 	if _queue.size() == 0:
+# 		_curState = State.DRUG_MENU if not _gameFinished else State.HIGHSCORES
+# 	else:
+# 		_curState = State.MSG_QUEUE
+
+
+
+func _setState(nextState):
+	_curState = nextState
+	_maybeMsgQueueState()
+
+
 func _maybeMsgQueueState():
-	if _queue.size() == 0:
-		_curState = State.DRUG_MENU if not _finished else State.HIGHSCORES
-	else:
+	if _curState == State.DRUG_MENU and _queue.size() >= 1:
 		_curState = State.MSG_QUEUE
+	elif _curState == State.MSG_QUEUE and _queue.size() == 0:
+		if _gameFinished:
+			_curState = State.HIGHSCORES
+		else:
+			_curState = State.DRUG_MENU
+
+
+# func _enterNextState(nextState):
+
+
+# 	_curState = nextState
+
+# 	if _queue.size() == 0:
+# 		_curState = State.DRUG_MENU if not _gameFinished else State.HIGHSCORES
+# 	else:
+# 		_curState = State.MSG_QUEUE
 
 
 ########## Pub
@@ -290,7 +321,8 @@ func visitPub():
 	var price = _rng.randi_range(config.bitchPrice_low, config.bitchPrice_high)
 	_pushChoiceFront( 	"Would you like to hire a bitch for $%s?" % util.toCommaSepStr(price),
 						util.Curry.new(self, "buyBitch", [price]) )
-	_curState = State.PUB
+	# _curState = State.PUB
+	# _setState(State.PUB)
 
 
 func buyBitch(price):
@@ -310,7 +342,8 @@ func buyBitch(price):
 
 func visitLoanShark():
 	print("visitLoanShark()")
-	_curState = State.LOANSHARK
+	# _curState = State.LOANSHARK
+	_setState(State.LOANSHARK)
 
 
 func mostCanPayback():
@@ -325,14 +358,16 @@ func payback(amnt):
 
 
 func leaveLoanshark():
-	_maybeMsgQueueState()
+	# _msgQueue_nextState()
+	_setState(State.DRUG_MENU)
 
 
 ########### Bank
 
 func visitBank():
 	print("visitBank()")
-	_curState = State.BANK
+	# _curState = State.BANK
+	_setState(State.BANK)
 
 
 func deposit(amnt):
@@ -346,7 +381,7 @@ func withdraw(amnt):
 	leaveBank()
 
 func leaveBank():
-	_maybeMsgQueueState()
+	_setState(State.DRUG_MENU)
 
 
 ########### Gun Store
@@ -355,11 +390,13 @@ var _gunQuantities
 
 func visitGunStore():
 	print("visitGunStore()")
-	_curState = State.GUNSTORE
+	# _curState = State.GUNSTORE
+	_setState(State.GUNSTORE)
 
 
 func leaveGunStore():
-	_maybeMsgQueueState()
+	# _msgQueue_nextState()
+	_setState(State.DRUG_MENU)
 
 func guns():
 	var items = []
@@ -377,23 +414,357 @@ func canSellGun(name):
 func buyGun(name, price=null):
 	if price == null:
 		price = config.gunsByName[name].price
+	if _stats.cash < price:
+		print("insufficent funds")
+		return
+	print("buy %s for %s" % [name, price])
 	_gunQuantities[name] = _gunQuantities.get(name, 0) + 1
 	_stats.cash -= price
 	_stats.availSpace -= config.gunsByName[name].space
+	_stats.guns += 1
 
 func sellGun(name):
+	print("sell %s" % name)
 	_gunQuantities[name] -= 1
 	_stats.cash += config.gunsByName[name].price
 	_stats.availSpace += config.gunsByName[name].space
+	_stats.guns -= 1
+
+func dropGun(name):
+	print("drop %s" % name)
+	_gunQuantities[name] -= 1
+	_stats.availSpace += config.gunsByName[name].space
+	_stats.guns -= 1
 
 ########### Cop Fight
 
+
+class CopFight:
+	var _cfg
+	var numDeputies
+	var copHealth = 100
+	var fightText = []
+	var fightOver = false
+
+
+	func _init(cfg):
+		self._cfg = cfg
+
+
+func _playerAttackRating(gunCounts):
+	var rating = 80
+	for gunName in gunCounts.keys():
+		rating += config.gunsByName[gunName].damage * gunCounts[gunName]
+	return rating
+
+
+func _playerDefendRating(bitches):
+	return 100 - 5 * bitches
+
+
+func _copAttackRating():
+	var gunCounts = _copsGunCounts()
+	var rating = _playerAttackRating(_copsGunCounts())
+	rating -= fightData._cfg.attackPenalty
+	return rating
+
+
+func _copDefendRating():
+	return _playerAttackRating(_copsGunCounts()) - fightData._cfg.defendPenalty
+
+
+func _copArmour():
+	if fightData.numDeputies == 0:
+		return fightData._cfg.armour
+	else:
+		return fightData._cfg.deputyArmour
+
+func _playerArmour():
+	if _stats.bitches == 0:
+		return 100
+	else:
+		return 50
+
+
+func _copsAttackPlayer():
+	var attackRating = _copAttackRating()
+	var defendRating = _playerDefendRating(_stats.bitches)
+	print("_copsAttackPlayer() %s, %s" % [attackRating, defendRating])
+	if _rng.randi_range(0, attackRating-1) > _rng.randi_range(0, defendRating):
+		# hit
+		var damage = _calcDamage(_copsGunCounts(), _playerArmour())
+		var res = _playerTakesDamage(damage)
+		var fmt = ""
+		match res:
+			DamageRes.NONE:
+				fmt = "\n%s hits you, man!"
+			DamageRes.BITCH_KILLED:
+				fmt = "\n%s shoots at you... and kills a bitch!"
+			DamageRes.DEAD:
+				fmt = "\n%s wasted you, man! What a drag!"
+		fightData.fightText[-1] += fmt % fightData._cfg.name
+	else:
+		# miss
+		fightData.fightText[-1] += "\n%s shoots at you... and misses!" % fightData._cfg.name
+
+
+func _playerAttacksCops():
+	var attackRating = _playerAttackRating(_gunQuantities)
+	var defendRating = _copDefendRating()
+	print("_playerAttacksCops() %s, %s" % [attackRating, defendRating])
+	if _rng.randi_range(0, attackRating-1) > _rng.randi_range(0, defendRating):
+		# hit
+		var damage = _calcDamage(_gunQuantities, _copArmour())
+		var res = _copsTakeDamage(damage)
+		var fmt = ""
+		match res:
+			DamageRes.NONE:
+				fmt = "You hit %s!"
+			DamageRes.DEPUTY_KILLED:
+				fmt = "You hit %s and killed a deputy!"
+			DamageRes.DEAD:
+				fmt = "You killed %s!"
+		fightData.fightText.append(fmt % fightData._cfg.name)
+	else:
+		# miss
+		fightData.fightText.append( "You missed %s!" % fightData._cfg.name )
+
+	if fightOver():
+		if faithfulToOriginal:
+			var loot = _rng.randi_range(100, 1999)
+			fightData.fightText[-1] += "\nYou find $%s on the body!" % util.toCommaSepStr(loot)
+			_stats.cash += loot
+		else:
+			pass # TODO
+	else:
+		_copsAttackPlayer()
+
+
+
+
+
+func _calcDamage(gunCounts, armour):
+	# print("calc damage: ", gunCounts, ", ", armour)
+	var damage = 0
+	for gunName in gunCounts:
+		var count = gunCounts[gunName]
+		for i in range(count):
+			damage += _rng.randi_range(0,config.gunsByName[gunName].damage-1)
+			# print("d: ", damage )
+	damage = (damage * 100 / armour) as int
+	damage = max(1, damage)
+	return damage
+
+
+
+enum ItemType {GUN, DRUG}
+
+class _InvetoryItem:
+	var type
+	var name
+	var space
+	var dropped
+
+	func _init(type, name, space):
+		self.type = type
+		self.name = name
+		self.space = space
+		self.dropped = false
+
+	func toStr():
+		return 'Item:[%s, %s, %s, %s]' % ["GUN" if self.type==ItemType.GUN else "DRUG", self.name, self.space, "dropped" if self.dropped else "not dropped"]
+
+
+
+func _getInvetoryItemList():
+	var list = []
+	for gunName in _gunQuantities:
+		for i in range(_gunQuantities[gunName]):
+			list.append(_InvetoryItem.new(ItemType.GUN, gunName, config.gunsByName[gunName].space))
+	for drugName in _drugsOwnedQuantities:
+		for i in range(_drugsOwnedQuantities[drugName]):
+			list.append(_InvetoryItem.new(ItemType.DRUG, drugName, 1))
+	return list
+
+
+func _printItemList(items):
+	print('item list: [')
+	for item in items:
+		print('\t', item.toStr())
+	print(']')
+
+
+func _playerLosesBitch():
+	var items = _getInvetoryItemList()
+
+	_printItemList(items)
+
+	var spaceRecovered = 0
+	while spaceRecovered < 10:
+		# chooseRandom item based on size
+		var spaceIdx = _rng.randi_range(0, _stats.totalSpace)
+		if spaceIdx >= (_stats.totalSpace - _stats.availSpace):
+			spaceRecovered += 1
+			continue
+		var spacePassed = 0
+		var itemIdx = 0
+		while spacePassed < spaceIdx:
+			spacePassed += items[itemIdx].space
+			if spacePassed <= spaceIdx:
+				itemIdx += 1
+
+		if spaceRecovered + items[itemIdx].space > 10 \
+				or items[itemIdx].dropped:
+			# cant free more than 10
+			# cant drop an item twice
+			continue
+
+		# drop item
+		if items[itemIdx].type == ItemType.DRUG:
+			drop(items[itemIdx].name, 1)
+		else:
+			dropGun(items[itemIdx].name)
+		spaceRecovered += items[itemIdx].space
+		items[itemIdx].dropped = true
+
+	_stats.bitches -= 1
+	_stats.totalSpace -= 10
+	_stats.availSpace -= 10
+
+
+
+
+
+
+enum DamageRes {NONE, BITCH_KILLED, DEPUTY_KILLED, DEAD}
+
+func _playerTakesDamage(amnt):
+	print("player taking %s damage" % amnt)
+	print("warning: incomplete")
+	if _stats.health - amnt <= 0:
+		if _stats.bitches > 0:
+			_stats.health = 100
+			_playerLosesBitch()
+			return DamageRes.BITCH_KILLED
+		_stats.health = 0
+		fightData.fightOver = true
+		_endGame()
+		return DamageRes.DEAD
+
+	_stats.health -= amnt
+	return DamageRes.NONE
+
+
+func _copsTakeDamage(amnt):
+	print("cops taking %s damange" % amnt)
+
+	if fightData.copHealth - amnt <= 0:
+		if fightData.numDeputies > 0:
+			fightData.numDeputies -= 1
+			fightData.copHealth = 100
+			return DamageRes.DEPUTY_KILLED
+		fightData.copHealth = 0
+		fightData.fightOver = true
+		_stats.copsKilled += 1
+		return DamageRes.DEAD
+
+	fightData.copHealth -= amnt
+	return DamageRes.NONE
+
+
+
+
+var fightData
+
+
+
+
+func _copsGunCount():
+	return fightData._cfg.copGun + fightData._cfg.deputyGun * fightData.numDeputies
+
+func _copsGunCounts():
+	return {config.guns[fightData._cfg.gunIndex].name : _copsGunCount()}
+
+
+func _howArmed():
+	var maxDamage = 0
+	for gun in config.guns:
+		maxDamage = max(maxDamage, gun.damage)
+		maxDamage *= (numDeputies()+1)
+
+	var damage = config.guns[fightData._cfg.gunIndex].damage * _copsGunCount()
+
+	var armPercent = 100 * damage / maxDamage
+
+	if armPercent < 10: return "pitifully armed"
+	elif armPercent < 25: return "lightly armed"
+	elif armPercent < 60: return "moderately well armed"
+	elif armPercent < 80: return "heavily armed"
+	else: return "armed to the teeth"
+
+
+
 func _copFight():
-	print("COP FIGHT!!")
+	print("COP FIGHT")
+	# _curState = State.COP_FIGHT
+	_setState(State.COP_FIGHT)
+
+	fightData = CopFight.new(config.cops[_stats.copsKilled])
+	fightData.numDeputies = _rng.randi_range(fightData._cfg.minDeputies, fightData._cfg.maxDeputies+1)
+	fightData.fightText.append("%s and %s deputies - %s - are chasing you, man!" \
+			% [fightData._cfg.name, fightData.numDeputies, _howArmed()])
+	_copsAttackPlayer()
+
+
+
+
+func curCop():
+	return "Officer Hardass"
+
+func getFightText():
+	return fightData.fightText[-1]
+
+func numDeputies():
+	return fightData.numDeputies
+
+func canFight():
+	return _stats.guns > 0
+
+func fightOver():
+	return fightData.fightOver
+
+func finishFight():
+	print("you chose to FINISH FIGHT.")
+	if _gameFinished:
+		_setState(State.HIGHSCORES)
+	else:
+		_setState(State.DRUG_MENU)
+
+func fight():
+	print("you chose to FIGHT.")
+	_playerAttacksCops()
+
+func stand():
+	print("you chose to STAND.")
+	fightData.fightText.append("You stand there like a dummy.")
+	print(fightData.fightText)
+	_copsAttackPlayer()
+
+func run():
+	print("you chose to RUN.")
+	if _rng.randi_range(0, 99) < 60:
+		fightData.fightText.append("You got away!")
+		fightData.fightOver = true
+	else:
+		fightData.fightText.append("Panic! You can't get away!")
+		_copsAttackPlayer()
 
 
 ########### General
 
+
+func gameFinished():
+	return _gameFinished
 
 func _possibleSaying():
 	if _rng.randi_range(0, 99) < 15:
@@ -493,11 +864,12 @@ func _stopToDoSomething():
 	_pushMsg("You stopped to %s." % _randElem(config.stoppedTo))
 	_stats.cash -= _rng.randi_range(1, min(10, _stats.cash))
 
-func _endGame(msg):
+func _endGame(msg=null):
 	print("END GAME: \"%s\"" % msg)
 	_clearMsgQueue()
-	_pushMsg(msg)
-	_finished = true
+	if msg != null:
+		_pushMsg(msg)
+	_gameFinished = true
 	_addHighscore(totalMoney())
 
 
@@ -505,21 +877,24 @@ func _endGame(msg):
 func _possibleCopsOfferOrEvent():
 	print("_possibleCopsOfferOrEvent()")
 
-	var i = 99
-	if totalMoney() >   3000000:
-		i = 129
-	elif totalMoney() > 1000000:
-		i = 114
-	if _rng.randi_range(0,i) <= 75:
-		return
+	# TESTING
+	_copFight()
 
-	i = _rng.randi_range(0, 79 + config.placesByName[_stats.curPlace].police)
-	if i < 33:
-		_randomOffer()
-	elif i < 50:
-		_randomEvent()
-	else:
-		_copFight()
+#	var i = 99
+#	if totalMoney() >   3000000:
+#		i = 129
+#	elif totalMoney() > 1000000:
+#		i = 114
+#	if _rng.randi_range(0,i) <= 75:
+#		return
+#
+#	i = _rng.randi_range(0, 79 + config.placesByName[_stats.curPlace].police)
+#	if i < 33:
+#		_randomOffer()
+#	elif i < 50:
+#		_randomEvent()
+#	else:
+#		_copFight()
 
 
 func totalMoney():
@@ -544,9 +919,14 @@ func places():
 func reset():
 	_stats = Stats.new()
 	_curState = State.DRUG_MENU
-	_finished = false
+	_gameFinished = false
 	_clearMsgQueue()
-	_gunQuantities = {}
+
+	#_gunQuantities = {}
+	_gunQuantities = {".38 Special" : 5} # TESTING
+	_stats.guns = 5
+	_stats.availSpace -= (5*4)
+
 	_drugsHerePrices = {}
 	_drugsOwnedQuantities = {}
 
@@ -563,9 +943,10 @@ var highscores = [
 	10000,
 	1000,
 	100,
+	10,
 	1,
-
 ]
+
 var highscoreIndex = -1
 
 

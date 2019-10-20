@@ -67,3 +67,45 @@ class GunConfig:
 		self.price = price
 		self.space = space
 		self.damage = damage
+
+
+#   gchar *Name, *DeputyName, *DeputiesName;
+#   gint Armour, DeputyArmour;
+#   gint AttackPenalty, DefendPenalty;
+#   gint MinDeputies, MaxDeputies;
+#   gint GunIndex;
+#   gint CopGun, DeputyGun;
+
+class CopConfig:
+	var name : String
+	var armour : int
+	var deputyArmour : int
+	var attackPenalty : int
+	var defendPenalty : int
+	var minDeputies : int
+	var maxDeputies : int
+	var gunIndex : int
+	var copGun : int
+	var deputyGun : int
+
+	func _init(	name,	\
+				armour,	\
+				deputyArmour,	\
+				attackPenalty,	\
+				defendPenalty,	\
+				minDeputies,	\
+				maxDeputies,	\
+				gunIndex,	\
+				copGun,	\
+				deputyGun):
+		self.name = name
+		self.armour = armour
+		self.deputyArmour = deputyArmour
+		self.attackPenalty = attackPenalty
+		self.defendPenalty = defendPenalty
+		self.minDeputies = minDeputies
+		self.maxDeputies = maxDeputies
+		self.gunIndex = gunIndex
+		self.copGun = copGun
+		self.deputyGun = deputyGun
+

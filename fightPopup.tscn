@@ -1,0 +1,143 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://fightPopup.gd" type="Script" id=1]
+
+[node name="fightPopup" type="CenterContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+margin_left = 350.0
+margin_top = 209.0
+margin_right = 674.0
+margin_bottom = 391.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 317.0
+margin_bottom = 175.0
+
+[node name="YouSection" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+margin_right = 310.0
+margin_bottom = 32.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/YouSection"]
+margin_right = 310.0
+margin_bottom = 14.0
+
+[node name="YouLabel" type="Label" parent="PanelContainer/VBoxContainer/YouSection/HBoxContainer"]
+margin_right = 23.0
+margin_bottom = 14.0
+text = "You"
+
+[node name="BitchesCounter" type="Label" parent="PanelContainer/VBoxContainer/YouSection/HBoxContainer"]
+margin_left = 27.0
+margin_right = 310.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "8 bitches"
+align = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer/YouSection"]
+margin_top = 18.0
+margin_right = 310.0
+margin_bottom = 32.0
+
+[node name="HealthLabel" type="Label" parent="PanelContainer/VBoxContainer/YouSection/HBoxContainer2"]
+margin_right = 46.0
+margin_bottom = 14.0
+text = "Health:"
+
+[node name="HealthProgressBar" type="ProgressBar" parent="PanelContainer/VBoxContainer/YouSection/HBoxContainer2"]
+margin_left = 50.0
+margin_right = 310.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+step = 1.0
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer"]
+margin_top = 36.0
+margin_right = 310.0
+margin_bottom = 40.0
+
+[node name="CopSection" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+margin_top = 44.0
+margin_right = 310.0
+margin_bottom = 76.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/CopSection"]
+margin_right = 310.0
+margin_bottom = 14.0
+
+[node name="OfficerLabel" type="Label" parent="PanelContainer/VBoxContainer/CopSection/HBoxContainer"]
+margin_right = 98.0
+margin_bottom = 14.0
+text = "Officer Hardass"
+
+[node name="DeputiesCounter" type="Label" parent="PanelContainer/VBoxContainer/CopSection/HBoxContainer"]
+margin_left = 102.0
+margin_right = 310.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "3 Deputies"
+align = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer/CopSection"]
+margin_top = 18.0
+margin_right = 310.0
+margin_bottom = 32.0
+
+[node name="HealthLabel" type="Label" parent="PanelContainer/VBoxContainer/CopSection/HBoxContainer2"]
+margin_right = 46.0
+margin_bottom = 14.0
+text = "Health:"
+
+[node name="HealthProgressBar" type="ProgressBar" parent="PanelContainer/VBoxContainer/CopSection/HBoxContainer2"]
+margin_left = 50.0
+margin_right = 310.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+
+[node name="HSeparator2" type="HSeparator" parent="PanelContainer/VBoxContainer"]
+margin_top = 80.0
+margin_right = 310.0
+margin_bottom = 84.0
+
+[node name="Text" type="Label" parent="PanelContainer/VBoxContainer"]
+margin_top = 88.0
+margin_right = 310.0
+margin_bottom = 136.0
+text = "blah blah blah blah blah blah blah blah blah blah 
+blah blah blah blah blah blah blah
+ blah blah blah blah "
+
+[node name="HSeparator3" type="HSeparator" parent="PanelContainer/VBoxContainer"]
+margin_top = 140.0
+margin_right = 310.0
+margin_bottom = 144.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+margin_top = 148.0
+margin_right = 310.0
+margin_bottom = 168.0
+custom_constants/separation = 20
+alignment = 1
+
+[node name="StandFightButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+margin_right = 145.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Fight"
+
+[node name="RunDealDrugsButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+margin_left = 165.0
+margin_right = 310.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Run"
+[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/StandFightButton" to="." method="_on_StandFightButton_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/RunDealDrugsButton" to="." method="_on_RunDealDrugsButton_pressed"]

@@ -13,6 +13,7 @@ onready var bankPopup = $bankPopup
 onready var bankChoosePopup = $bankChoosePopup
 onready var gunStorePopup = $gunStorePopup
 onready var highscoresPopup = $highscoresPopup
+onready var fightPopup = $fightPopup
 
 onready var msgPopup = $msgPopup
 
@@ -60,7 +61,7 @@ func _process(delta):
 		gameModel.State.LOANSHARK:
 			state_loanshark()
 		gameModel.State.COP_FIGHT:
-			pass
+			state_copFight()
 		gameModel.State.BANK:
 			state_bank()
 		gameModel.State.GUNSTORE:
@@ -94,6 +95,9 @@ func state_msgQueue():
 		msgPopup.setupAndShow(gameModel.getMsgText())
 	else:
 		choicePopup.setupAndShow(gameModel.getMsgText())
+
+func state_copFight():
+	fightPopup.setupAndShow()
 
 func _on_msgPopup_okayPressed():
 	gameModel.chooseOkay()
