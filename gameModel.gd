@@ -417,6 +417,9 @@ func buyGun(name, price=null):
 	if _stats.cash < price:
 		print("insufficent funds")
 		return
+	if _stats.space < config.gunsByName[name].space:
+		print('not enough space')
+		return
 	print("buy %s for %s" % [name, price])
 	_gunQuantities[name] = _gunQuantities.get(name, 0) + 1
 	_stats.cash -= price
