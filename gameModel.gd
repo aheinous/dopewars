@@ -745,9 +745,9 @@ func finishFight():
 	if _gameFinished:
 		_setState(State.HIGHSCORES)
 	else:
-		if _rng.randi_range(0,99) > config.placesByName[_stats.curPlace].police:
+		if _rng.randi_range(0,99) > config.placesByName[_stats.curPlace].police and _stats.health < 100:
 			var randBitchPrice = _rng.randi_range(config.bitchPrice_low, config.bitchPrice_high-1)
-			var doctorPrice = randBitchPrice * _stats.health / 500
+			var doctorPrice = randBitchPrice * (100-_stats.health) / 500
 			_pushChoiceFront("Do you pay a doctor $%s to sew you up?" % util.toCommaSepStr(doctorPrice),
 								util.Curry.new(self, '_visitDoctor', [doctorPrice]))
 		_setState(State.DRUG_MENU)
