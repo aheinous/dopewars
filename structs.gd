@@ -1,15 +1,6 @@
 extends Node
 
-class StoreItem:
-	var name : String
-	var price : int
-	var quantity : int
 
-
-	func _init(name, price, quantity):
-		self.name = name
-		self.price = price
-		self.quantity = quantity
 
 
 class Stats:
