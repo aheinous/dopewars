@@ -888,25 +888,21 @@ func _endGame(msg=null):
 
 func _possibleCopsOfferOrEvent():
 	print("_possibleCopsOfferOrEvent()")
+	var i = 99
+	if totalMoney() >   3000000:
+		i = 129
+	elif totalMoney() > 1000000:
+		i = 114
+	if _rng.randi_range(0,i) <= 75:
+		return
 
-	# TESTING
-	_copFight()
-
-#	var i = 99
-#	if totalMoney() >   3000000:
-#		i = 129
-#	elif totalMoney() > 1000000:
-#		i = 114
-#	if _rng.randi_range(0,i) <= 75:
-#		return
-#
-#	i = _rng.randi_range(0, 79 + config.placesByName[_stats.curPlace].police)
-#	if i < 33:
-#		_randomOffer()
-#	elif i < 50:
-#		_randomEvent()
-#	else:
-#		_copFight()
+	i = _rng.randi_range(0, 79 + config.placesByName[_stats.curPlace].police)
+	if i < 33:
+		_randomOffer()
+	elif i < 50:
+		_randomEvent()
+	else:
+		_copFight()
 
 
 func totalMoney():
@@ -934,10 +930,7 @@ func reset():
 	_gameFinished = false
 	_clearMsgQueue()
 
-	#_gunQuantities = {}
-	_gunQuantities = {".38 Special" : 5} # TESTING
-	_stats.guns = 5
-	_stats.availSpace -= (5*4)
+	_gunQuantities = {}
 
 	_drugsHerePrices = {}
 	_drugsOwnedQuantities = {}
