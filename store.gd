@@ -5,12 +5,12 @@ var _availPrices = {}
 
 
 class StoreItem:
-	var name : String
+	var itemName : String
 	var price : int
 	var quantity : int
 
-	func _init(name, price, quantity):
-		self.name = name
+	func _init(itemName, price, quantity):
+		self.itemName = itemName
 		self.price = price
 		self.quantity = quantity
 
@@ -20,6 +20,9 @@ func _init(player, ownedQuantities, availPrices):
 	self._ownedQuantities = ownedQuantities
 	self._availPrices = availPrices
 
+
+func setAvailPrices(availPrices):
+	self._availPrices = availPrices
 
 
 func isHere(item):
@@ -38,17 +41,20 @@ func numCanAfford(item):
 	return (_player.cash/price(item)) as int
 
 
+func haveAny(item):
+	return numHave(item) > 0
+
 func numHave(item):
 	return _ownedQuantities.get(item, 0)
 
 func numCanBuy(item):
-	return min(_player.avaiSpace, numCanAfford(item))
+	return min(_player.availSpace, numCanAfford(item))
 
-func isBuyable(item, amnt=1):
+func canBuy(item, amnt=1):
 	return isHere(item) and _player.cash  >= amnt*price(item) and _player.availSpace >= amnt
 
 
-func isSellable(item, amnt=1):
+func canSell(item, amnt=1):
 	return isHere(item) and numHave(item) >= amnt
 
 func canDrop(item, amnt=1):
@@ -56,7 +62,7 @@ func canDrop(item, amnt=1):
 
 func buy(item, amnt:int):
 	print('buying %s of %s' % [amnt, item])
-	assert(isBuyable(item, amnt))
+	assert(canBuy(item, amnt))
 	_player.cash -= price(item)*amnt
 	_player.availSpace -= amnt
 	assert(_player.cash >= 0)
@@ -91,23 +97,24 @@ func sell(item, amnt : int):
 
 func drop(item, amnt : int):
 	print('drop %s of %s' % [amnt, item])
-	_give(item, amnt)
+	give(item, amnt)
 
 
 
 
 func itemsHere(preferedOrder):
 	var items = []
-	for name in preferedOrder:
-		if name in _availPrices:
-			items.append(StoreItem.new(name, price(name), numHave(item)))
+	for itemName in preferedOrder:
+		if itemName in _availPrices:
+			items.append(StoreItem.new(itemName, price(itemName), numHave(itemName)))
 	return items
 
 
-func drugsOwnedAndNotHere(preferedOrder):
+func itemsOwnedAndNotHere(preferedOrder):
 	var items = []
-	for name in preferedOrder:
-		if name in _ownedQuantities and not name in _availPrices:
-			items.append(StoreItem.new(StoreItem.new(name, price(name), numHave(item)))
+	for itemName in preferedOrder:
+		if itemName in _ownedQuantities and not itemName in _availPrices:
+			items.append(StoreItem.new(itemName, price(itemName), numHave(itemName)))
 	return items
+
 

@@ -1,128 +1,120 @@
 extends Node
 
 
+const Player = preload('player.gd')
+const Store = preload('store.gd')
+
+
+
 var faithfulToOriginal = true
 
 enum State {DRUG_MENU, MSG_QUEUE, LOANSHARK, COP_FIGHT, BANK, GUNSTORE, PUB, HIGHSCORES}
 
 var _gameFinished = false
 
-class Stats:
-	var cash
-	var debt
-	var availSpace
-	var totalSpace
-	var health
-	var guns
-	var bitches
-	var bank
-	var day
-	var finalDay
-	var curPlace
-	var copsKilled
 
 
-	func _init():
-		cash = 2000
-		debt = 5500
-		availSpace = 100
-		totalSpace = 100
-		health = 100
-		guns = 0
-		bitches = 8
-		bank = 0
-		day = 1
-		finalDay = 31
-		curPlace = "Bronx"
-		copsKilled = 0
-
-
-var _stats
-
-var _curState
+var _player : Player
+var _curState = State.MSG_QUEUE
+var _drugStore : Store
 
 var _rng
 
 
+####################### External API
+
+
+func getCurPlace():
+	return _player.curPlace
+
+func getCash():
+	return _player.cash
+
+func getNumGuns():
+	return _player.numGuns()
+
+func getDebt():
+	return _player.debt
+
+func getBitches():
+	return _player.bitches
+
+func getAvailSpace():
+	return _player.availSpace
+
+func getTotalSpace():
+	return _player.totalSpace
+
+func getBank():
+	return _player.bank
+
+func getDay():
+	return _player.day
+
+func getFinalDay():
+	return _player.finalDay
+
+func getHealth():
+	return _player.health
+
+func getDrugsHere():
+	return _drugStore.itemsHere(config.drugNameList)
+
+func getDrugsOwnedAndNotHere():
+	return _drugStore.itemsOwnedAndNotHere(config.drugNameList)
+
+
+func canBuyDrug(drug):
+	return _drugStore.canBuy(drug)
+
+func canSellDrug(drug):
+	return _drugStore.canSell(drug)
+
+func canDropDrug(drug):
+	return _drugStore.canDrop(drug)
+
+func getDrugPrice(drug):
+	return _drugStore.price(drug)
+
+func getNumDrugCanAfford(drug):
+	return _drugStore.numCanAfford(drug)
+
+func getMostDrugCanBuy(drug):
+	return _drugStore.numCanBuy(drug)
+
+func getNumDrugHave(drug):
+	return _drugStore.numHave(drug)
+
+func buyDrug(drug, amnt):
+	_drugStore.buy(drug, amnt)
+
+func receiveDrug(drug, amnt):
+	_drugStore.receive(drug, amnt)
+
+func giveDrug(drug, amnt):
+	_drugStore.give(drug, amnt)
+
+func sellDrug(drug, amnt):
+	_drugStore.sell(drug, amnt)
+
+func dropDrug(drug, amnt):
+	_drugStore.drop(drug, amnt)
+
+
+
+
+
+
 ####################### Drug Menu
 
-var _drugsHerePrices
-var _drugsOwnedQuantities
 
-func here(drug):
-	return drug in _drugsHerePrices
-
-func price(drug):
-	if not drug in _drugsHerePrices:
-		return -1
-	return _drugsHerePrices[drug]
-
-func canAfford(drug):
-	if price(drug) == -1:
-		return -1
-	return (_stats.cash/price(drug)) as int
-
-func quantity(drug):
-	return _drugsOwnedQuantities.get(drug, 0)
-
-func mostCanBuy(drug):
-	return min(_stats.availSpace, canAfford(drug))
-
-func canBuy(drug, amnt=1):
-	return here(drug) and _stats.cash >= amnt*price(drug) and _stats.availSpace >= amnt
-
-func canSell(drug, amnt=1):
-	return here(drug) and quantity(drug) >= amnt
-
-func canDrop(drug, amnt=1):
-	return not here(drug) and quantity(drug) >= 1
-
-func buy(drug, amnt:int):
-	print('buying %s of %s' % [amnt, drug])
-	assert(canBuy(drug, amnt))
-	_stats.cash -= price(drug)*amnt
-	_stats.availSpace -= amnt
-	assert(_stats.cash >= 0)
-	assert(_stats.availSpace >= 0)
-	if not drug in _drugsOwnedQuantities:
-		_drugsOwnedQuantities[drug] = 0
-	_drugsOwnedQuantities[drug] += amnt
-	# emit_signal("updated")
-
-func _receive(drug, amnt):
-	_stats.availSpace -= amnt
-	if not drug in _drugsOwnedQuantities:
-		_drugsOwnedQuantities[drug] = 0
-	_drugsOwnedQuantities[drug] += amnt
-
-func _give(drug, amnt):
-	_stats.availSpace += amnt
-	_drugsOwnedQuantities[drug] -= amnt
-	if _drugsOwnedQuantities[drug] == 0:
-		_drugsOwnedQuantities.erase(drug)
-
-func sell(drug, amnt : int):
-	print('sell %s of %s' % [amnt, drug])
-	assert(canSell(drug, amnt))
-	_stats.cash += price(drug)*amnt
-	_drugsOwnedQuantities[drug] -= amnt
-	_stats.availSpace += amnt
-	assert(_drugsOwnedQuantities[drug] >= 0)
-	assert(_stats.availSpace <= _stats.totalSpace)
-	if _drugsOwnedQuantities[drug] == 0:
-		_drugsOwnedQuantities.erase(drug)
-	# emit_signal("updated")
-
-func drop(drug, amnt : int):
-	print('drop %s of %s' % [amnt, drug])
-	_give(drug, amnt)
 
 func _nRandDrugNamesOtherThan(n, except):
 	var outputDrugNames = []
 #	var possibleDrugNames = config.drugsByName.keys()
 	while outputDrugNames.size() < n:
 		var i = _rng.randi_range(0, config.drugs.size()-1)
-#		var name = possibleDrugNames[i]
+#		var drugName = possibleDrugNames[i]
 		if not config.drugs[i].drugName in outputDrugNames and not config.drugs[i].drugName in except:
 			outputDrugNames.append(config.drugs[i].drugName )
 	return outputDrugNames
@@ -132,7 +124,7 @@ func _nRandSpecialPriceableDrugNames(n):
 #	var possibleDrugNames = config.drugsByName.keys()
 	while outputDrugNames.size() < n:
 		var i = _rng.randi_range(0, config.drugs.size()-1)
-#		var name = possibleDrugNames[i]
+#		var drugName = possibleDrugNames[i]
 		if not config.drugs[i].drugName in outputDrugNames and (config.drugs[i].canBeLow or config.drugs[i].canBeHigh):
 			outputDrugNames.append(config.drugs[i].drugName)
 	return outputDrugNames
@@ -151,15 +143,15 @@ func _calcNSpecialPricedDrugs():
 
 
 func _setupDrugsHere():
-	var numDrugs = _rng.randi_range(config.placesByName[_stats.curPlace].minDrugs, config.placesByName[_stats.curPlace].maxDrugs)
-	_drugsHerePrices = {}
+	var numDrugs = _rng.randi_range(config.placesByName[_player.curPlace].minDrugs,
+	config.placesByName[_player.curPlace].maxDrugs)
+	var drugPrices = {}
 
 	for drugName in _nRandSpecialPriceableDrugNames(_calcNSpecialPricedDrugs()):
 		var minPrice = config.drugsByName[drugName].minPrice
 		var maxPrice = config.drugsByName[drugName].maxPrice
 		var price = _rng.randi_range(minPrice, maxPrice)
 
-		# print('specical drug price: ', price)
 
 		if config.drugsByName[drugName].canBeLow:
 			price /= 4
@@ -171,49 +163,32 @@ func _setupDrugsHere():
 				_pushMsg("Cops made a big %s bust! Prices are outrageous!" % drugName)
 			else:
 				_pushMsg("Addicts are buying %s at ridiculous prices!" % drugName)
-		_drugsHerePrices[drugName] = price
+		drugPrices[drugName] = price
 		# print('-> ', price)
 
-	for drugName in _nRandDrugNamesOtherThan(numDrugs - _drugsHerePrices.size(), _drugsHerePrices.keys()):
+	for drugName in _nRandDrugNamesOtherThan(numDrugs - drugPrices.size(), drugPrices.keys()):
 		# print(drugName)
 		var minPrice = config.drugsByName[drugName].minPrice
 		var maxPrice = config.drugsByName[drugName].maxPrice
 		var price = _rng.randi_range(minPrice, maxPrice)
-		_drugsHerePrices[drugName] = price
+		drugPrices[drugName] = price
+
+	_drugStore.setAvailPrices(drugPrices)
 
 
-
-func drugsHere():
-	var drugs = []
-
-	for cfgDrug in config.drugs:
-		if cfgDrug.drugName in _drugsHerePrices:
-			drugs.append(structs.StoreItem.new(cfgDrug.drugName, price(cfgDrug.drugName), quantity(cfgDrug.drugName)))
-
-	return drugs
-
-
-func drugsOwnedAndNotHere():
-	var drugs = []
-
-	for cfgDrug in config.drugs:
-		if cfgDrug.drugName in _drugsOwnedQuantities and not cfgDrug.drugName in _drugsHerePrices:
-			drugs.append(structs.StoreItem.new(cfgDrug.drugName, price(cfgDrug.drugName), quantity(cfgDrug.drugName)))
-
-	return drugs
 
 
 
 func jet(place):
 	print("Jetting to ", place)
-	if _stats.day == _stats.finalDay:
+	if _player.day == _player.finalDay:
 		_endGame("Your dealing time is up...")
 		return
 
-	_stats.curPlace = place
-	_stats.day += 1
-	_stats.debt += ((_stats.debt / 10) as int)
-	_stats.bank += ((_stats.bank / 20) as int)
+	_player.curPlace = place
+	_player.day += 1
+	_player.debt += ((_player.debt / 10) as int)
+	_player.bank += ((_player.bank / 20) as int)
 
 	_possibleSaying()
 	_possibleCopsOfferOrEvent()
@@ -222,7 +197,7 @@ func jet(place):
 		_pushChoice("Would you like to visit Dan's House of Guns?", funcref(self, "visitGunStore"))
 		_pushChoice("Would you like to visit the pub?", funcref(self, "visitPub"))
 	elif place == "Bronx":
-		if _stats.debt > 0:
+		if _player.debt > 0:
 			_pushChoice("Would you like to visit the loan shark?", funcref(self, "visitLoanShark"))
 		_pushChoice("Would you like to visit the bank?", funcref(self, "visitBank"))
 	_setupDrugsHere()
@@ -327,13 +302,13 @@ func visitPub():
 
 func buyBitch(price):
 	print("buyBitch(%s)" % price)
-	if _stats.cash < price:
+	if _player.cash < price:
 		print("insufficent funds")
 		return
-	_stats.cash -= price
-	_stats.availSpace += 10
-	_stats.totalSpace += 10
-	_stats.bitches += 1
+	_player.cash -= price
+	_player.availSpace += 10
+	_player.totalSpace += 10
+	_player.bitches += 1
 
 
 ########### Loanshark
@@ -347,13 +322,13 @@ func visitLoanShark():
 
 
 func mostCanPayback():
-	return min(_stats.debt, _stats.cash)
+	return min(_player.debt, _player.cash)
 
 
 
 func payback(amnt):
-	_stats.cash -= amnt
-	_stats.debt -= amnt
+	_player.cash -= amnt
+	_player.debt -= amnt
 	leaveLoanshark()
 
 
@@ -371,13 +346,13 @@ func visitBank():
 
 
 func deposit(amnt):
-	_stats.cash -= amnt
-	_stats.bank += amnt
+	_player.cash -= amnt
+	_player.bank += amnt
 	leaveBank()
 
 func withdraw(amnt):
-	_stats.cash += amnt
-	_stats.bank -= amnt
+	_player.cash += amnt
+	_player.bank -= amnt
 	leaveBank()
 
 func leaveBank():
@@ -401,43 +376,43 @@ func leaveGunStore():
 func guns():
 	var items = []
 	for gun in config.guns:
-		items.append(structs.StoreItem.new(gun.name, gun.price, _gunQuantities.get(gun.name, 0)))
+		items.append(Store.StoreItem.new(gun.gunName, gun.price, _gunQuantities.get(gun.gunName, 0)))
 	return items
 
-func canBuyGun(name):
-	return config.gunsByName[name].price <= _stats.cash and config.gunsByName[name].space <= _stats.availSpace
+func canBuyGun(gunName):
+	return config.gunsByName[gunName].price <= _player.cash and config.gunsByName[gunName].space <= _player.availSpace
 
-func canSellGun(name):
-	return _gunQuantities.get(name, 0) > 0
+func canSellGun(gunName):
+	return _gunQuantities.get(gunName, 0) > 0
 
 
-func buyGun(name, price=null):
+func buyGun(gunName, price=null):
 	if price == null:
-		price = config.gunsByName[name].price
-	if _stats.cash < price:
+		price = config.gunsByName[gunName].price
+	if _player.cash < price:
 		print("insufficent funds")
 		return
-	if _stats.space < config.gunsByName[name].space:
+	if _player.space < config.gunsByName[gunName].space:
 		print('not enough space')
 		return
-	print("buy %s for %s" % [name, price])
-	_gunQuantities[name] = _gunQuantities.get(name, 0) + 1
-	_stats.cash -= price
-	_stats.availSpace -= config.gunsByName[name].space
-	_stats.guns += 1
+	print("buy %s for %s" % [gunName, price])
+	_gunQuantities[gunName] = _gunQuantities.get(gunName, 0) + 1
+	_player.cash -= price
+	_player.availSpace -= config.gunsByName[gunName].space
+	_player.guns += 1
 
-func sellGun(name):
-	print("sell %s" % name)
-	_gunQuantities[name] -= 1
-	_stats.cash += config.gunsByName[name].price
-	_stats.availSpace += config.gunsByName[name].space
-	_stats.guns -= 1
+func sellGun(gunName):
+	print("sell %s" % gunName)
+	_gunQuantities[gunName] -= 1
+	_player.cash += config.gunsByName[gunName].price
+	_player.availSpace += config.gunsByName[gunName].space
+	_player.guns -= 1
 
-func dropGun(name):
-	print("drop %s" % name)
-	_gunQuantities[name] -= 1
-	_stats.availSpace += config.gunsByName[name].space
-	_stats.guns -= 1
+func dropGun(gunName):
+	print("drop %s" % gunName)
+	_gunQuantities[gunName] -= 1
+	_player.availSpace += config.gunsByName[gunName].space
+	_player.guns -= 1
 
 ########### Cop Fight
 
@@ -483,7 +458,7 @@ func _copArmour():
 		return fightData._cfg.deputyArmour
 
 func _playerArmour():
-	if _stats.bitches == 0:
+	if _player.bitches == 0:
 		return 100
 	else:
 		return 50
@@ -491,7 +466,7 @@ func _playerArmour():
 
 func _copsAttackPlayer():
 	var attackRating = _copAttackRating()
-	var defendRating = _playerDefendRating(_stats.bitches)
+	var defendRating = _playerDefendRating(_player.bitches)
 	print("_copsAttackPlayer() %s, %s" % [attackRating, defendRating])
 	if _rng.randi_range(0, attackRating-1) > _rng.randi_range(0, defendRating):
 		# hit
@@ -505,10 +480,10 @@ func _copsAttackPlayer():
 				fmt = "\n%s shoots at you... and kills a bitch!"
 			DamageRes.DEAD:
 				fmt = "\n%s wasted you, man! What a drag!"
-		fightData.fightText[-1] += fmt % fightData._cfg.name
+		fightData.fightText[-1] += fmt % fightData._cfg.copName
 	else:
 		# miss
-		fightData.fightText[-1] += "\n%s shoots at you... and misses!" % fightData._cfg.name
+		fightData.fightText[-1] += "\n%s shoots at you... and misses!" % fightData._cfg.copName
 
 
 func _playerAttacksCops():
@@ -527,16 +502,16 @@ func _playerAttacksCops():
 				fmt = "You hit %s and killed a deputy!"
 			DamageRes.DEAD:
 				fmt = "You killed %s!"
-		fightData.fightText.append(fmt % fightData._cfg.name)
+		fightData.fightText.append(fmt % fightData._cfg.copName)
 	else:
 		# miss
-		fightData.fightText.append( "You missed %s!" % fightData._cfg.name )
+		fightData.fightText.append( "You missed %s!" % fightData._cfg.copName )
 
 	if fightOver():
 		if faithfulToOriginal:
 			var loot = _rng.randi_range(100, 1999)
 			fightData.fightText[-1] += "\nYou find $%s on the body!" % util.toCommaSepStr(loot)
-			_stats.cash += loot
+			_player.cash += loot
 		else:
 			pass # TODO
 	else:
@@ -564,30 +539,31 @@ enum ItemType {GUN, DRUG}
 
 class _InvetoryItem:
 	var type
-	var name
+	var itemName
 	var space
 	var dropped
 
-	func _init(type, name, space):
+	func _init(type, itemName, space):
 		self.type = type
-		self.name = name
+		self.itemName = itemName
 		self.space = space
 		self.dropped = false
 
 	func toStr():
-		return 'Item:[%s, %s, %s, %s]' % ["GUN" if self.type==ItemType.GUN else "DRUG", self.name, self.space, "dropped" if self.dropped else "not dropped"]
+		return 'Item:[%s, %s, %s, %s]' % ["GUN" if self.type==ItemType.GUN else "DRUG", self.itemName, self.space, "dropped" if self.dropped else "not dropped"]
 
 
 
 func _getInvetoryItemList():
-	var list = []
-	for gunName in _gunQuantities:
-		for i in range(_gunQuantities[gunName]):
-			list.append(_InvetoryItem.new(ItemType.GUN, gunName, config.gunsByName[gunName].space))
-	for drugName in _drugsOwnedQuantities:
-		for i in range(_drugsOwnedQuantities[drugName]):
-			list.append(_InvetoryItem.new(ItemType.DRUG, drugName, 1))
-	return list
+	return [] # TODO
+	# var list = []
+	# for gunName in _gunQuantities:
+	# 	for i in range(_gunQuantities[gunName]):
+	# 		list.append(_InvetoryItem.new(ItemType.GUN, gunName, config.gunsByName[gunName].space))
+	# for drugName in _drugsOwnedQuantities:
+	# 	for i in range(_drugsOwnedQuantities[drugName]):
+	# 		list.append(_InvetoryItem.new(ItemType.DRUG, drugName, 1))
+	# return list
 
 
 func _printItemList(items):
@@ -598,42 +574,43 @@ func _printItemList(items):
 
 
 func _playerLosesBitch():
-	var items = _getInvetoryItemList()
+	pass # TODO
+	# var items = _getInvetoryItemList()
 
-	_printItemList(items)
+	# _printItemList(items)
 
-	var spaceRecovered = 0
-	while spaceRecovered < 10:
-		# chooseRandom item based on size
-		var spaceIdx = _rng.randi_range(0, _stats.totalSpace)
-		if spaceIdx >= (_stats.totalSpace - _stats.availSpace):
-			spaceRecovered += 1
-			continue
-		var spacePassed = 0
-		var itemIdx = 0
-		while spacePassed < spaceIdx:
-			spacePassed += items[itemIdx].space
-			if spacePassed <= spaceIdx:
-				itemIdx += 1
+	# var spaceRecovered = 0
+	# while spaceRecovered < 10:
+	# 	# chooseRandom item based on size
+	# 	var spaceIdx = _rng.randi_range(0, _player.totalSpace)
+	# 	if spaceIdx >= (_player.totalSpace - _player.availSpace):
+	# 		spaceRecovered += 1
+	# 		continue
+	# 	var spacePassed = 0
+	# 	var itemIdx = 0
+	# 	while spacePassed < spaceIdx:
+	# 		spacePassed += items[itemIdx].space
+	# 		if spacePassed <= spaceIdx:
+	# 			itemIdx += 1
 
-		if spaceRecovered + items[itemIdx].space > 10 \
-				or items[itemIdx].dropped:
-			# cant free more than 10
-			# cant drop an item twice
-			continue
+	# 	if spaceRecovered + items[itemIdx].space > 10 \
+	# 			or items[itemIdx].dropped:
+	# 		# cant free more than 10
+	# 		# cant drop an item twice
+	# 		continue
 
-		# drop item
-		if items[itemIdx].type == ItemType.DRUG:
-			drop(items[itemIdx].name, 1)
-			# TODO drop adjacent
-		else:
-			dropGun(items[itemIdx].name)
-		spaceRecovered += items[itemIdx].space
-		items[itemIdx].dropped = true
+	# 	# drop item
+	# 	if items[itemIdx].type == ItemType.DRUG:
+	# 		drop(items[itemIdx].itemName, 1)
+	# 		# TODO drop adjacent
+	# 	else:
+	# 		dropGun(items[itemIdx].itemName)
+	# 	spaceRecovered += items[itemIdx].space
+	# 	items[itemIdx].dropped = true
 
-	_stats.bitches -= 1
-	_stats.totalSpace -= 10
-	_stats.availSpace -= 10
+	# _player.bitches -= 1
+	# _player.totalSpace -= 10
+	# _player.availSpace -= 10
 
 
 
@@ -645,17 +622,17 @@ enum DamageRes {NONE, BITCH_KILLED, DEPUTY_KILLED, DEAD}
 func _playerTakesDamage(amnt):
 	print("player taking %s damage" % amnt)
 	print("warning: incomplete")
-	if _stats.health - amnt <= 0:
-		if _stats.bitches > 0:
-			_stats.health = 100
+	if _player.health - amnt <= 0:
+		if _player.bitches > 0:
+			_player.health = 100
 			_playerLosesBitch()
 			return DamageRes.BITCH_KILLED
-		_stats.health = 0
+		_player.health = 0
 		fightData.fightOver = true
 		_endGame()
 		return DamageRes.DEAD
 
-	_stats.health -= amnt
+	_player.health -= amnt
 	return DamageRes.NONE
 
 
@@ -669,7 +646,7 @@ func _copsTakeDamage(amnt):
 			return DamageRes.DEPUTY_KILLED
 		fightData.copHealth = 0
 		fightData.fightOver = true
-		_stats.copsKilled += 1
+		_player.copsKilled += 1
 		return DamageRes.DEAD
 
 	fightData.copHealth -= amnt
@@ -687,7 +664,7 @@ func _copsGunCount():
 	return fightData._cfg.copGun + fightData._cfg.deputyGun * fightData.numDeputies
 
 func _copsGunCounts():
-	return {config.guns[fightData._cfg.gunIndex].name : _copsGunCount()}
+	return {config.guns[fightData._cfg.gunIndex].gunName : _copsGunCount()}
 
 
 func _howArmed():
@@ -713,19 +690,19 @@ func _copFight():
 	# _curState = State.COP_FIGHT
 	_setState(State.COP_FIGHT)
 
-	fightData = CopFight.new(config.cops[_stats.copsKilled])
+	fightData = CopFight.new(config.cops[_player.copsKilled])
 	fightData.numDeputies = _rng.randi_range(fightData._cfg.minDeputies, fightData._cfg.maxDeputies+1)
 	fightData.fightText.append("%s and %s deputies - %s - are chasing you, man!" \
-			% [fightData._cfg.name, fightData.numDeputies, _howArmed()])
+			% [fightData._cfg.copName, fightData.numDeputies, _howArmed()])
 	_copsAttackPlayer()
 
 
 func _visitDoctor(price):
-	if _stats.cash < price:
+	if _player.cash < price:
 		print("insufficent funds")
 		return
-	_stats.cash -= price
-	_stats.health = 100
+	_player.cash -= price
+	_player.health = 100
 
 
 func curCop():
@@ -738,7 +715,7 @@ func numDeputies():
 	return fightData.numDeputies
 
 func canFight():
-	return _stats.guns > 0
+	return _player.guns > 0
 
 func fightOver():
 	return fightData.fightOver
@@ -748,9 +725,9 @@ func finishFight():
 	if _gameFinished:
 		_setState(State.HIGHSCORES)
 	else:
-		if _rng.randi_range(0,99) > config.placesByName[_stats.curPlace].police and _stats.health < 100:
+		if _rng.randi_range(0,99) > config.placesByName[_player.curPlace].police and _player.health < 100:
 			var randBitchPrice = _rng.randi_range(config.bitchPrice_low, config.bitchPrice_high-1)
-			var doctorPrice = randBitchPrice * (100-_stats.health) / 500
+			var doctorPrice = randBitchPrice * (100-_player.health) / 500
 			_pushChoiceFront("Do you pay a doctor $%s to sew you up?" % util.toCommaSepStr(doctorPrice),
 								util.Curry.new(self, '_visitDoctor', [doctorPrice]))
 		_setState(State.DRUG_MENU)
@@ -807,14 +784,14 @@ func _randomOffer():
 		var gun = config.guns[_rng.randi_range(0, config.guns.size()-1)]
 		var price = gun.price / 10
 		var s = "Would you like to buy a %s for $%s?"
-		s %= [gun.name, util.toCommaSepStr(price)]
-		_pushChoice(s, util.Curry.new(self, "buyGun", [gun.name, price]))
+		s %= [gun.gunName, util.toCommaSepStr(price)]
+		_pushChoice(s, util.Curry.new(self, "buyGun", [gun.gunName, price]))
 
 
 func _randDrugWithAtLeastAmnt(amnt):
 	for i in range(5):
 		var drug = _randDrug()
-		if quantity(drug) >= amnt:
+		if _drugStore.numHave(drug) >= amnt:
 			return drug
 	return null
 
@@ -830,7 +807,7 @@ func _randomEvent():
 		_mugged()
 	elif r < 50:
 		_giveOrReceiveDrugs()
-	elif r < 60 and ("Weed" in _drugsOwnedQuantities or "Hashish" in _drugsOwnedQuantities):
+	elif r < 60 and (_drugStore.haveAny("Weed") or _drugStore.haveAny("Hashish")):
 		_brownies()
 	elif r < 65:
 		_paraquatWeed()
@@ -847,18 +824,18 @@ func _paraquatWeed():
 func _brownies():
 	var drug = "Weed" if quantity("Weed") > quantity("Hashish") else "Hashish"
 	_pushMsg("Your mama made brownies with some of your %s! They were great!" % drug)
-	_give(drug, min(_rng.randi_range(2,5), _drugsOwnedQuantities[drug]))
+	_drugStore.give(drug, min(_rng.randi_range(2,5), _drugStore.numHave(drug)))
 
 func _giveOrReceiveDrugs():
 	var amnt = _rng.randi_range(3, 6)
 	var drug = _randDrugWithAtLeastAmnt(amnt)
-	if drug == null and amnt > _stats.availSpace:
+	if drug == null and amnt > _player.availSpace:
 		return
 	elif drug == null:
 		drug = _randDrug()
 		var fmt = "You meet a friend! He gives you %s %s." if _rng.randi()%2 == 0 else "You find %s %s on a dead dude in the subway."
 		_pushMsg(fmt % [amnt, drug])
-		_receive(drug, amnt)
+		_drugStore.receive(drug, amnt)
 	else:
 		if _rng.randi()%2 == 0:
 			var fmt = "You meet a friend! You give him %s %s."
@@ -866,18 +843,18 @@ func _giveOrReceiveDrugs():
 		else:
 			var fmt = "Police chased you for %s blocks! You dropped some %s! That's a drag man."
 			_pushMsg(fmt % [_rng.randi_range(3,6), drug])
-		_give(drug, amnt)
+		_drugStore.give(drug, amnt)
 
 func _mugged():
 	_pushMsg("You were mugged in the subway!")
-	_stats.cash = (_stats.cash * _rng.randf_range(.8, .95)) as int
+	_player.cash = (_player.cash * _rng.randf_range(.8, .95)) as int
 
 func _randElem(list):
 	return list[_rng.randi_range(0, list.size()-1)]
 
 func _stopToDoSomething():
 	_pushMsg("You stopped to %s." % _randElem(config.stoppedTo))
-	_stats.cash -= _rng.randi_range(1, min(10, _stats.cash))
+	_player.cash -= _rng.randi_range(1, min(10, _player.cash))
 
 func _endGame(msg=null):
 	print("END GAME: \"%s\"" % msg)
@@ -899,7 +876,7 @@ func _possibleCopsOfferOrEvent():
 	if _rng.randi_range(0,i) <= 75:
 		return
 
-	i = _rng.randi_range(0, 79 + config.placesByName[_stats.curPlace].police)
+	i = _rng.randi_range(0, 79 + config.placesByName[_player.curPlace].police)
 	if i < 33:
 		_randomOffer()
 	elif i < 50:
@@ -909,7 +886,7 @@ func _possibleCopsOfferOrEvent():
 
 
 func totalMoney():
-	return _stats.cash + _stats.bank - _stats.debt
+	return _player.cash + _player.bank - _player.debt
 
 
 func _ready():
@@ -920,23 +897,22 @@ func curState():
 
 
 func stats():
-	return _stats
+	return _player
 
 
 func places():
-	return config.placeNamesList
+	return config.placeNameList
 
 
 func reset():
-	_stats = Stats.new()
+	_player = Player.new()
 	_curState = State.DRUG_MENU
 	_gameFinished = false
 	_clearMsgQueue()
 
 	_gunQuantities = {}
 
-	_drugsHerePrices = {}
-	_drugsOwnedQuantities = {}
+	_drugStore = Store.new(_player, _player.drugQuantities, {})
 
 	_rng = RandomNumberGenerator.new()
 	_rng.randomize()

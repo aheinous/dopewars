@@ -5,6 +5,6 @@ var bitches := 0
 
 func numGuns():
     var n = 0
-    for name in gunQuantities:
-        n += gunQuantities[name]
+    for gunName in gunQuantities:
+        n += gunQuantities[gunName]
     return n

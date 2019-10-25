@@ -14,13 +14,12 @@ onready var dayDisp =     $VBoxContainer/GridContainer/dayDisp
 
 func populate():
 
-	var stats = gameModel.stats()
-	locationDisp.text = "-- %s --" % stats.curPlace
-	cashDisp.text = "$" + util.toCommaSepStr(stats.cash)
-	gunsDisp.text = str(stats.guns)
-	debtDisp.text = "$" + util.toCommaSepStr(stats.debt)
-	bitchesDisp.text = str(stats.bitches)
-	spaceDisp.text = str(stats.availSpace) + " / " + str(stats.totalSpace)
-	bankDisp.text = "$" + util.toCommaSepStr(stats.bank)
-	healthDisp.text = str(stats.health)
-	dayDisp.text = str(stats.day) + " / " + str(stats.finalDay)
+	locationDisp.text = "-- %s --" % gameModel.getCurPlace()
+	cashDisp.text = "$" + util.toCommaSepStr(gameModel.getCash())
+	gunsDisp.text = str(gameModel.getNumGuns())
+	debtDisp.text = "$" + util.toCommaSepStr(gameModel.getDebt())
+	bitchesDisp.text = str(gameModel.getBitches())
+	spaceDisp.text = str(gameModel.getAvailSpace()) + " / " + str(gameModel.getTotalSpace())
+	bankDisp.text = "$" + util.toCommaSepStr(gameModel.getBank())
+	healthDisp.text = str(gameModel.getHealth())
+	dayDisp.text = str(gameModel.getDay()) + " / " + str(gameModel.getFinalDay())

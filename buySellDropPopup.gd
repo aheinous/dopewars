@@ -14,16 +14,16 @@ func setupAndShow(verb, drug):
 	match verb:
 		"Buy":
 			text.text = "Buy %s at $%s\nCan afford: %s\nAvailable Space: %s" \
-					% [drug, gameModel.price(drug), gameModel.canAfford(drug), gameModel.stats().availSpace]
-			amntChooser.setup(verb, gameModel.mostCanBuy(drug))
+					% [drug, gameModel.getDrugPrice(drug), gameModel.getNumDrugCanAfford(drug), gameModel.getAvailSpace()]
+			amntChooser.setup(verb, gameModel.getMostDrugCanBuy(drug))
 		"Drop":
 			text.text = "Drop %s.\nAvailable Space: %s" \
-					% [drug, gameModel.stats().availSpace]
-			amntChooser.setup(verb, gameModel.quantity(drug))
+					% [drug, gameModel.getAvailSpace()]
+			amntChooser.setup(verb, gameModel.getNumDrugHave(drug))
 		"Sell":
 			text.text = "Sell %s at $%s\nYou have: %s\nAvailable Space: %s" \
-					% [drug, gameModel.price(drug), gameModel.quantity(drug), gameModel.stats().availSpace]
-			amntChooser.setup(verb, gameModel.quantity(drug))
+					% [drug, gameModel.getDrugPrice(drug), gameModel.getNumDrugHave(drug), gameModel.getAvailSpace()]
+			amntChooser.setup(verb, gameModel.getNumDrugHave(drug))
 		_:
 			assert(false)
 
@@ -39,11 +39,11 @@ func _on_cancelButton_pressed():
 func _on_okayButton_pressed():
 	match verb:
 		"Buy":
-			gameModel.buy(drug, amntChooser.getValue())
+			gameModel.buyDrug(drug, amntChooser.getValue())
 		"Drop":
-			gameModel.drop(drug, amntChooser.getValue())
+			gameModel.dropDrug(drug, amntChooser.getValue())
 		"Sell":
-			gameModel.sell(drug, amntChooser.getValue())
+			gameModel.sellDrug(drug, amntChooser.getValue())
 		_:
 			assert(false)
 	hide()

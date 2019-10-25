@@ -37,13 +37,13 @@ func _addButton(item, colWidths):
 	var font = button.get_font("font")
 
 	button.text = "%s %s %s" % [
-								util.rpad_pixels(font, colWidths[0], item.name),
+								util.rpad_pixels(font, colWidths[0], item.itemName),
 								util.lpad_pixels(font, colWidths[1],
 									"$"+util.toCommaSepStr(item.price) if item.price != -1 else "Ain't here"),
 								util.lpad_pixels(font, colWidths[2], str(item.quantity))
 								]
 	self.add_child(button)
-	button.connect("pressed", self, "onItemButtonPressed", [item.name])
+	button.connect("pressed", self, "onItemButtonPressed", [item.itemName])
 
 func _populate(storeItems, colWidths):
 	_rmvAllChildren()
@@ -59,5 +59,5 @@ func _populate(storeItems, colWidths):
 
 
 
-func onItemButtonPressed(name):
-	emit_signal("itemButtonPressed", name)
+func onItemButtonPressed(itemName):
+	emit_signal("itemButtonPressed", itemName)

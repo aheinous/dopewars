@@ -27,14 +27,14 @@ func sellDrug(drug):
 func _on_drugList_itemButtonPressed(drug):
 	print("_on_list_drugButtonPressed(%s)" % [drug])
 
-	if gameModel.canBuy(drug) and not gameModel.canSell(drug):
+	if gameModel.canBuyDrug(drug) and not gameModel.canSellDrug(drug):
 		buyDrug(drug)
-	elif not gameModel.canBuy(drug) and gameModel.canSell(drug):
+	elif not gameModel.canBuyDrug(drug) and gameModel.canSellDrug(drug):
 		sellDrug(drug)
-	elif gameModel.canBuy(drug) and gameModel.canSell(drug):
+	elif gameModel.canBuyDrug(drug) and gameModel.canSellDrug(drug):
 		# choose
 		chooseBuySellPopup.setupAndShow(drug)
-	elif gameModel.canDrop(drug):
+	elif gameModel.canDropDrug(drug):
 		# drop
 		buySellDropPopup.setupAndShow("Drop", drug)
 

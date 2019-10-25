@@ -20,12 +20,12 @@ func _on_leaveButton_pressed():
 	hide()
 
 
-func buy(name):
-	gameModel.buyGun(name)
+func buy(gunName):
+	gameModel.buyGun(gunName)
 	emit_signal("done")
 
-func sell(name):
-	gameModel.sellGun(name)
+func sell(gunName):
+	gameModel.sellGun(gunName)
 	emit_signal("done")
 
 func _on_gunList_itemButtonPressed(gunName):
