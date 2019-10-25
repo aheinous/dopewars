@@ -10,8 +10,11 @@ var drugsByName
 var placesByName
 var gunsByName
 
+var gunPrices
+
 var placeNameList
 var drugNameList
+var gunNameList
 
 
 func _ready():
@@ -20,6 +23,8 @@ func _ready():
 	gunsByName = {}
 	placeNameList = []
 	drugNameList = []
+	gunPrices = {}
+	gunNameList = []
 
 	for drugCfg in drugs:
 		drugsByName[drugCfg.drugName] = drugCfg
@@ -30,6 +35,8 @@ func _ready():
 
 	for gunCfg in guns:
 		gunsByName[gunCfg.gunName] = gunCfg
+		gunPrices[gunCfg.gunName] = gunCfg.price
+		gunNameList.append(gunCfg.gunName)
 
 	for drug in drugs:
 		drugNameList.append(drug.drugName)

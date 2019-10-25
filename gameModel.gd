@@ -17,6 +17,7 @@ var _gameFinished = false
 var _player : Player
 var _curState = State.MSG_QUEUE
 var _drugStore : Store
+var _gunStore : Store
 
 var _rng
 
@@ -63,7 +64,6 @@ func getDrugsHere():
 func getDrugsOwnedAndNotHere():
 	return _drugStore.itemsOwnedAndNotHere(config.drugNameList)
 
-
 func canBuyDrug(drug):
 	return _drugStore.canBuy(drug)
 
@@ -100,10 +100,23 @@ func sellDrug(drug, amnt):
 func dropDrug(drug, amnt):
 	_drugStore.drop(drug, amnt)
 
+func canBuyGun(gunName):
+	return _gunStore.canBuy(gunName)
 
+func canSellGun(gunName):
+	return _gunStore.canSell(gunName)
 
+func buyGun(gunName, price=null):
+	_gunStore.buy(gunName, 1, price)
 
+func sellGun(gunName):
+	_gunStore.sell(gunName, 1)
 
+func getGunsHere():
+	return _gunStore.itemsHere(config.gunNameList)
+
+func leaveGunStore():
+	_setState(State.DRUG_MENU)
 
 ####################### Drug Menu
 
@@ -173,7 +186,7 @@ func _setupDrugsHere():
 		var price = _rng.randi_range(minPrice, maxPrice)
 		drugPrices[drugName] = price
 
-	_drugStore.setAvailPrices(drugPrices)
+	_drugStore.setItems(drugPrices)
 
 
 
@@ -255,13 +268,6 @@ func chooseNo():
 	_queue.pop_front()
 	_maybeMsgQueueState()
 
-# func _msgQueue_nextState():
-# 	if _queue.size() == 0:
-# 		_curState = State.DRUG_MENU if not _gameFinished else State.HIGHSCORES
-# 	else:
-# 		_curState = State.MSG_QUEUE
-
-
 
 func _setState(nextState):
 	_curState = nextState
@@ -278,15 +284,6 @@ func _maybeMsgQueueState():
 			_curState = State.DRUG_MENU
 
 
-# func _enterNextState(nextState):
-
-
-# 	_curState = nextState
-
-# 	if _queue.size() == 0:
-# 		_curState = State.DRUG_MENU if not _gameFinished else State.HIGHSCORES
-# 	else:
-# 		_curState = State.MSG_QUEUE
 
 
 ########## Pub
@@ -361,58 +358,11 @@ func leaveBank():
 
 ########### Gun Store
 
-var _gunQuantities
+# var _gunQuantities
 
 func visitGunStore():
 	print("visitGunStore()")
-	# _curState = State.GUNSTORE
 	_setState(State.GUNSTORE)
-
-
-func leaveGunStore():
-	# _msgQueue_nextState()
-	_setState(State.DRUG_MENU)
-
-func guns():
-	var items = []
-	for gun in config.guns:
-		items.append(Store.StoreItem.new(gun.gunName, gun.price, _gunQuantities.get(gun.gunName, 0)))
-	return items
-
-func canBuyGun(gunName):
-	return config.gunsByName[gunName].price <= _player.cash and config.gunsByName[gunName].space <= _player.availSpace
-
-func canSellGun(gunName):
-	return _gunQuantities.get(gunName, 0) > 0
-
-
-func buyGun(gunName, price=null):
-	if price == null:
-		price = config.gunsByName[gunName].price
-	if _player.cash < price:
-		print("insufficent funds")
-		return
-	if _player.space < config.gunsByName[gunName].space:
-		print('not enough space')
-		return
-	print("buy %s for %s" % [gunName, price])
-	_gunQuantities[gunName] = _gunQuantities.get(gunName, 0) + 1
-	_player.cash -= price
-	_player.availSpace -= config.gunsByName[gunName].space
-	_player.guns += 1
-
-func sellGun(gunName):
-	print("sell %s" % gunName)
-	_gunQuantities[gunName] -= 1
-	_player.cash += config.gunsByName[gunName].price
-	_player.availSpace += config.gunsByName[gunName].space
-	_player.guns -= 1
-
-func dropGun(gunName):
-	print("drop %s" % gunName)
-	_gunQuantities[gunName] -= 1
-	_player.availSpace += config.gunsByName[gunName].space
-	_player.guns -= 1
 
 ########### Cop Fight
 
@@ -487,12 +437,12 @@ func _copsAttackPlayer():
 
 
 func _playerAttacksCops():
-	var attackRating = _playerAttackRating(_gunQuantities)
+	var attackRating = _playerAttackRating(_player.gunQuantities)
 	var defendRating = _copDefendRating()
 	print("_playerAttacksCops() %s, %s" % [attackRating, defendRating])
 	if _rng.randi_range(0, attackRating-1) > _rng.randi_range(0, defendRating):
 		# hit
-		var damage = _calcDamage(_gunQuantities, _copArmour())
+		var damage = _calcDamage(_player.gunQuantities, _copArmour())
 		var res = _copsTakeDamage(damage)
 		var fmt = ""
 		match res:
@@ -910,9 +860,8 @@ func reset():
 	_gameFinished = false
 	_clearMsgQueue()
 
-	_gunQuantities = {}
-
 	_drugStore = Store.new(_player, _player.drugQuantities, {})
+	_gunStore = Store.new(_player, _player.gunQuantities, config.gunPrices)
 
 	_rng = RandomNumberGenerator.new()
 	_rng.randomize()

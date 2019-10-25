@@ -1,6 +1,7 @@
 var _player
 var _ownedQuantities = {}
-var _availPrices = {}
+var _itemPrices = {}
+var _itemSizes = {}
 
 
 
@@ -15,31 +16,32 @@ class StoreItem:
 		self.quantity = quantity
 
 
-func _init(player, ownedQuantities, availPrices):
+
+func _init(player, ownedQuantities, itemPrices, itemSizes=null):
 	self._player = player
 	self._ownedQuantities = ownedQuantities
-	self._availPrices = availPrices
+	setItems(itemPrices, itemSizes)
 
-
-func setAvailPrices(availPrices):
-	self._availPrices = availPrices
-
+func setItems(itemPrices, itemSizes=null):
+	if itemSizes == null:
+		itemSizes = {}
+		for item in itemPrices:
+			itemSizes[item] = 1
+	self._itemPrices = itemPrices
+	self._itemSizes = itemSizes
 
 func isHere(item):
-	return item in _availPrices
-
+	return item in _itemPrices
 
 func price(item):
-	if not item in _availPrices:
+	if not item in _itemPrices:
 		return -1
-	return _availPrices[item]
-
+	return _itemPrices[item]
 
 func numCanAfford(item):
 	if price(item) == -1:
 		return 0
 	return (_player.cash/price(item)) as int
-
 
 func haveAny(item):
 	return numHave(item) > 0
@@ -53,17 +55,23 @@ func numCanBuy(item):
 func canBuy(item, amnt=1):
 	return isHere(item) and _player.cash  >= amnt*price(item) and _player.availSpace >= amnt
 
-
 func canSell(item, amnt=1):
 	return isHere(item) and numHave(item) >= amnt
 
 func canDrop(item, amnt=1):
 	return not isHere(item) and numHave(item) >= 1
 
-func buy(item, amnt:int):
-	print('buying %s of %s' % [amnt, item])
-	assert(canBuy(item, amnt))
-	_player.cash -= price(item)*amnt
+func buy(item, amnt:int, buyPrice=null):
+	print('buying %s of %s at %s each' % [amnt, item, buyPrice])
+	if buyPrice == null:
+		buyPrice = price(item)
+	if _player.cash < buyPrice*amnt:
+		print('insufficeint funds')
+		return
+	if _player.availSpace < _itemSizes[item]*amnt:
+		print('not enough space')
+		return
+	_player.cash -= buyPrice*amnt
 	_player.availSpace -= amnt
 	assert(_player.cash >= 0)
 	assert(_player.availSpace >= 0)
@@ -71,17 +79,20 @@ func buy(item, amnt:int):
 		_ownedQuantities[item] = 0
 	_ownedQuantities[item] += amnt
 
+
 func receive(item, amnt):
 	_player.availSpace -= amnt
 	if not item in _ownedQuantities:
 		_ownedQuantities[item] = 0
 	_ownedQuantities[item] += amnt
 
+
 func give(item, amnt):
 	_player.availSpace += amnt
 	_ownedQuantities[item] -= amnt
 	if _ownedQuantities[item] == 0:
 		_ownedQuantities.erase(item)
+
 
 func sell(item, amnt : int):
 	print('sell %s of %s' % [amnt, item])
@@ -93,19 +104,17 @@ func sell(item, amnt : int):
 	assert(_player.availSpace <= _player.totalSpace)
 	if _ownedQuantities[item] == 0:
 		_ownedQuantities.erase(item)
-	# emit_signal("updated")
+
 
 func drop(item, amnt : int):
 	print('drop %s of %s' % [amnt, item])
 	give(item, amnt)
 
 
-
-
 func itemsHere(preferedOrder):
 	var items = []
 	for itemName in preferedOrder:
-		if itemName in _availPrices:
+		if itemName in _itemPrices:
 			items.append(StoreItem.new(itemName, price(itemName), numHave(itemName)))
 	return items
 
@@ -113,7 +122,7 @@ func itemsHere(preferedOrder):
 func itemsOwnedAndNotHere(preferedOrder):
 	var items = []
 	for itemName in preferedOrder:
-		if itemName in _ownedQuantities and not itemName in _availPrices:
+		if itemName in _ownedQuantities and not itemName in _itemPrices:
 			items.append(StoreItem.new(itemName, price(itemName), numHave(itemName)))
 	return items
 
