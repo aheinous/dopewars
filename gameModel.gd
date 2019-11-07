@@ -665,7 +665,7 @@ func numDeputies():
 	return fightData.numDeputies
 
 func canFight():
-	return _player.guns > 0
+	return _player.numGuns() > 0
 
 func fightOver():
 	return fightData.fightOver
