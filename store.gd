@@ -1,7 +1,6 @@
 var _player
 var _ownedQuantities = {}
 var _itemPrices = {}
-var _itemSizes = {}
 
 
 
@@ -17,18 +16,14 @@ class StoreItem:
 
 
 
-func _init(player, ownedQuantities, itemPrices, itemSizes=null):
+func _init(player, ownedQuantities, itemPrices):
 	self._player = player
 	self._ownedQuantities = ownedQuantities
-	setItems(itemPrices, itemSizes)
+	setItems(itemPrices)
 
-func setItems(itemPrices, itemSizes=null):
-	if itemSizes == null:
-		itemSizes = {}
-		for item in itemPrices:
-			itemSizes[item] = 1
+func setItems(itemPrices):			
 	self._itemPrices = itemPrices
-	self._itemSizes = itemSizes
+
 
 func isHere(item):
 	return item in _itemPrices
@@ -50,10 +45,10 @@ func numHave(item):
 	return _ownedQuantities.get(item, 0)
 
 func numCanBuy(item):
-	return min(_player.availSpace, numCanAfford(item))
+	return min((_player.availSpace/config.itemSize(item)) as int, numCanAfford(item))
 
 func canBuy(item, amnt=1):
-	return isHere(item) and _player.cash  >= amnt*price(item) and _player.availSpace >= amnt
+	return isHere(item) and _player.cash  >= amnt*price(item) and _player.availSpace >= amnt*config.itemSize(item)
 
 func canSell(item, amnt=1):
 	return isHere(item) and numHave(item) >= amnt
@@ -68,11 +63,11 @@ func buy(item, amnt:int, buyPrice=null):
 	if _player.cash < buyPrice*amnt:
 		print('insufficeint funds')
 		return
-	if _player.availSpace < _itemSizes[item]*amnt:
+	if _player.availSpace < config.itemSize(item)*amnt:
 		print('not enough space')
 		return
 	_player.cash -= buyPrice*amnt
-	_player.availSpace -= amnt
+	_player.availSpace -= amnt*config.itemSize(item)
 	assert(_player.cash >= 0)
 	assert(_player.availSpace >= 0)
 	if not item in _ownedQuantities:
@@ -81,14 +76,14 @@ func buy(item, amnt:int, buyPrice=null):
 
 
 func receive(item, amnt):
-	_player.availSpace -= amnt
+	_player.availSpace -= amnt * config.itemSize(item)
 	if not item in _ownedQuantities:
 		_ownedQuantities[item] = 0
 	_ownedQuantities[item] += amnt
 
 
 func give(item, amnt):
-	_player.availSpace += amnt
+	_player.availSpace += amnt * config.itemSize(item)
 	_ownedQuantities[item] -= amnt
 	if _ownedQuantities[item] == 0:
 		_ownedQuantities.erase(item)
@@ -99,7 +94,7 @@ func sell(item, amnt : int):
 	assert(canSell(item, amnt))
 	_player.cash += price(item)*amnt
 	_ownedQuantities[item] -= amnt
-	_player.availSpace += amnt
+	_player.availSpace += amnt  * config.itemSize(item)
 	assert(_ownedQuantities[item] >= 0)
 	assert(_player.availSpace <= _player.totalSpace)
 	if _ownedQuantities[item] == 0:

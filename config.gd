@@ -11,6 +11,7 @@ var placesByName
 var gunsByName
 
 var gunPrices
+var gunSizes
 
 var placeNameList
 var drugNameList
@@ -25,6 +26,7 @@ func _ready():
 	drugNameList = []
 	gunPrices = {}
 	gunNameList = []
+	gunSizes = {}
 
 	for drugCfg in drugs:
 		drugsByName[drugCfg.drugName] = drugCfg
@@ -37,9 +39,16 @@ func _ready():
 		gunsByName[gunCfg.gunName] = gunCfg
 		gunPrices[gunCfg.gunName] = gunCfg.price
 		gunNameList.append(gunCfg.gunName)
+		gunSizes[gunCfg.gunName] = gunCfg.space
 
 	for drug in drugs:
 		drugNameList.append(drug.drugName)
+
+
+func itemSize(item):
+	if item in drugsByName:
+		return 1
+	return gunsByName[item].space
 
 
 class DrugConfig:
