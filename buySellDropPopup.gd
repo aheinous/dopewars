@@ -14,15 +14,22 @@ func setupAndShow(verb, drug):
 	match verb:
 		"Buy":
 			text.text = "Buy %s at $%s\nCan afford: %s\nAvailable Space: %s" \
-					% [drug, gameModel.getDrugPrice(drug), gameModel.getNumDrugCanAfford(drug), gameModel.getAvailSpace()]
+					% [drug, \
+					util.toCommaSepStr(gameModel.getDrugPrice(drug)), \
+					util.toCommaSepStr(gameModel.getNumDrugCanAfford(drug)), \
+					util.toCommaSepStr(gameModel.getAvailSpace()) ]
 			amntChooser.setup(verb, gameModel.getMostDrugCanBuy(drug))
 		"Drop":
 			text.text = "Drop %s.\nAvailable Space: %s" \
-					% [drug, gameModel.getAvailSpace()]
+					% [drug, \
+					toCommaSepStr(gameModel.getAvailSpace())]
 			amntChooser.setup(verb, gameModel.getNumDrugHave(drug))
 		"Sell":
 			text.text = "Sell %s at $%s\nYou have: %s\nAvailable Space: %s" \
-					% [drug, gameModel.getDrugPrice(drug), gameModel.getNumDrugHave(drug), gameModel.getAvailSpace()]
+					% [drug, \
+					util.toCommaSepStr(gameModel.getDrugPrice(drug)), \
+					util.toCommaSepStr(gameModel.getNumDrugHave(drug)), \
+					util.toCommaSepStr(gameModel.getAvailSpace())]
 			amntChooser.setup(verb, gameModel.getNumDrugHave(drug))
 		_:
 			assert(false)
