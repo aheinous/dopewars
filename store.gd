@@ -57,9 +57,11 @@ func canDrop(item, amnt=1):
 	return not isHere(item) and numHave(item) >= 1
 
 func buy(item, amnt:int, buyPrice=null):
-	print('buying %s of %s at %s each' % [amnt, item, buyPrice])
 	if buyPrice == null:
 		buyPrice = price(item)
+	print('buying %s of %s at %s each' % [amnt, item, buyPrice])
+	if amnt == 0:
+		return
 	if _player.cash < buyPrice*amnt:
 		print('insufficeint funds')
 		return
