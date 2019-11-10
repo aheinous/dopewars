@@ -43,16 +43,16 @@ static func lpadColumnStr(font, cols):
 
 
 static func toCommaSepStr(number):
-    var string = str(number)
-    var mod = string.length() % 3
-    var res = ""
+	var string = str(number)
+	var mod = string.length() % 3
+	var res = ""
 
-    for i in range(0, string.length()):
-        if i != 0 && i % 3 == mod:
-            res += ","
-        res += string[i]
+	for i in range(0, string.length()):
+		if i != 0 && i % 3 == mod:
+			res += ","
+		res += string[i]
 
-    return res
+	return res
 
 
 class Curry:
