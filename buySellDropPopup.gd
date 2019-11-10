@@ -22,7 +22,7 @@ func setupAndShow(verb, drug):
 		"Drop":
 			text.text = "Drop %s.\nAvailable Space: %s" \
 					% [drug, \
-					toCommaSepStr(gameModel.getAvailSpace())]
+					util.toCommaSepStr(gameModel.getAvailSpace())]
 			amntChooser.setup(verb, gameModel.getNumDrugHave(drug))
 		"Sell":
 			text.text = "Sell %s at $%s\nYou have: %s\nAvailable Space: %s" \
