@@ -29,9 +29,9 @@ func _on_cancelButton_pressed():
 
 func _on_okayButton_pressed():
 	if mode == "Deposit":
-		gameModel.deposit(amntChooser.getValue())
+		gameModel.deposit(amntChooser.getValue() as int)
 	else:
-		gameModel.withdraw(amntChooser.getValue())
+		gameModel.withdraw(amntChooser.getValue() as int)
 	emit_signal("done")
 	hide()
 

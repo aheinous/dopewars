@@ -391,12 +391,12 @@ func visitBank():
 	_setState(State.BANK)
 
 
-func deposit(amnt):
+func deposit(amnt : int):
 	_player.cash -= amnt
 	_player.bank += amnt
 	leaveBank()
 
-func withdraw(amnt):
+func withdraw(amnt : int):
 	_player.cash += amnt
 	_player.bank -= amnt
 	leaveBank()
