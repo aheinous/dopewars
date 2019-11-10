@@ -24,7 +24,6 @@ func setVerb(verb_):
 func setup(verb, max_value, start=-1):
 
 	print("amntChooser setup: %s, %s" % [verb, max_value])
-	assert(max_value > 0)
 
 	if start == -1:
 		start = max_value
@@ -49,6 +48,8 @@ func getValue():
 
 
 func _on_valueChanged(value):
+	if util.isNAN(value):
+		value = 0
 	slider.value = value
 	spinBox.value = value
 

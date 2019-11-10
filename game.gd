@@ -27,7 +27,7 @@ func sellDrug(drug):
 func _on_drugList_itemButtonPressed(drug):
 	print("_on_list_drugButtonPressed(%s)" % [drug])
 
-	if gameModel.canBuyDrug(drug) and not gameModel.canSellDrug(drug):
+	if not gameModel.canSellDrug(drug): # show buy menu if buy is the only option *or* if there are no options
 		buyDrug(drug)
 	elif not gameModel.canBuyDrug(drug) and gameModel.canSellDrug(drug):
 		sellDrug(drug)

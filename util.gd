@@ -39,7 +39,8 @@ static func lpadColumnStr(font, cols):
 	return output
 
 
-
+static func isNAN(x):
+	return x != x
 
 
 static func toCommaSepStr(number):
