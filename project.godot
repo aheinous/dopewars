@@ -25,6 +25,12 @@ config="*res://config.gd"
 util="*res://util.gd"
 gameModel="*res://gameModel.gd"
 
+[display]
+
+window/size/width=640
+window/size/height=960
+window/size/resizable=false
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
