@@ -22,6 +22,20 @@ static func lpad_pixels(font, tgt_width : int, s : String ):
 	return _lrpad_spaces(font,tgt_width, s) + s
 
 
+static func _nSpaces(n):
+	var s = ""
+	for unused in range(n):
+		s += " "
+	return s
+
+
+static func lpad_chars(tgt_width, s):
+	return _nSpaces(tgt_width - s.length()) + s
+
+static func rpad_chars(tgt_width, s):
+	return s + _nSpaces(tgt_width - s.length())
+
+
 static func lpadColumnStr(font, cols):
 	for col in cols:
 		var colWidth = 0

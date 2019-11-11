@@ -9,9 +9,9 @@ func _addHeader(colWidths):
 	var font = header.get_font("font")
 #	var util = load("res://util.gd")
 	header.text = "%s %s %s" % [
-			util.rpad_pixels(font, colWidths[0], "Name"),
-			util.rpad_pixels(font, colWidths[1], "Price"),
-			util.lpad_pixels(font, colWidths[2], "Quantity") ]
+			util.rpad_chars(colWidths[0], "Name"),
+			util.rpad_chars(colWidths[1], "Price"),
+			util.lpad_chars(colWidths[2], "Quantity") ]
 	header.align = Label.ALIGN_CENTER
 	self.add_child(header)
 
@@ -37,10 +37,10 @@ func _addButton(item, colWidths):
 	var font = button.get_font("font")
 
 	button.text = "%s %s %s" % [
-								util.rpad_pixels(font, colWidths[0], item.itemName),
-								util.lpad_pixels(font, colWidths[1],
+								util.rpad_chars(colWidths[0], item.itemName),
+								util.lpad_chars(colWidths[1],
 									"$"+util.toCommaSepStr(item.price) if item.price != -1 else "Ain't here"),
-								util.lpad_pixels(font, colWidths[2], str(item.quantity))
+								util.lpad_chars(colWidths[2], str(item.quantity))
 								]
 	self.add_child(button)
 	button.connect("pressed", self, "onItemButtonPressed", [item.itemName])

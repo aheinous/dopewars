@@ -1,8 +1,13 @@
 extends Node
 
 
-const colWidths_drugs = [100,62,55]
-const colWidths_guns = [150,42,55]
+# const colWidths_drugs = [100,62,55]
+# const colWidths_guns = [150,42,55]
+
+
+
+const colWidths_chars_drugs = [8, 9, 9]
+const colWidths_chars_guns = [22, 6, 9]
 
 
 
