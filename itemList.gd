@@ -7,7 +7,7 @@ signal itemButtonPressed
 func _addHeader(colWidths):
 	var header = Label.new()
 	var font = header.get_font("font")
-#	var util = load("res://util.gd")
+	
 	header.text = "%s %s %s" % [
 			util.rpad_chars(colWidths[0], "Name"),
 			util.rpad_chars(colWidths[1], "Price"),
