@@ -13,7 +13,7 @@ var redrawNeeded = true
 export var font : Font
 
 
-onready var jetButton = $"../MarginContainer/VBoxContainer/jetButton"
+#onready var jetButton = $"../MarginContainer/VBoxContainer/jetButton"
 
 
 func boxString(size, text):
@@ -54,8 +54,9 @@ func _childrenInDrawOrder(root):
 func _ready():
 	connect("resized", self, "_onResized")
 	mouse_filter = MOUSE_FILTER_IGNORE
-	jetButton.connect("draw", self, "onNeedRedraw")
+#	jetButton.connect("draw", self, "onNeedRedraw")
 	_onResized()
+	tui_manager.overlay = self
 
 func _gui_input(event):
 	print('_gui_input(%s)' % event)

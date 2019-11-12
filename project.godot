@@ -24,6 +24,7 @@ config/icon="res://icon.png"
 config="*res://config.gd"
 util="*res://util.gd"
 gameModel="*res://gameModel.gd"
+tui_manager="*res://tui_manager.gd"
 
 [display]
 
