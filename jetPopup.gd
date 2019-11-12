@@ -1,5 +1,6 @@
 extends CenterContainer
 
+const TuiButton = preload("tui/tuiButton.tscn")
 
 signal placeButtonPressed
 
@@ -23,7 +24,7 @@ func go():
 
 
 	for place in gameModel.places():
-		var button = Button.new()
+		var button = TuiButton.instance()
 		button.text = place
 #		print(place, ", ", gameModel.curPlace)
 		if place == gameModel.stats().curPlace:

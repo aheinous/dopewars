@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://jetPopup.gd" type="Script" id=1]
+[ext_resource path="res://tui/tuiButton.gd" type="Script" id=2]
 
 [node name="jetPopup" type="CenterContainer"]
 anchor_right = 1.0
@@ -28,4 +29,5 @@ margin_top = 20.0
 margin_right = 54.0
 margin_bottom = 40.0
 text = "Cancel"
+script = ExtResource( 2 )
 [connection signal="pressed" from="PanelContainer/VBoxContainer/cancelButton" to="." method="_on_cancelButton_pressed"]
