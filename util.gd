@@ -1,6 +1,20 @@
 extends Node
 
 
+# static func slice(arr, start, end):
+# 	var res = ""
+# 	for i in range(start, end):
+# 		res += arr[i]
+# 	return res
+
+# static func font_test(font):
+# 	var s = "abcdefghijklmnopABCDEFGHJKLMNOPQRSTUVWXYZ01234567890 !@#$%^&*()"
+# 	for x in range(1,s.length()):
+# 		var s2 = slice(s, 0, x)
+# 		print("\"%s\": %s, avg width: %s" % [s2, font.get_string_size(s2), font.get_string_size(s2).x / s2.length()])
+
+
+
 
 static func _lrpad_spaces(font, tgt_width, s):
 	var space = " "
@@ -27,6 +41,13 @@ static func _nSpaces(n):
 	for unused in range(n):
 		s += " "
 	return s
+
+
+static func lrpad_chars(tgt_width, s):
+	var nSpaces = tgt_width - s.length()
+	var nRightSpaces = nSpaces/2
+	var nLeftSpaces = nSpaces - nRightSpaces
+	return _nSpaces(nLeftSpaces) + s + _nSpaces(nRightSpaces)
 
 
 static func lpad_chars(tgt_width, s):

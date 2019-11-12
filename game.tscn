@@ -1,20 +1,23 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://textUI_theme.tres" type="Theme" id=1]
 [ext_resource path="res://game.gd" type="Script" id=2]
 [ext_resource path="res://stats.tscn" type="PackedScene" id=3]
 [ext_resource path="res://drugList.gd" type="Script" id=4]
-[ext_resource path="res://jetPopup.tscn" type="PackedScene" id=5]
-[ext_resource path="res://msgPopup.tscn" type="PackedScene" id=6]
-[ext_resource path="res://choicePopup.tscn" type="PackedScene" id=7]
-[ext_resource path="res://loansharkPopup.tscn" type="PackedScene" id=8]
-[ext_resource path="res://chooseBuySellPopup.tscn" type="PackedScene" id=9]
-[ext_resource path="res://buySellDropPopup.tscn" type="PackedScene" id=10]
-[ext_resource path="res://bankPopup.tscn" type="PackedScene" id=11]
-[ext_resource path="res://bankChoosePopup.tscn" type="PackedScene" id=12]
-[ext_resource path="res://gunStorePopup.tscn" type="PackedScene" id=13]
-[ext_resource path="res://highscoresPopup.tscn" type="PackedScene" id=14]
-[ext_resource path="res://fightPopup.tscn" type="PackedScene" id=15]
+[ext_resource path="res://jetButton.gd" type="Script" id=5]
+[ext_resource path="res://jetPopup.tscn" type="PackedScene" id=6]
+[ext_resource path="res://msgPopup.tscn" type="PackedScene" id=7]
+[ext_resource path="res://choicePopup.tscn" type="PackedScene" id=8]
+[ext_resource path="res://loansharkPopup.tscn" type="PackedScene" id=9]
+[ext_resource path="res://chooseBuySellPopup.tscn" type="PackedScene" id=10]
+[ext_resource path="res://buySellDropPopup.tscn" type="PackedScene" id=11]
+[ext_resource path="res://bankPopup.tscn" type="PackedScene" id=12]
+[ext_resource path="res://bankChoosePopup.tscn" type="PackedScene" id=13]
+[ext_resource path="res://gunStorePopup.tscn" type="PackedScene" id=14]
+[ext_resource path="res://highscoresPopup.tscn" type="PackedScene" id=15]
+[ext_resource path="res://fightPopup.tscn" type="PackedScene" id=16]
+[ext_resource path="res://TUI_Overlay.gd" type="Script" id=17]
+[ext_resource path="res://FixedSys24.tres" type="DynamicFont" id=18]
 
 [node name="Game" type="Control"]
 anchor_right = 1.0
@@ -48,40 +51,48 @@ script = ExtResource( 4 )
 [node name="jetButton" type="Button" parent="MarginContainer/VBoxContainer"]
 margin_top = 181.0
 margin_right = 387.0
-margin_bottom = 201.0
+margin_bottom = 226.0
+rect_min_size = Vector2( 0, 40 )
 text = "Jet"
+script = ExtResource( 5 )
 
-[node name="jetPopup" parent="." instance=ExtResource( 5 )]
+[node name="jetPopup" parent="." instance=ExtResource( 6 )]
 visible = false
 
-[node name="msgPopup" parent="." instance=ExtResource( 6 )]
+[node name="msgPopup" parent="." instance=ExtResource( 7 )]
 visible = false
 
-[node name="choicePopup" parent="." instance=ExtResource( 7 )]
+[node name="choicePopup" parent="." instance=ExtResource( 8 )]
 visible = false
 
-[node name="loansharkPopup" parent="." instance=ExtResource( 8 )]
+[node name="loansharkPopup" parent="." instance=ExtResource( 9 )]
 visible = false
 
-[node name="chooseBuySellPopup" parent="." instance=ExtResource( 9 )]
+[node name="chooseBuySellPopup" parent="." instance=ExtResource( 10 )]
 visible = false
 
-[node name="buySellDropPopup" parent="." instance=ExtResource( 10 )]
+[node name="buySellDropPopup" parent="." instance=ExtResource( 11 )]
 visible = false
 
-[node name="bankPopup" parent="." instance=ExtResource( 11 )]
+[node name="bankPopup" parent="." instance=ExtResource( 12 )]
 visible = false
 
-[node name="bankChoosePopup" parent="." instance=ExtResource( 12 )]
+[node name="bankChoosePopup" parent="." instance=ExtResource( 13 )]
 visible = false
 
-[node name="gunStorePopup" parent="." instance=ExtResource( 13 )]
+[node name="gunStorePopup" parent="." instance=ExtResource( 14 )]
 visible = false
 
-[node name="highscoresPopup" parent="." instance=ExtResource( 14 )]
+[node name="highscoresPopup" parent="." instance=ExtResource( 15 )]
 visible = false
 
-[node name="fightPopup" parent="." instance=ExtResource( 15 )]
+[node name="fightPopup" parent="." instance=ExtResource( 16 )]
+
+[node name="TUI_Overlay" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 17 )
+font = ExtResource( 18 )
 [connection signal="itemButtonPressed" from="MarginContainer/VBoxContainer/drugList" to="." method="_on_drugList_itemButtonPressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/jetButton" to="." method="_on_jetButton_pressed"]
 [connection signal="placeButtonPressed" from="jetPopup" to="." method="_on_jetPopup_placeButtonPressed"]
