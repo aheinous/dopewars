@@ -29,7 +29,7 @@ gameModel="*res://gameModel.gd"
 
 window/size/width=640
 window/size/height=960
-window/size/resizable=false
+window/handheld/orientation="portrait"
 
 [rendering]
 
