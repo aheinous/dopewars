@@ -94,6 +94,7 @@ anchor_bottom = 1.0
 script = ExtResource( 17 )
 [connection signal="itemButtonPressed" from="MarginContainer/VBoxContainer/drugList" to="." method="_on_drugList_itemButtonPressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/jetButton" to="." method="_on_jetButton_pressed"]
+[connection signal="placeButtonPressed" from="tuiJetPopup" to="." method="_on_tuiJetPopup_placeButtonPressed"]
 [connection signal="resized" from="tuiJetPopup" to="tuiJetPopup" method="_on_tuiJetPopup_resized"]
 [connection signal="okayPressed" from="msgPopup" to="." method="_on_msgPopup_okayPressed"]
 [connection signal="noPressed" from="choicePopup" to="." method="_on_choicePopup_noPressed"]

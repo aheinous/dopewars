@@ -40,6 +40,8 @@ func charSize():
 
 
 func go():
+	for button in panel.get_children():
+		button.disabled = (button.text == gameModel.stats().curPlace)
 	show()
 
 

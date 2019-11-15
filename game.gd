@@ -116,7 +116,7 @@ func _on_choicePopup_yesPressed():
 	set_process(true)
 
 
-func _on_jetPopup_placeButtonPressed(place):
+func _on_tuiJetPopup_placeButtonPressed(place):
 	gameModel.jet(place)
 	set_process(true)
 
@@ -131,4 +131,3 @@ func _on_bankChoosePopup_withdrawPressed():
 
 func _on_bankChoosePopup_despositPressed():
 	bankPopup.setupAndShow("Deposit")
-
