@@ -2,7 +2,8 @@ extends Button
 
 func _ready():
 	TUI.registerElement(self)
-	set_custom_minimum_size(charSize() * TUI.cSize)
+	print(Vector2(TUI.cWidth*(text.length()+2), TUI.cHeight*3))
+	set_custom_minimum_size(Vector2(TUI.cWidth*(text.length()+2), TUI.cHeight*3))
 	print('button ready: %s' % text)
 
 func tuiDraw(tui):
@@ -11,7 +12,6 @@ func tuiDraw(tui):
 		return 
 	# var olay = tui_manager.overlay
 	tui.drawToTUI(self, tui.boxString(rect_size, text))
-	# print("%s rect size. ratio: %s, %s" % [text, rect_size, rect_size/TUI.cSize])
 
 
 # static func roundUpToMult(x:int, mult:int):
@@ -33,8 +33,7 @@ func tuiDraw(tui):
 	
 
 	
-func charSize():
-	return Vector2(text.length()+2, 3)
+
 
 
 func _on_cancelButton_minimum_size_changed():

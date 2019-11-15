@@ -1,12 +1,6 @@
-[gd_resource type="Theme" load_steps=3 format=2]
+[gd_resource type="Theme" load_steps=2 format=2]
 
 [ext_resource path="res://FixedSys24.tres" type="DynamicFont" id=1]
-
-[sub_resource type="StyleBoxTexture" id=1]
-margin_left = 10.0
-margin_right = 10.0
-margin_top = 10.0
-margin_bottom = 10.0
 
 [resource]
 default_font = ExtResource( 1 )
@@ -19,5 +13,5 @@ Button/fonts/font = null
 Button/styles/disabled = null
 Button/styles/focus = null
 Button/styles/hover = null
-Button/styles/normal = SubResource( 1 )
+Button/styles/normal = null
 Button/styles/pressed = null

@@ -6,7 +6,9 @@ onready var stats = $MarginContainer/VBoxContainer/stats
 
 onready var buySellDropPopup = $buySellDropPopup
 onready var chooseBuySellPopup = $chooseBuySellPopup
-onready var jetPopup = $jetPopup
+#onready var jetPopup = $jetPopup
+onready var jetPopup = $tuiJetPopup
+
 onready var choicePopup = $choicePopup
 onready var loansharkPopup = $loansharkPopup
 onready var bankPopup = $bankPopup

@@ -36,7 +36,7 @@ static func lpad_pixels(font, tgt_width : int, s : String ):
 	return _lrpad_spaces(font,tgt_width, s) + s
 
 
-static func _nSpaces(n):
+static func nSpaces(n):
 	var s = ""
 	for unused in range(n):
 		s += " "
@@ -47,14 +47,14 @@ static func lrpad_chars(tgt_width, s):
 	var nSpaces = tgt_width - s.length()
 	var nRightSpaces = nSpaces/2
 	var nLeftSpaces = nSpaces - nRightSpaces
-	return _nSpaces(nLeftSpaces) + s + _nSpaces(nRightSpaces)
+	return nSpaces(nLeftSpaces) + s + nSpaces(nRightSpaces)
 
 
 static func lpad_chars(tgt_width, s):
-	return _nSpaces(tgt_width - s.length()) + s
+	return nSpaces(tgt_width - s.length()) + s
 
 static func rpad_chars(tgt_width, s):
-	return s + _nSpaces(tgt_width - s.length())
+	return s + nSpaces(tgt_width - s.length())
 
 
 static func lpadColumnStr(font, cols):
@@ -103,3 +103,17 @@ class Curry:
 
 	func call_func():
 		obj.callv(funcName, args)
+
+
+static func roundUpToMult(x:int, mult:int):
+	return ((x + mult - 1) / mult) * mult
+
+
+static func vec2_roundUpToMult(vx: Vector2, vmult:Vector2):
+	var res = Vector2()
+	res[0] = roundUpToMult(vx[0], vmult[0])
+	res[1] = roundUpToMult(vx[1], vmult[1])
+	return res
+
+
+
