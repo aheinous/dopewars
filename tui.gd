@@ -3,7 +3,7 @@ extends Node
 const Colors = {	
 	"NORMAL":Color(0,1,0),
 	"DISABLED" : Color(0.5, 0.5, 0.5),
-	"NOT_FOCUSED":Color(0, 0.8, 0)
+	"NOT_ACTIVE":Color(0, .3, 0)
 }
 
 const  DRAW_DEBUG_PATTERN = false
@@ -20,6 +20,8 @@ var dataGrid := []
 
 
 var font : Font = load("res://FixedSys24.tres")
+
+var activeSubtree = null
 
 
 class CharData:
@@ -121,9 +123,32 @@ func _process(delta):
 		_overlay.update()
 
 
+var _lastPressOwner = null
+
+func _onMousePress(cCoords):
+	_lastPressOwner = dataGrid[cCoords.y][cCoords.x].owner
+
+func _onMouseRelease(cCoords):
+	var owner = dataGrid[cCoords.y][cCoords.x].owner
+	if owner != null and owner == _lastPressOwner and _inActiveSubtree(owner):
+		owner.emit_signal("pressed")
+	_lastPressOwner = null
+
 func registerElement(elem):
 	elem.connect("draw", TUI, "onNeedRedraw") 
 	elem.connect("visibility_changed", TUI, "onNeedRedraw") 
+
+
+func _inActiveSubtree(node):
+	if activeSubtree == null:
+		return true
+	while true:
+		if node == null:
+			return false
+		if node == activeSubtree:
+			return true
+		node = node.get_parent()
+
 
 func drawToTUI(owner, string):
 	var pos = owner.get_global_position()
@@ -134,6 +159,17 @@ func drawToTUI(owner, string):
 	var colnum = startcol
 	var linenum = startline
 
+	_inActiveSubtree(owner)
+
+	var color = Colors["NOT_ACTIVE"]
+	if _inActiveSubtree(owner):
+		color = Colors["NORMAL"]
+	if owner.has_method("is_disabled")  and owner.is_disabled():
+		color = Colors["DISABLED"]
+
+	if owner.has_method("get_text"):
+		print("text. focus: %s, %s" % [owner.get_text(), owner.has_focus()])
+
 	for c in string:
 		if c == "\n":
 			linenum += 1
@@ -143,6 +179,9 @@ func drawToTUI(owner, string):
 			print("tui drawing offscreen")
 			continue
 		dataGrid[linenum][colnum].c = c
+		dataGrid[linenum][colnum].owner = owner
+		dataGrid[linenum][colnum].fg = color
+		
 		colnum += 1
 
 

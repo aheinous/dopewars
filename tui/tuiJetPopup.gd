@@ -40,6 +40,7 @@ func charSize():
 
 
 func go():
+	TUI.activeSubtree = self
 	for button in panel.get_children():
 		button.disabled = (button.text == gameModel.stats().curPlace)
 	show()
@@ -47,10 +48,12 @@ func go():
 
 func onPlaceButtonPressed(place):
 	hide()
+	TUI.activeSubtree = null
 	emit_signal("placeButtonPressed", place)
 
 
 func _on_cancelButton_pressed():
+	TUI.activeSubtree = null
 	hide()
 
 
