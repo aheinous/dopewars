@@ -3,13 +3,7 @@ extends Label
 
 const DEBUG_PRINT = false
 
-
-
 enum DrawMode {BOTH, GUI_ONLY, TUI_ONLY}
-
-
-
-
 var drawMode = DrawMode.BOTH
 
 func _ready():
