@@ -23,6 +23,5 @@ margin_right = 27.0
 margin_bottom = 10.0
 text = "Cancel"
 script = ExtResource( 3 )
-[connection signal="item_rect_changed" from="." to="." method="_on_tuiJetPopup_item_rect_changed"]
 [connection signal="minimum_size_changed" from="Panel/cancelButton" to="Panel/cancelButton" method="_on_cancelButton_minimum_size_changed"]
 [connection signal="pressed" from="Panel/cancelButton" to="." method="_on_cancelButton_pressed"]
