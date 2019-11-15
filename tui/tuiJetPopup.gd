@@ -29,17 +29,17 @@ func _ready():
 		button.rect_size.x = maxCharWidth * TUI.cWidth
 
 	panel.rect_size = Vector2(maxCharWidth+2, charPos.y+1) * TUI.cSize
+	recenter()
 
 
-	panel.rect_position = (self.rect_size - panel.rect_size) / 2 # center
+func recenter():
+	panel.rect_position = util.vec2_roundToMult((self.rect_size - panel.rect_size) / 2, TUI.cSize) 
 
 func charSize():
 	return Vector2(rect_size.x/TUI.cWidth, rect_size.y/TUI.cHeight)
 
 
-
 func go():
-	panel.rect_position = (self.rect_size - panel.rect_size) / 2 # center
 	show()
 
 
@@ -52,8 +52,5 @@ func _on_cancelButton_pressed():
 	hide()
 
 
-
-
 func _on_tuiJetPopup_resized():
-	var root = get_parent()
-	panel.rect_position = (self.rect_size - panel.rect_size) / 2 # center
+	recenter()

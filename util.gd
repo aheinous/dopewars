@@ -117,3 +117,16 @@ static func vec2_roundUpToMult(vx: Vector2, vmult:Vector2):
 
 
 
+static func roundToMult(x:int, mult:int):
+	return ((x + mult/2) / mult) * mult
+	
+
+
+static func vec2_roundToMult(vx: Vector2, vmult:Vector2):
+	var res = Vector2()
+	res[0] = roundToMult(vx[0], vmult[0])
+	res[1] = roundToMult(vx[1], vmult[1])
+	return res
+
+
+
