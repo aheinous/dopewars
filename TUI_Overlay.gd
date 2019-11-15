@@ -3,7 +3,14 @@ extends Label
 
 const DEBUG_PRINT = false
 
-var _visible = true
+
+
+enum DrawMode {BOTH, GUI_ONLY, TUI_ONLY}
+
+
+
+
+var drawMode = DrawMode.BOTH
 
 func _ready():
 	connect("resized", TUI, "_onOlayResized")
@@ -17,19 +24,19 @@ func _drawChar(var linenum, var colnum):
 	var tl = Vector2(colnum, linenum) * TUI.cSize
 	var bl = Vector2(colnum, linenum+1) * TUI.cSize
 	
-	if (linenum + colnum) % 2 == 0:
+	if drawMode == DrawMode.BOTH and (linenum + colnum) % 2 == 0:
 		draw_rect(Rect2(tl, TUI.cSize), Color(1, 0, 0, 0.06))
-	draw_string(TUI.font, bl, TUI.lines[linenum][colnum], Color(0,1,0))
+	draw_string(TUI.font, bl, TUI.dataGrid[linenum][colnum].c, Color(0,1,0))
+
+
 
 func _draw():
-	if not _visible:
+	if drawMode == DrawMode.GUI_ONLY:
 		return
-	# print("TUI_Overlay._draw()")
-	# draw_rect(Rect2(Vector2(), rect_size), Color(0,0,0, .8))
+	if drawMode == DrawMode.TUI_ONLY:
+		draw_rect(Rect2(Vector2(), rect_size), Color(0,0,0))
 
 	for linenum in range(TUI.nLines):
-		# var pos = Vector2(0, TUI.cHeight*(linenum+1))
-		# draw_string(TUI.font, pos, TUI.lines[linenum])
 
 		for colnum in range(TUI.nCols):
 			_drawChar(linenum, colnum)
@@ -47,7 +54,7 @@ func _input(event):
 func _process(delta):
 	if Input.is_action_just_pressed("toggle_tui"):
 		print("toggle tui")
-		_visible = not _visible
+		drawMode = (drawMode + 1) % DrawMode.size()
 		update()
 
 		for child in TUI._childrenInDrawOrder(get_tree().get_root()):

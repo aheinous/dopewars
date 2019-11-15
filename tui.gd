@@ -1,5 +1,10 @@
 extends Node
 
+const Colors = {	
+	"NORMAL":Color(0,1,0),
+	"DISABLED" : Color(0.5, 0.5, 0.5),
+	"NOT_FOCUSED":Color(0, 0.8, 0)
+}
 
 const  DRAW_DEBUG_PATTERN = false
 
@@ -11,13 +16,23 @@ var cHeight := 0
 var cSize : Vector2
 var nCols := 0
 var nLines := 0
-var lines := []
+var dataGrid := []
 
-
-# var _redrawNeeded = true
 
 var font : Font = load("res://FixedSys24.tres")
 
+
+class CharData:
+	var c : String = " "
+	var owner = null
+	var fg : Color
+	var bg : Color
+
+	func _init(c = " ", owner=null, fg=Colors["NORMAL"], bg=Color(0,0,0)):
+		self.c = c
+		self.owner = owner
+		self.fg = fg
+		self.bg = bg
 
 
 func _ready():
@@ -42,29 +57,31 @@ func _onOlayResized():
 	onNeedRedraw()
 
 
-func _clear():	
-	var fillChar = " "
-	var ln = ""
-
-	if DRAW_DEBUG_PATTERN:
-		fillChar = "."
-
-	lines = []
-
-	for colnum in range(nCols):
-		ln += fillChar
-
-	if DRAW_DEBUG_PATTERN and ln.length() > 0:
-		ln[0] = '<'
-		ln[-1] = ">"
-
+func _clear():
+	dataGrid = []
 	for linenum in range(nLines):
-		lines.append(ln)
+		dataGrid.append([])
+		for colnum in range(nCols):
+			var fillChar = " "
 
-	if DRAW_DEBUG_PATTERN and ln.length() > 0 and lines.size() > 0:
-		lines[0][0] = "S"
-		lines[-1][-1] = "E"
-	
+			var lastLine = nLines-1
+			var lastCol = nCols-1
+
+			if DRAW_DEBUG_PATTERN:
+				match [linenum, colnum]:
+					[0,0]:
+						fillChar = "S"
+					[lastLine, lastCol]:
+						fillChar = "E"
+					[_,0]:
+						fillChar = "<"
+					[_,lastCol]:
+						fillChar = ">"
+					_:
+						fillChar = "."
+
+			dataGrid[-1].append(CharData.new(fillChar))
+			
 
 static func _childrenInDrawOrder(root):
 	var drawOrder = []
@@ -125,7 +142,7 @@ func drawToTUI(owner, string):
 		if colnum >= nCols or linenum >= nLines:
 			print("tui drawing offscreen")
 			continue
-		lines[linenum][colnum] = c
+		dataGrid[linenum][colnum].c = c
 		colnum += 1
 
 
