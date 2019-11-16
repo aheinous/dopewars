@@ -74,6 +74,9 @@ static func lpadColumnStr(font, cols):
 	return output
 
 
+static func centerFill(tgtWidth, left, right):
+	return left + nSpaces(tgtWidth-left.length()-right.length()) + right
+
 static func isNAN(x):
 	return x != x
 
@@ -129,4 +132,55 @@ static func vec2_roundToMult(vx: Vector2, vmult:Vector2):
 	return res
 
 
+static func _isWhite(c:String):
+	assert(c.length() == 1)
+	return c == " " or c == "\t" or c == "\n"
+
+static func _split(s):
+	var res = []
+	var curWord = ""
+
+	for c in s:
+		if _isWhite(c):
+			if curWord.length() > 0:
+				res.append(curWord)
+				curWord = ""
+			if c == "\n":
+				res.append(c)
+		else:
+			curWord += c
+	if curWord.length() > 0:
+		res.append(curWord)
+	return res
+	 
+
+static func wordWrap(s, maxCols):
+	var words = _split(s)
+	var res = ""
+	var curlineLen = 0
+
+	for word in words:
+		if word == "\n":
+			res += word
+			curlineLen = 0
+		elif curlineLen + word.length() < maxCols:
+			if curlineLen > 0:
+				res += " "
+				curlineLen += 1
+			res += word
+			curlineLen += word.length()
+		else:
+			res += "\n"
+			res += word
+			curlineLen = word.length()
+
+	return res
+
+
+static func getCharSize(s):
+	var nCols = 0
+	var lines = s.split("\n")
+	for ln in lines:
+		nCols = max(nCols, ln.length())
+	return Vector2(nCols, lines.size())
 

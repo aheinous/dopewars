@@ -45,8 +45,8 @@ func _input(event):
 	# print('event: ', event)
 	# print(mouse_filter)
 	# print(event.position, event.position / Vector2(TUI.cWidth, TUI.cHeight), Vector2(TUI.nCols, TUI.nLines))
-	print(event)
-	print(typeof(event))
+	# print(event)
+	# print(typeof(event))
 	# if event.is_type("InputEventMouseButton"):
 	# 	if event.button_index==BUTTON_LEFT and event.pressed:
 	# 		print("left pressed")
@@ -59,7 +59,7 @@ func _input(event):
 		if event.pressed:
 			TUI._onMousePress(cCoords)
 		elif  not event.pressed:
-			print("left released")
+			# print("left released")
 			TUI._onMouseRelease(cCoords)
 
 

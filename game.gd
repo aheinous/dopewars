@@ -1,7 +1,8 @@
 extends Control
 
 onready var drugList = $MarginContainer/VBoxContainer/drugList
-onready var stats = $MarginContainer/VBoxContainer/stats
+#onready var stats = $MarginContainer/VBoxContainer/stats
+onready var stats = $MarginContainer/VBoxContainer/tuiStats
 
 
 onready var buySellDropPopup = $buySellDropPopup
@@ -17,7 +18,7 @@ onready var gunStorePopup = $gunStorePopup
 onready var highscoresPopup = $highscoresPopup
 onready var fightPopup = $fightPopup
 
-onready var msgPopup = $msgPopup
+onready var msgPopup = $tuiMsgPopup
 
 
 func buyDrug(drug):
