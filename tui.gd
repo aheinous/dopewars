@@ -3,7 +3,8 @@ extends Node
 const Colors = {	
 	"NORMAL":Color(0,1,0),
 	"DISABLED" : Color(0.5, 0.5, 0.5),
-	"NOT_ACTIVE":Color(0, .3, 0)
+	"NOT_ACTIVE":Color(0, .3, 0),
+	"PRESSED":Color(1, 0, 0)
 }
 
 const  DRAW_DEBUG_PATTERN = false
@@ -22,6 +23,9 @@ var dataGrid := []
 var font : Font = load("res://FixedSys24.tres")
 
 var activeSubtree = null
+
+var _lastPressOwner = null
+var _mouseCCoordOwner = null
 
 
 class CharData:
@@ -46,6 +50,15 @@ func _ready():
 func setOverlay(olay):
 	_overlay = olay
 	_onOlayResized()
+
+
+func pixelCoordsToCharCoords(pCoords):
+	var cCoords = pCoords / cSize
+	cCoords.x = cCoords.x as int
+	cCoords.y = cCoords.y as int
+	if cCoords.x >= nCols or cCoords.y >= nLines or cCoords.x < 0 or cCoords.y < 0:
+		return null
+	return cCoords
 
 
 func _onOlayResized():
@@ -123,16 +136,29 @@ func _process(delta):
 		_overlay.update()
 
 
-var _lastPressOwner = null
+func _getCharOwner(cCoords):
+	return null if cCoords == null else dataGrid[cCoords.y][cCoords.x].owner
+
 
 func _onMousePress(cCoords):
-	_lastPressOwner = dataGrid[cCoords.y][cCoords.x].owner
+	# _lastPressOwner = dataGrid[cCoords.y][cCoords.x].owner
+	_lastPressOwner = _getCharOwner(cCoords)
+	onNeedRedraw()
 
 func _onMouseRelease(cCoords):
-	var owner = dataGrid[cCoords.y][cCoords.x].owner
+	# var owner = dataGrid[cCoords.y][cCoords.x].owner
+	var owner = _getCharOwner(cCoords)
 	if owner != null and owner == _lastPressOwner and _inActiveSubtree(owner):
 		owner.emit_signal("pressed")
 	_lastPressOwner = null
+	onNeedRedraw()
+
+func _onMouseMove(cCoords):
+	# var owner = dataGrid[cCoords.y][cCoords.x].owner
+	var owner = _getCharOwner(cCoords)
+	if owner != _mouseCCoordOwner:
+		_mouseCCoordOwner = owner
+		onNeedRedraw()
 
 func registerElement(elem):
 	elem.connect("draw", TUI, "onNeedRedraw") 
@@ -164,11 +190,13 @@ func drawToTUI(owner, string):
 	var color = Colors["NOT_ACTIVE"]
 	if _inActiveSubtree(owner):
 		color = Colors["NORMAL"]
+	if owner == _lastPressOwner and owner == _mouseCCoordOwner:
+		color = Colors["PRESSED"]
 	if owner.has_method("is_disabled")  and owner.is_disabled():
 		color = Colors["DISABLED"]
 
-	if owner.has_method("get_text"):
-		print("text. focus: %s, %s" % [owner.get_text(), owner.has_focus()])
+	# if owner.has_method("get_text"):
+	# 	print("text, focus: %s, %s" % [owner.get_text(), owner.has_focus()])
 
 	for c in string:
 		if c == "\n":

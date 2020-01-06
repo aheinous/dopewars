@@ -5,6 +5,7 @@ const DEBUG_PRINT = false
 
 enum DrawMode {BOTH, GUI_ONLY, TUI_ONLY}
 var drawMode = DrawMode.BOTH
+var _lastMouseCCoords = null
 
 func _ready():
 	connect("resized", TUI, "_onOlayResized")
@@ -53,9 +54,16 @@ func _input(event):
 	# 	elif event.button_index==BUTTON_RIGHT and not event.pressed:
 	# 		print("left released")
 
+	if event is InputEventMouseMotion:
+		var cCoords = TUI.pixelCoordsToCharCoords(event.position)
+		# var cCoords = event.position / TUI.cSize
+		if cCoords != _lastMouseCCoords:
+			# print(cCoords)
+			TUI._onMouseMove(cCoords)
+
 	if event is InputEventMouseButton and event.button_index==BUTTON_LEFT:
-		var cCoords = event.position
-		cCoords /= TUI.cSize
+		var cCoords = TUI.pixelCoordsToCharCoords(event.position)
+		# var cCoords = event.position / TUI.cSize
 		if event.pressed:
 			TUI._onMousePress(cCoords)
 		elif  not event.pressed:
