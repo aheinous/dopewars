@@ -501,7 +501,7 @@ func _paraquatWeed():
 
 
 func _brownies():
-	var drug = "Weed" if quantity("Weed") > quantity("Hashish") else "Hashish"
+	var drug = "Weed" if _drugStore.numHave("Weed") > _drugStore.numHave("Hashish") else "Hashish"
 	_pushMsg("Your mama made brownies with some of your %s! They were great!" % drug)
 	_drugStore.give(drug, min(_rng.randi_range(2,5), _drugStore.numHave(drug)))
 
