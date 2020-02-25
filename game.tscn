@@ -25,6 +25,9 @@ anchor_bottom = 1.0
 mouse_filter = 1
 theme = ExtResource( 1 )
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
@@ -45,13 +48,15 @@ margin_bottom = 25.0
 
 [node name="stats" parent="MarginContainer/VBoxContainer" instance=ExtResource( 4 )]
 visible = false
+margin_top = 45.0
 margin_right = 387.0
-margin_bottom = 141.0
+margin_bottom = 186.0
 
 [node name="drugList" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
 margin_top = 45.0
 margin_right = 96.0
 margin_bottom = 45.0
+custom_constants/separation = 0
 script = ExtResource( 5 )
 
 [node name="jetButton" type="Button" parent="MarginContainer/VBoxContainer"]
@@ -97,7 +102,14 @@ visible = false
 [node name="TUI_Overlay" type="Label" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = -1.16638
+margin_top = -1.16635
+margin_right = -1.16638
+margin_bottom = -1.16638
 script = ExtResource( 18 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="itemButtonPressed" from="MarginContainer/VBoxContainer/drugList" to="." method="_on_drugList_itemButtonPressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/jetButton" to="." method="_on_jetButton_pressed"]
 [connection signal="placeButtonPressed" from="tuiJetPopup" to="." method="_on_tuiJetPopup_placeButtonPressed"]

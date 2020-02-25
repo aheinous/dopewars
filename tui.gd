@@ -214,7 +214,12 @@ func drawToTUI(owner, string):
 
 
 
-func boxString(size, text=""):
+func skinnyButtonStr(size, text=""):
+	var box_nCols = round(size.x as float / cWidth) as int
+	return "│" + util.lrpad_chars(box_nCols-2, text) + "│\n"
+
+
+func boxString(size, text="", half=false):
 	var box_nCols = round(size.x as float / cWidth) as int
 	var box_nLines = round(size.y as float/ cHeight) as int
 	box_nCols = max(box_nCols, text.length() + 2)
@@ -238,6 +243,9 @@ func boxString(size, text=""):
 
 	for i in range(extraLines_bottom):
 		s += "│" + util.nSpaces(box_nCols-2) + "│\n"
+
+	if half:
+		return s.substr(0, s.length()-1)
 
 	s += "└"
 	for colnum in range(1, box_nCols-1):

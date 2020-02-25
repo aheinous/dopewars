@@ -1,9 +1,16 @@
-extends Button
+extends Control
 
 var _halfButton = false
+var text = 'default'
+signal pressed
+
+
+func _onSelfPressed():
+	print('button "', text, '" pressed')
 
 func _ready():
 	TUI.registerElement(self)
+	connect("pressed", self, "_onSelfPressed")
 	# set_custom_minimum_size(charSize() * TUI.cSize)
 	setText(text)
 	print('button ready: %s' % text)
@@ -30,7 +37,7 @@ func setHalfButton(b):
 
 
 func setText(s:String):
-	# text = s
+	text = s
 	# set_custom_minimum_size(charSize() * TUI.cSize)
 	# set_custom_minimum_size(Vector2(4,4))
 	_refreshMinSize()
@@ -39,11 +46,11 @@ func setText(s:String):
 
 
 func _refreshMinSize():
-	# set_custom_minimum_size(charSize() * TUI.cSize)
-	print('start size: ', self.rect_size)
-	self.rect_size = Vector2(100,4)
-	print('end rect_size ', self.rect_size)
-	set_custom_minimum_size(Vector2(100,4))
+	set_custom_minimum_size(charSize() * TUI.cSize)
+#	print('start size: ', self.rect_size)
+#	self.rect_size = Vector2(100,4)
+#	print('end rect_size ', self.rect_size)
+#	set_custom_minimum_size(Vector2(100,4))
 
 	
 func charSize():
