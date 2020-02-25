@@ -3,17 +3,19 @@ extends VBoxContainer
 signal itemButtonPressed
 
 const TuiButton = preload("res://tui/tuiButton_pure.tscn")
+const TuiLabel = preload("res://tui/tuiLabel_pure.tscn")
 
 
 func _addHeader(colWidths):
-	var header = Label.new()
+	# var header = Label.new()
+	var header = TuiLabel.instance()
 	var font = header.get_font("font")
 	
 	header.text = "%s %s %s" % [
-			util.rpad_chars(colWidths[0], "Name"),
-			util.rpad_chars(colWidths[1], "Price"),
-			util.lpad_chars(colWidths[2], "Quantity") ]
-	header.align = Label.ALIGN_CENTER
+			util.rpad_chars(colWidths[0], "NAME"),
+			util.rpad_chars(colWidths[1], "PRICE"),
+			util.lpad_chars(colWidths[2], "QUANTITY") ]
+#	header.align = Label.ALIGN_CENTER
 	self.add_child(header)
 
 
