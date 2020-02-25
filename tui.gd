@@ -235,23 +235,23 @@ func boxString(size, text="", half=false):
 
 
 	var s = "┌"
-	for colnum in range(1, box_nCols-1):
+	for _colnum in range(1, box_nCols-1):
 		s += "─"
 	s += "┐\n"
 
-	for i in range(extraLines_top):
+	for _i in range(extraLines_top):
 		s += "│" + util.nSpaces(box_nCols-2) + "│\n"
 
 	s += "│" + util.lrpad_chars(box_nCols-2, text) + "│\n"
 
-	for i in range(extraLines_bottom):
+	for _i in range(extraLines_bottom):
 		s += "│" + util.nSpaces(box_nCols-2) + "│\n"
 
 	if half:
 		return s.substr(0, s.length()-1)
 
 	s += "└"
-	for colnum in range(1, box_nCols-1):
+	for _colnum in range(1, box_nCols-1):
 		s += "─"
 	s += "┘"
 	return s
