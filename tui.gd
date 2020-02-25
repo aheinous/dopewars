@@ -33,12 +33,14 @@ class CharData:
 	var owner = null
 	var fg : Color
 	var bg : Color
+	var pressable : bool
 
-	func _init(c = " ", owner=null, fg=Colors["NORMAL"], bg=Color(0,0,0)):
+	func _init(c = " ", owner=null, fg=Colors["NORMAL"], bg=Color(0,0,0), pressable=false):
 		self.c = c
 		self.owner = owner
 		self.fg = fg
 		self.bg = bg
+		self.pressable = pressable
 
 
 func _ready():
@@ -139,10 +141,15 @@ func _process(delta):
 func _getCharOwner(cCoords):
 	return null if cCoords == null else dataGrid[cCoords.y][cCoords.x].owner
 
+func _isCoordPressable(cCoords):
+	return false if cCoords == null else dataGrid[cCoords.y][cCoords.x].pressable
+
 
 func _onMousePress(cCoords):
-	# _lastPressOwner = dataGrid[cCoords.y][cCoords.x].owner
-	_lastPressOwner = _getCharOwner(cCoords)
+	if _isCoordPressable(cCoords):
+		_lastPressOwner = _getCharOwner(cCoords)
+	else:
+		_lastPressOwner = null
 	onNeedRedraw()
 
 func _onMouseRelease(cCoords):
@@ -175,6 +182,20 @@ func _inActiveSubtree(node):
 			return true
 		node = node.get_parent()
 
+func _isDisabled(node):
+	return node.has_method("is_disabled")  and node.is_disabled()
+
+
+func _isPressable(node):
+	if not _inActiveSubtree(node) or _isDisabled(node):
+		return false
+
+	for sig in node.get_signal_list():
+		if sig.name == "pressed":
+			return true
+
+	return false
+
 
 func drawToTUI(owner, string):
 	if not owner.is_visible_in_tree():
@@ -195,8 +216,15 @@ func drawToTUI(owner, string):
 		color = Colors["NORMAL"]
 	if owner == _lastPressOwner and owner == _mouseCCoordOwner:
 		color = Colors["PRESSED"]
-	if owner.has_method("is_disabled")  and owner.is_disabled():
+	if _isDisabled(owner):
 		color = Colors["DISABLED"]
+
+	# var pressable = owner.has_user_signal("pressed") and _inActiveSubtree(owner) and not _isDisabled(owner)
+	# print("PRESSABLE:" , string, pressable, owner.has_user_signal("pressed"))
+	# if string == "Okay":
+	# 	print("...")
+
+	var pressable = _isPressable(owner)
 
 	# if owner.has_method("get_text"):
 	# 	print("text, focus: %s, %s" % [owner.get_text(), owner.has_focus()])
@@ -212,6 +240,8 @@ func drawToTUI(owner, string):
 		dataGrid[linenum][colnum].c = c
 		dataGrid[linenum][colnum].owner = owner
 		dataGrid[linenum][colnum].fg = color
+		dataGrid[linenum][colnum].pressable = pressable
+
 		
 		colnum += 1
 
