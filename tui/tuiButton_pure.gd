@@ -17,8 +17,8 @@ func _ready():
 
 func tuiDraw(tui):
 	# print("tuiDraw()")
-	if not is_visible_in_tree():
-		return 
+#	if not is_visible_in_tree():
+#		return 
 	# var olay = tui_manager.overlay
 	if _halfButton:
 		tui.drawToTUI(self, tui.skinnyButtonStr(rect_size, text))

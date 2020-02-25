@@ -177,6 +177,9 @@ func _inActiveSubtree(node):
 
 
 func drawToTUI(owner, string):
+	if not owner.is_visible_in_tree():
+		return 
+
 	var pos = owner.get_global_position()
 
 	var startcol = round(pos.x as float / cWidth) as int
