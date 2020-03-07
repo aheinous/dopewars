@@ -7,7 +7,6 @@ var text = 'default'
 func _ready():
 	TUI.registerElement(self)
 	setText(text)
-	print('label ready: %s' % text)
 
 func tuiDraw(tui):
 	tui.drawToTUI(self, tui.skinnyButtonStr(rect_size, text))

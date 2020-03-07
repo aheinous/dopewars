@@ -6,7 +6,6 @@ func _ready():
 	TUI.registerElement(self)
 	# set_custom_minimum_size(charSize() * TUI.cSize)
 	setText(text)
-	print('button ready: %s' % text)
 
 func tuiDraw(tui):
 	# print("tuiDraw()")
@@ -40,9 +39,7 @@ func setText(s:String):
 
 func _refreshMinSize():
 	# set_custom_minimum_size(charSize() * TUI.cSize)
-	print('start size: ', self.rect_size)
 	self.rect_size = Vector2(100,4)
-	print('end rect_size ', self.rect_size)
 	set_custom_minimum_size(Vector2(100,4))
 
 	

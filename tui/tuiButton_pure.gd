@@ -13,7 +13,6 @@ func _ready():
 	connect("pressed", self, "_onSelfPressed")
 	# set_custom_minimum_size(charSize() * TUI.cSize)
 	setText(text)
-	print('button ready: %s' % text)
 
 func tuiDraw(tui):
 	# print("tuiDraw()")
