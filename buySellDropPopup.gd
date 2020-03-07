@@ -13,19 +13,19 @@ func setupAndShow(verb, drug):
 	self.verb = verb
 	match verb:
 		"Buy":
-			text.text = "Buy %s at $%s\nCan afford: %s\nAvailable Space: %s" \
+			text.text = "Buy %s at $%s\nCan afford: %s\nAvailable Space: %s\n" \
 					% [drug, \
 					util.toCommaSepStr(gameModel.getDrugPrice(drug)), \
 					util.toCommaSepStr(gameModel.getNumDrugCanAfford(drug)), \
 					util.toCommaSepStr(gameModel.getAvailSpace()) ]
 			amntChooser.setup(verb, gameModel.getMostDrugCanBuy(drug))
 		"Drop":
-			text.text = "Drop %s.\nAvailable Space: %s" \
+			text.text = "Drop %s.\nAvailable Space: %s\n" \
 					% [drug, \
 					util.toCommaSepStr(gameModel.getAvailSpace())]
 			amntChooser.setup(verb, gameModel.getNumDrugHave(drug))
 		"Sell":
-			text.text = "Sell %s at $%s\nYou have: %s\nAvailable Space: %s" \
+			text.text = "Sell %s at $%s\nYou have: %s\nAvailable Space: %s\n" \
 					% [drug, \
 					util.toCommaSepStr(gameModel.getDrugPrice(drug)), \
 					util.toCommaSepStr(gameModel.getNumDrugHave(drug)), \
@@ -35,12 +35,14 @@ func setupAndShow(verb, drug):
 			assert(false)
 
 	okayButton.text = verb
-
+	
+	TUI.activeSubtree = self
 	show()
 
 
 func _on_cancelButton_pressed():
 	hide()
+	TUI.activeSubtree = null
 
 
 func _on_okayButton_pressed():
@@ -53,5 +55,6 @@ func _on_okayButton_pressed():
 			gameModel.sellDrug(drug, amntChooser.getValue())
 		_:
 			assert(false)
+	TUI.activeSubtree = null
 	hide()
 	emit_signal("done")

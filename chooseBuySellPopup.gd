@@ -7,8 +7,8 @@ signal sellPressed
 
 
 func setupAndShow(item):
-    self.item = item
-    _setupAndShow("Buy or sell %s?" % item, "Buy", "Sell")
+	self.item = item
+	_setupAndShow("Buy or sell %s?" % item, "Buy", "Sell")
 
 
 func _on_buttonA_pressed():

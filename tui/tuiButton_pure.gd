@@ -1,7 +1,7 @@
 extends Control
 
 var _halfButton = false
-var text = 'default'
+export var text := 'default'
 signal pressed
 
 

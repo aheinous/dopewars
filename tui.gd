@@ -251,6 +251,14 @@ func skinnyButtonStr(size, text=""):
 	var box_nCols = round(size.x as float / cWidth) as int
 	return "│" + util.lrpad_chars(box_nCols-2, text) + "│\n"
 
+	
+
+func centeredStr(size, text=""):
+	var box_nCols = round(size.x as float / cWidth) as int
+	return util.lrpad_chars(box_nCols, text) + "\n"
+
+	
+
 
 func boxString(size, text="", half=false):
 	var box_nCols = round(size.x as float / cWidth) as int

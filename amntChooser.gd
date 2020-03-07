@@ -1,55 +1,80 @@
-tool
 extends Control
 
-onready var label = $Label
-onready var slider = $HBoxContainer/HSlider
-onready var spinBox = $HBoxContainer/SpinBox
+onready var label = $label
+onready var m10_button = $m10
+onready var m1_button =  $m1
+onready var p1_button =  $p1
+onready var p10_button = $p10
+onready var max_button = $max
 
 
-var value setget , getValue
-export var verb = "Verb" setget setVerb
+var value
+var max_value
+var verb 
 
 func _ready():
-	if Engine.is_editor_hint():
-		setup(verb, 100, 73)
-	setVerb(verb)
+	label.rect_position =   	TUI.cSize * Vector2(0,	0)
+	m10_button.rect_position = 	TUI.cSize * Vector2(0,	1)
+	m1_button.rect_position = 	TUI.cSize * Vector2(5,	1)
+	p1_button.rect_position = 	TUI.cSize * Vector2(9,	1)
+	p10_button.rect_position = 	TUI.cSize * Vector2(13,	1)
+	max_button.rect_position = 	TUI.cSize * Vector2(18,	1)
+	# valueLabel.rect_position = 	TUI.cSize * Vector2(4,	4  )
+	
 
-func setVerb(verb_):
-	print("setting verb: ", verb_)
-	verb = verb_
-	if $Label != null:
-		$Label.text = verb_ + " how many?"
-	#label.text = verb + " how many?"
 
 func setup(verb, max_value, start=-1):
 
 	print("amntChooser setup: %s, %s" % [verb, max_value])
 
+	self.verb = verb
+	self.max_value = max_value
+
 	if start == -1:
 		start = max_value
 
-	start = clamp(start, 0, max_value)
+	_setValue(start)
 
+
+func charSize():
+	return Vector2(23, 4)
+
+func _refreshText():
+	var text
 	if verb == "Pay" or verb == "Deposit" or verb == "Withdraw":
-			label.text = verb + " how much?"
+		text = verb + " how much?"
 	else:
-		label.text = verb + " how many?"
+		text = verb + " how many?"
 
-	slider.max_value = max_value
-	slider.value = start
-
-	spinBox.max_value = max_value
-	spinBox.value = start
-
+	text += ": " + String(value)
+	label.text = text
 
 func getValue():
-	return spinBox.value
+	return value
+
+func _setValue(newValue):
+	if util.isNAN(newValue):
+		newValue = 0
+	if newValue > max_value:
+		newValue = max_value
+	if newValue < 0:
+		newValue = 0
+	self.value = newValue
+	_refreshText()
 
 
 
-func _on_valueChanged(value):
-	if util.isNAN(value):
-		value = 0
-	slider.value = value
-	spinBox.value = value
+func _on_m10_pressed(): 
+	_setValue(value - 10)
 
+func _on_m1_pressed(): 
+	_setValue(value - 1)
+
+func _on_p1_pressed(): 
+	_setValue(value + 1)
+
+func _on_p10_pressed(): 
+	_setValue(value + 10)
+
+func _on_max_pressed(): 
+	_setValue(max_value)
