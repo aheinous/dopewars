@@ -18,13 +18,13 @@ func setupAndShow(mode):
 
 	okayButton.text = mode
 
-	show()
+	_showPopup()
 
 
 func _on_cancelButton_pressed():
 	gameModel.leaveBank()
 	emit_signal("done")
-	hide()
+	_hidePopup()
 
 
 func _on_okayButton_pressed():
@@ -33,7 +33,7 @@ func _on_okayButton_pressed():
 	else:
 		gameModel.withdraw(amntChooser.getValue() as int)
 	emit_signal("done")
-	hide()
+	_hidePopup()
 
 
 

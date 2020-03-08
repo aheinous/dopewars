@@ -1,4 +1,4 @@
-extends "res://tui/tuiElement.gd"
+extends "res://tui/tuiPopup.gd"
 
 const TUIButton = preload("tuiButton.tscn")
 
@@ -33,22 +33,19 @@ func _ready():
 
 
 
-func go():
-	TUI.activeSubtree = self
+func setupAndShow():
 	for button in panel.get_children():
 		button.disabled = (button.text == gameModel.stats().curPlace)
-	show()
+	_showPopup()
 
 
 func onPlaceButtonPressed(place):
-	hide()
-	TUI.activeSubtree = null
+	_hidePopup()
 	emit_signal("placeButtonPressed", place)
 
 
 func _on_cancelButton_pressed():
-	TUI.activeSubtree = null
-	hide()
+	_hidePopup()
 
 
 func _on_tuiJetPopup_resized():

@@ -36,13 +36,11 @@ func setupAndShow(verb, drug):
 
 	okayButton.text = verb
 	
-	TUI.activeSubtree = self
-	show()
+	_showPopup()
 
 
 func _on_cancelButton_pressed():
-	hide()
-	TUI.activeSubtree = null
+	_hidePopup()
 
 
 func _on_okayButton_pressed():
@@ -56,5 +54,5 @@ func _on_okayButton_pressed():
 		_:
 			assert(false)
 	TUI.activeSubtree = null
-	hide()
+	_hidePopup()
 	emit_signal("done")

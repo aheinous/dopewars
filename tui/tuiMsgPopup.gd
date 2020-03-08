@@ -1,4 +1,4 @@
-extends Control
+extends "res://tui/tuiPopup.gd"
 
 signal okayPressed
 
@@ -15,10 +15,6 @@ func _ready():
 
 
 func setupAndShow(var msg):
-
-	print("tuiMsgPopup.setupAndShow() pos %s, sz: %s" % [rect_position, rect_size])
-
-	TUI.activeSubtree = self
 	var charPos = Vector2(1,1)
 
 	text.setText(msg)
@@ -32,14 +28,13 @@ func setupAndShow(var msg):
 	panel.rect_position = TUI.cSize
 	panel.rect_size = Vector2(max(okayButton.charSize().x, text.charSize().x)+2, charPos.y+1) * TUI.cSize
 	panel.recenter()
-	show()
+	_showPopup()
+	
 
-func finish():
-	TUI.activeSubtree = null
-	hide()
+
 
 func _on_OkayButton_pressed():
-	finish()
+	_hidePopup()
 	emit_signal("okayPressed")
 
 

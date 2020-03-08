@@ -5,4 +5,3 @@
 
 [node name="bankPopup" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
-[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/okayButton" to="." method="_on_okayButton_pressed"]

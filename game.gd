@@ -51,7 +51,7 @@ func _on_chooseBuySellPopup_sellPressed(drug):
 
 
 func _on_jetButton_pressed():
-	jetPopup.go()
+	jetPopup.setupAndShow()
 
 
 func _process(delta):
