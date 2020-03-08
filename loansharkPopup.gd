@@ -1,6 +1,6 @@
 extends "res://amntPopup.gd"
 
-signal done
+#signal done
 
 func setupAndShow():
 	text.text = "Cash: $%s\nDebt: $%s" % [util.toCommaSepStr(gameModel.getCash()), util.toCommaSepStr(gameModel.getDebt())]
@@ -11,10 +11,10 @@ func setupAndShow():
 func _on_cancelButton_pressed():
 	_hidePopup()
 	gameModel.leaveLoanshark()
-	emit_signal("done")
+#	emit_signal("done")
 
 
 func _on_payButton_pressed():
 	gameModel.payback(amntChooser.getValue() as int)
 	_hidePopup()
-	emit_signal("done")
+#	emit_signal("done")

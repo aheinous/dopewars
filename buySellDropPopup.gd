@@ -1,11 +1,7 @@
 extends "res://amntPopup.gd"
 
-
 var verb = "Buy"
 var drug = "drug"
-
-
-signal done
 
 
 func setupAndShow(verb, drug):
@@ -53,6 +49,4 @@ func _on_okayButton_pressed():
 			gameModel.sellDrug(drug, amntChooser.getValue())
 		_:
 			assert(false)
-	TUI.activeSubtree = null
 	_hidePopup()
-	emit_signal("done")

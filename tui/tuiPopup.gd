@@ -1,6 +1,6 @@
 extends "res://tui/tuiElement.gd"
 
-# signal done
+signal done
 
 func _showPopup():
 	TUI.activeSubtree = self
@@ -10,5 +10,5 @@ func _showPopup():
 func _hidePopup():
 	TUI.activeSubtree = null
 	hide()
-	# emit_signal("done")
+	emit_signal("done")
 

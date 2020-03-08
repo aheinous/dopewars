@@ -2,8 +2,6 @@ extends "res://amntPopup.gd"
 
 var mode
 
-signal done
-
 func setupAndShow(mode):
 	self.mode = mode
 	text.text = "%s how much?\nCash: %s\nBank balance: %s" \
@@ -23,7 +21,6 @@ func setupAndShow(mode):
 
 func _on_cancelButton_pressed():
 	gameModel.leaveBank()
-	emit_signal("done")
 	_hidePopup()
 
 
@@ -32,7 +29,6 @@ func _on_okayButton_pressed():
 		gameModel.deposit(amntChooser.getValue() as int)
 	else:
 		gameModel.withdraw(amntChooser.getValue() as int)
-	emit_signal("done")
 	_hidePopup()
 
 
