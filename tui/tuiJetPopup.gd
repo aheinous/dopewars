@@ -1,11 +1,10 @@
 extends "res://tui/tuiPopup.gd"
 
-const TUIButton = preload("tuiButton.tscn")
-
 signal placeButtonPressed
 
-onready var cancelButton = $Panel/cancelButton
+const TUIButton = preload("res://tui/tuiButton_pure.tscn")
 
+onready var cancelButton = $Panel/cancelButton
 
 func _ready():
 	var charPos = Vector2(1,1)
@@ -48,7 +47,4 @@ func _on_cancelButton_pressed():
 
 func _on_tuiJetPopup_resized():
 	panel.recenter()
-
-
-func _on_tuiButton_pressed():
-	pass # Replace with function body.
+	

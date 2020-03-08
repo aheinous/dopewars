@@ -1,6 +1,7 @@
 extends Control
 
 var _halfButton = false
+export var disabled := false
 export var text := 'default'
 signal pressed
 
@@ -54,4 +55,8 @@ func _refreshMinSize():
 	
 func charSize():
 	return Vector2(text.length()+2, 1 if _halfButton else 3)
+
+
+func is_disabled():
+	return disabled
 
