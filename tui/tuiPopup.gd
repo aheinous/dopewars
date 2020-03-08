@@ -2,6 +2,8 @@ extends "res://tui/tuiElement.gd"
 
 signal done
 
+onready var panel = $Panel
+
 func _showPopup():
 	TUI.activeSubtree = self
 	show()
@@ -12,3 +14,7 @@ func _hidePopup():
 	hide()
 	emit_signal("done")
 
+
+
+func _on_tuiPopup_resized():
+	panel.recenter()

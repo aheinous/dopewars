@@ -1,6 +1,5 @@
 extends "res://tui/tuiPopup.gd"
 
-onready var panel = $Panel
 onready var text = $Panel/text
 onready var amntChooser = $Panel/amntChooser
 onready var okayButton = $Panel/okayButton

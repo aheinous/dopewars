@@ -64,13 +64,9 @@ func pixelCoordsToCharCoords(pCoords):
 
 
 func _onOlayResized():
-	# print('onResized()')
 	nCols = _overlay.rect_size.x / cWidth
 	nLines = _overlay.rect_size.y / cHeight
-
 	_clear()
-
-	print('cWidth x cHeight: %sx%s, nCols x nLines: %sx%s' % [cWidth, cHeight, nCols, nLines])
 	onNeedRedraw()
 
 

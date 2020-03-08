@@ -2,8 +2,7 @@ extends "res://tui/tuiPopup.gd"
 
 signal okayPressed
 
-#onready var text = $PanelContainer/VBoxContainer/Text
-onready var panel = $Panel
+
 onready var text = $Panel/Text
 onready var okayButton = $Panel/OkayButton
 

@@ -1,24 +1,14 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://tui/tuiMsgPopup.gd" type="Script" id=1]
-[ext_resource path="res://tui/tuiPanel.gd" type="Script" id=2]
+[ext_resource path="res://tui/tuiPopup.tscn" type="PackedScene" id=2]
 [ext_resource path="res://tui/tuiLabel.gd" type="Script" id=3]
 [ext_resource path="res://tui/tuiButton.gd" type="Script" id=4]
 
-[node name="tuiMsgPopup" type="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="tuiMsgPopup" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="Panel" type="Panel" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
-script = ExtResource( 2 )
-
-[node name="Text" type="Label" parent="Panel"]
+[node name="Text" type="Label" parent="Panel" index="0"]
 margin_left = 281.0
 margin_top = 461.0
 margin_right = 358.0
@@ -27,12 +17,14 @@ size_flags_vertical = 1
 text = "Default Text"
 script = ExtResource( 3 )
 
-[node name="OkayButton" type="Button" parent="Panel"]
+[node name="OkayButton" type="Button" parent="Panel" index="1"]
 margin_left = 281.0
 margin_top = 461.0
 margin_right = 358.0
 margin_bottom = 481.0
 text = "Okay"
 script = ExtResource( 4 )
-[connection signal="resized" from="." to="." method="_on_tuiMsgPopup_resized"]
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="Panel/OkayButton" to="." method="_on_OkayButton_pressed"]
