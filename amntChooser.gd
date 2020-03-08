@@ -1,4 +1,4 @@
-extends Control
+extends "res://tui/tuiElement.gd"
 
 onready var label = $label
 onready var m10_button = $m10

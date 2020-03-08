@@ -1,7 +1,7 @@
-extends Panel
+extends "res://tui/tuiElement.gd"
 
-func charSize():
-	return rect_size / TUI.cSize
+# func charSize():
+# 	return rect_size / TUI.cSize
 
 
 func tuiDraw(tui):

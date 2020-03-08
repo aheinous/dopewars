@@ -19,7 +19,6 @@ func setupAndShow(var msg):
 	print("tuiMsgPopup.setupAndShow() pos %s, sz: %s" % [rect_position, rect_size])
 
 	TUI.activeSubtree = self
-#	text.text = msg
 	var charPos = Vector2(1,1)
 
 	text.setText(msg)
@@ -32,11 +31,8 @@ func setupAndShow(var msg):
 	charPos.y += okayButton.charSize().y
 	panel.rect_position = TUI.cSize
 	panel.rect_size = Vector2(max(okayButton.charSize().x, text.charSize().x)+2, charPos.y+1) * TUI.cSize
-	recenter()
+	panel.recenter()
 	show()
-
-func recenter():
-	panel.rect_position = util.vec2_roundToMult((self.rect_size - panel.rect_size) / 2, TUI.cSize) 
 
 func finish():
 	TUI.activeSubtree = null
@@ -45,8 +41,7 @@ func finish():
 func _on_OkayButton_pressed():
 	finish()
 	emit_signal("okayPressed")
-#	queue_free()
 
 
 func _on_tuiMsgPopup_resized():
-	recenter()
+	panel.recenter()
