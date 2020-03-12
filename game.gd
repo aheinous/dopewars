@@ -10,7 +10,7 @@ onready var chooseBuySellPopup = $chooseBuySellPopup
 #onready var jetPopup = $jetPopup
 onready var jetPopup = $tuiJetPopup
 
-onready var choicePopup = $choicePopup
+onready var choicePopup = $tuiChoicePopup
 onready var loansharkPopup = $loansharkPopup
 onready var bankPopup = $bankPopup
 onready var bankChoosePopup = $bankChoosePopup
@@ -132,3 +132,5 @@ func _on_bankChoosePopup_withdrawPressed():
 
 func _on_bankChoosePopup_despositPressed():
 	bankPopup.setupAndShow("Deposit")
+
+

@@ -20,6 +20,7 @@ func _ready():
 	p10_button.rect_position = 	TUI.cSize * Vector2(13,	1)
 	max_button.rect_position = 	TUI.cSize * Vector2(18,	1)
 	# valueLabel.rect_position = 	TUI.cSize * Vector2(4,	4  )
+	setCharSize(Vector2(23, 4))
 	
 
 
@@ -36,8 +37,8 @@ func setup(verb, max_value, start=-1):
 	_setValue(start)
 
 
-func charSize():
-	return Vector2(23, 4)
+# func charSize():
+# 	return Vector2(23, 4)
 
 func _refreshText():
 	var text

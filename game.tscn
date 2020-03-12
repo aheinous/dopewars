@@ -8,7 +8,7 @@
 [ext_resource path="res://tui/tuiButton.gd" type="Script" id=6]
 [ext_resource path="res://tuiJetPopup.tscn" type="PackedScene" id=7]
 [ext_resource path="res://tui/tuiMsgPopup.tscn" type="PackedScene" id=8]
-[ext_resource path="res://choicePopup.tscn" type="PackedScene" id=9]
+[ext_resource path="res://tui/tuiChoicePopup.tscn" type="PackedScene" id=9]
 [ext_resource path="res://loansharkPopup.tscn" type="PackedScene" id=10]
 [ext_resource path="res://chooseBuySellPopup.tscn" type="PackedScene" id=11]
 [ext_resource path="res://buySellDropPopup.tscn" type="PackedScene" id=12]
@@ -73,7 +73,7 @@ visible = false
 [node name="tuiMsgPopup" parent="." instance=ExtResource( 8 )]
 visible = false
 
-[node name="choicePopup" parent="." instance=ExtResource( 9 )]
+[node name="tuiChoicePopup" parent="." instance=ExtResource( 9 )]
 visible = false
 
 [node name="loansharkPopup" parent="." instance=ExtResource( 10 )]
@@ -114,9 +114,8 @@ __meta__ = {
 [connection signal="pressed" from="MarginContainer/VBoxContainer/jetButton" to="." method="_on_jetButton_pressed"]
 [connection signal="placeButtonPressed" from="tuiJetPopup" to="." method="_on_tuiJetPopup_placeButtonPressed"]
 [connection signal="resized" from="tuiJetPopup" to="tuiJetPopup" method="_on_tuiJetPopup_resized"]
+[connection signal="done" from="tuiMsgPopup" to="." method="_on_popupDone"]
 [connection signal="okayPressed" from="tuiMsgPopup" to="." method="_on_msgPopup_okayPressed"]
-[connection signal="noPressed" from="choicePopup" to="." method="_on_choicePopup_noPressed"]
-[connection signal="yesPressed" from="choicePopup" to="." method="_on_choicePopup_yesPressed"]
 [connection signal="done" from="loansharkPopup" to="." method="_on_popupDone"]
 [connection signal="buyPressed" from="chooseBuySellPopup" to="." method="_on_chooseBuySellPopup_buyPressed"]
 [connection signal="sellPressed" from="chooseBuySellPopup" to="." method="_on_chooseBuySellPopup_sellPressed"]

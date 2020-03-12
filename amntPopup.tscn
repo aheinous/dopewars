@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://amntPopup.gd" type="Script" id=1]
 [ext_resource path="res://tui/tuiPanel.gd" type="Script" id=2]
 [ext_resource path="res://tui/tuiLabel_pure.tscn" type="PackedScene" id=3]
 [ext_resource path="res://tui/tuiButton_pure.tscn" type="PackedScene" id=4]
 [ext_resource path="res://amntChooser.gd" type="Script" id=5]
+[ext_resource path="res://tui/tuiHBox.tscn" type="PackedScene" id=6]
+[ext_resource path="res://tui/tuiVBox.tscn" type="PackedScene" id=7]
 
 [node name="amntPopup" type="Control"]
 anchor_right = 1.0
@@ -23,20 +25,13 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 script = ExtResource( 2 )
 
-[node name="text" parent="Panel" instance=ExtResource( 3 )]
+[node name="tuiVBox" parent="Panel" instance=ExtResource( 7 )]
+
+[node name="text" parent="Panel/tuiVBox" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 
-[node name="cancelButton" parent="Panel" instance=ExtResource( 4 )]
-margin_right = 0.0
-margin_bottom = 0.0
-text = "Cancel"
-
-[node name="okayButton" parent="Panel" instance=ExtResource( 4 )]
-margin_right = 0.0
-margin_bottom = 0.0
-
-[node name="amntChooser" type="Control" parent="Panel"]
+[node name="amntChooser" type="Control" parent="Panel/tuiVBox"]
 margin_right = 40.0
 margin_bottom = 40.0
 script = ExtResource( 5 )
@@ -44,40 +39,60 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="m10" parent="Panel/amntChooser" instance=ExtResource( 4 )]
+[node name="m10" parent="Panel/tuiVBox/amntChooser" instance=ExtResource( 4 )]
 margin_right = 0.0
 margin_bottom = 0.0
 text = "-10"
 
-[node name="m1" parent="Panel/amntChooser" instance=ExtResource( 4 )]
+[node name="m1" parent="Panel/tuiVBox/amntChooser" instance=ExtResource( 4 )]
 margin_right = 0.0
 margin_bottom = 0.0
 text = "-1"
 
-[node name="p1" parent="Panel/amntChooser" instance=ExtResource( 4 )]
+[node name="p1" parent="Panel/tuiVBox/amntChooser" instance=ExtResource( 4 )]
 margin_right = 0.0
 margin_bottom = 0.0
 text = "+1"
 
-[node name="p10" parent="Panel/amntChooser" instance=ExtResource( 4 )]
+[node name="p10" parent="Panel/tuiVBox/amntChooser" instance=ExtResource( 4 )]
 margin_right = 0.0
 margin_bottom = 0.0
 text = "+10"
 
-[node name="max" parent="Panel/amntChooser" instance=ExtResource( 4 )]
+[node name="max" parent="Panel/tuiVBox/amntChooser" instance=ExtResource( 4 )]
 margin_right = 0.0
 margin_bottom = 0.0
 text = "Max"
 
-[node name="label" parent="Panel/amntChooser" instance=ExtResource( 3 )]
+[node name="label" parent="Panel/tuiVBox/amntChooser" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
+
+[node name="tuiHBox" parent="Panel/tuiVBox" instance=ExtResource( 6 )]
+margin_left = -320.0
+margin_top = -480.0
+margin_right = -320.0
+margin_bottom = -480.0
+alignment = 1
+
+[node name="cancelButton" parent="Panel/tuiVBox/tuiHBox" instance=ExtResource( 4 )]
+margin_left = 320.0
+margin_top = 480.0
+margin_right = 320.0
+margin_bottom = 480.0
+text = "Cancel"
+
+[node name="okayButton" parent="Panel/tuiVBox/tuiHBox" instance=ExtResource( 4 )]
+margin_left = 320.0
+margin_top = 480.0
+margin_right = 320.0
+margin_bottom = 480.0
 [connection signal="resized" from="." to="." method="_on_amntPopup_resized"]
-[connection signal="resized" from="Panel/text" to="." method="_on_text_resized"]
-[connection signal="pressed" from="Panel/cancelButton" to="." method="_on_cancelButton_pressed"]
-[connection signal="pressed" from="Panel/okayButton" to="." method="_on_okayButton_pressed"]
-[connection signal="pressed" from="Panel/amntChooser/m10" to="Panel/amntChooser" method="_on_m10_pressed"]
-[connection signal="pressed" from="Panel/amntChooser/m1" to="Panel/amntChooser" method="_on_m1_pressed"]
-[connection signal="pressed" from="Panel/amntChooser/p1" to="Panel/amntChooser" method="_on_p1_pressed"]
-[connection signal="pressed" from="Panel/amntChooser/p10" to="Panel/amntChooser" method="_on_p10_pressed"]
-[connection signal="pressed" from="Panel/amntChooser/max" to="Panel/amntChooser" method="_on_max_pressed"]
+[connection signal="resized" from="Panel/tuiVBox/text" to="." method="_on_text_resized"]
+[connection signal="pressed" from="Panel/tuiVBox/amntChooser/m10" to="Panel/tuiVBox/amntChooser" method="_on_m10_pressed"]
+[connection signal="pressed" from="Panel/tuiVBox/amntChooser/m1" to="Panel/tuiVBox/amntChooser" method="_on_m1_pressed"]
+[connection signal="pressed" from="Panel/tuiVBox/amntChooser/p1" to="Panel/tuiVBox/amntChooser" method="_on_p1_pressed"]
+[connection signal="pressed" from="Panel/tuiVBox/amntChooser/p10" to="Panel/tuiVBox/amntChooser" method="_on_p10_pressed"]
+[connection signal="pressed" from="Panel/tuiVBox/amntChooser/max" to="Panel/tuiVBox/amntChooser" method="_on_max_pressed"]
+[connection signal="pressed" from="Panel/tuiVBox/tuiHBox/cancelButton" to="." method="_on_cancelButton_pressed"]
+[connection signal="pressed" from="Panel/tuiVBox/tuiHBox/okayButton" to="." method="_on_okayButton_pressed"]

@@ -15,12 +15,12 @@ func _ready():
 		panel.add_child(button)
 		button.connect("pressed", self, "onPlaceButtonPressed", [place])
 		button.rect_position = (charPos * TUI.cSize)
-		maxCharWidth = max(maxCharWidth, button.charSize().x)
-		charPos.y += button.charSize().y
+		maxCharWidth = max(maxCharWidth, button.charSize.x)
+		charPos.y += button.charSize.y
 
 	charPos.y += 1 # spacer
 	cancelButton.rect_position = charPos * TUI.cSize
-	charPos.y += cancelButton.charSize().y
+	charPos.y += cancelButton.charSize.y
 
 	for button in panel.get_children():
 		button.rect_size.x = maxCharWidth * TUI.cWidth

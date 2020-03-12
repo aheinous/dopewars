@@ -141,6 +141,10 @@ static func _split(s):
 	 
 
 static func wordWrap(s, maxCols):
+
+	if s.length() <= maxCols:
+		return s
+
 	var words = _split(s)
 	var res = ""
 	var curlineLen = 0

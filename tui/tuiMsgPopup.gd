@@ -18,14 +18,17 @@ func setupAndShow(var msg):
 
 	text.setText(msg)
 	text.rect_position = charPos * TUI.cSize
-	charPos.y += text.charSize().y
+	charPos.y += text.charSize.y
 
 	
-	var buttonx = max(1, (text.charSize().x - okayButton.charSize().x) / 2)
+	var buttonx = max(1, (text.charSize.x - okayButton.charSize.x) / 2)
 	okayButton.rect_position = Vector2(buttonx, charPos.y) * TUI.cSize
-	charPos.y += okayButton.charSize().y
-	panel.rect_position = TUI.cSize
-	panel.rect_size = Vector2(max(okayButton.charSize().x, text.charSize().x)+2, charPos.y+1) * TUI.cSize
+	charPos.y += okayButton.charSize.y
+#	panel.rect_position = TUI.cSize
+
+	print(text.charSize, okayButton.charSize, charPos)
+
+	panel.charSize = Vector2(max(okayButton.charSize.x, text.charSize.x)+2, charPos.y+1)
 	panel.recenter()
 	_showPopup()
 	
