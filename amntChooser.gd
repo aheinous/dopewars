@@ -1,25 +1,18 @@
 extends "res://tui/tuiElement.gd"
 
-onready var label = $label
-onready var m10_button = $m10
-onready var m1_button =  $m1
-onready var p1_button =  $p1
-onready var p10_button = $p10
-onready var max_button = $max
+onready var label = $tuiVBox/label
+onready var m10_button = $tuiVBox/tuiHBox/m10
+onready var m1_button =  $tuiVBox/tuiHBox/m1
+onready var p1_button =  $tuiVBox/tuiHBox/p1
+onready var p10_button = $tuiVBox/tuiHBox/p10
+onready var max_button = $tuiVBox/tuiHBox/max
 
 
 var value
 var max_value
 var verb 
 
-func _ready():
-	label.rect_position =   	TUI.cSize * Vector2(0,	0)
-	m10_button.rect_position = 	TUI.cSize * Vector2(0,	1)
-	m1_button.rect_position = 	TUI.cSize * Vector2(5,	1)
-	p1_button.rect_position = 	TUI.cSize * Vector2(9,	1)
-	p10_button.rect_position = 	TUI.cSize * Vector2(13,	1)
-	max_button.rect_position = 	TUI.cSize * Vector2(18,	1)
-	# valueLabel.rect_position = 	TUI.cSize * Vector2(4,	4  )
+
 
 
 func setup(verb, max_value, start=-1):
@@ -36,10 +29,9 @@ func setup(verb, max_value, start=-1):
 
 
 func getMinCharSize():
-	return Vector2(23,4)
+	return $"tuiVBox".getMinCharSize()
 
-# func charSize():
-# 	return Vector2(23, 4)
+	
 
 func _refreshText():
 	var text
