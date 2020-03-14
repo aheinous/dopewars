@@ -15,4 +15,3 @@ __meta__ = {
 margin_right = 40.0
 margin_bottom = 40.0
 script = ExtResource( 1 )
-[connection signal="resized" from="." to="." method="_on_tuiPopup_resized"]

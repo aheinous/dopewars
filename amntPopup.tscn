@@ -90,7 +90,6 @@ margin_left = 320.0
 margin_top = 480.0
 margin_right = 320.0
 margin_bottom = 480.0
-[connection signal="resized" from="." to="." method="_on_amntPopup_resized"]
 [connection signal="resized" from="Panel/tuiVBox/text" to="." method="_on_text_resized"]
 [connection signal="pressed" from="Panel/tuiVBox/amntChooser/m10" to="Panel/tuiVBox/amntChooser" method="_on_m10_pressed"]
 [connection signal="pressed" from="Panel/tuiVBox/amntChooser/m1" to="Panel/tuiVBox/amntChooser" method="_on_m1_pressed"]

@@ -109,7 +109,6 @@ __meta__ = {
 [connection signal="itemButtonPressed" from="MarginContainer/VBoxContainer/drugList" to="." method="_on_drugList_itemButtonPressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/jetButton" to="." method="_on_jetButton_pressed"]
 [connection signal="placeButtonPressed" from="tuiJetPopup" to="." method="_on_tuiJetPopup_placeButtonPressed"]
-[connection signal="resized" from="tuiJetPopup" to="tuiJetPopup" method="_on_tuiJetPopup_resized"]
 [connection signal="done" from="tuiMsgPopup" to="." method="_on_popupDone"]
 [connection signal="okayPressed" from="tuiMsgPopup" to="." method="_on_msgPopup_okayPressed"]
 [connection signal="done" from="loansharkPopup" to="." method="_on_popupDone"]
