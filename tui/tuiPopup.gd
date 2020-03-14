@@ -1,4 +1,4 @@
-extends "res://tui/tuiElement.gd"
+extends "res://tui/tuiCenter.gd"
 
 signal done
 
@@ -16,5 +16,6 @@ func _hidePopup():
 
 
 
-func _on_tuiPopup_resized():
-	panel.recenter()
+# func _on_tuiPopup_resized():
+# 	# panel.recenter()
+# 	refresh()

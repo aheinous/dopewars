@@ -31,7 +31,7 @@ func setupAndShow(verb, drug):
 			assert(false)
 
 	okayButton.text = verb
-	
+	refresh()
 	_showPopup()
 
 

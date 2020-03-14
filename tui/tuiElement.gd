@@ -6,13 +6,16 @@ var charPos : Vector2 = Vector2.ZERO setget setCharPos, getCharPos
 
 var _preferredCharSize = Vector2.ZERO
 
+var _isReady = false
+
 func _ready():
+	_isReady = true
 	refresh()
 
 
 
-func recenter():
-	self.rect_position = util.vec2_roundToMult((get_parent().rect_size - self.rect_size) / 2, TUI.cSize) 
+# func recenter():
+# 	self.rect_position = util.vec2_roundToMult((get_parent().rect_size - self.rect_size) / 2, TUI.cSize) 
 
 
 # func charSize():
@@ -34,7 +37,7 @@ func refreshCharSize():
 	sz.y = max(_preferredCharSize.y, minSz.y)
 	if sz != charSize:
 		charSize = sz
-		rect_size = charSize * TUI.cSize
+		# rect_size = charSize * TUI.cSize
 		refresh()
 	
 
@@ -66,4 +69,5 @@ func getMinCharSize():
 
 
 func refresh():
-	pass
+	for child in get_children():
+		child.refresh()

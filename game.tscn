@@ -99,13 +99,9 @@ visible = false
 
 [node name="fightPopup" parent="." instance=ExtResource( 17 )]
 
-[node name="TUI_Overlay" type="Label" parent="."]
+[node name="TUI_Overlay" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -1.16638
-margin_top = -1.16635
-margin_right = -1.16638
-margin_bottom = -1.16638
 script = ExtResource( 18 )
 __meta__ = {
 "_edit_use_anchors_": false

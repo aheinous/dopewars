@@ -29,7 +29,7 @@ func setupAndShow(var msg):
 	print(text.charSize, okayButton.charSize, charPos)
 
 	panel.charSize = Vector2(max(okayButton.charSize.x, text.charSize.x)+2, charPos.y+1)
-	panel.recenter()
+#	panel.recenter()
 	_showPopup()
 	
 

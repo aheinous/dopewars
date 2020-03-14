@@ -231,7 +231,7 @@ func drawToTUI(owner, string):
 			colnum = startcol
 			continue
 		if colnum >= nCols or linenum >= nLines:
-			print("tui drawing offscreen")
+			# print("tui drawing offscreen")
 			continue
 		dataGrid[linenum][colnum].c = c
 		dataGrid[linenum][colnum].owner = owner
@@ -289,3 +289,39 @@ func boxString(size, text="", half=false):
 		s += "─"
 	s += "┘"
 	return s
+
+
+func boxStringCS(size, text="", half=false):
+		var box_nCols : int = size.x
+		var box_nLines : int = size.y
+		box_nCols = max(box_nCols, text.length() + 2)
+		box_nLines = max(box_nLines, 3)
+	
+	
+		var extraLines = box_nLines - 3
+		var extraLines_bottom = extraLines / 2
+		var extraLines_top = extraLines - extraLines_bottom
+	
+	
+		var s = "┌"
+		for _colnum in range(1, box_nCols-1):
+			s += "─"
+		s += "┐\n"
+	
+		for _i in range(extraLines_top):
+			s += "│" + util.nSpaces(box_nCols-2) + "│\n"
+	
+		s += "│" + util.lrpad_chars(box_nCols-2, text) + "│\n"
+	
+		for _i in range(extraLines_bottom):
+			s += "│" + util.nSpaces(box_nCols-2) + "│\n"
+	
+		if half:
+			return s.substr(0, s.length()-1)
+	
+		s += "└"
+		for _colnum in range(1, box_nCols-1):
+			s += "─"
+		s += "┘"
+		return s
+	

@@ -26,7 +26,7 @@ func _ready():
 		button.rect_size.x = maxCharWidth * TUI.cWidth
 
 	panel.rect_size = Vector2(maxCharWidth+2, charPos.y+1) * TUI.cSize
-	panel.recenter()
+#	panel.recenter()
 
 
 
@@ -46,5 +46,6 @@ func _on_cancelButton_pressed():
 
 
 func _on_tuiJetPopup_resized():
-	panel.recenter()
+#	panel.recenter()
+	pass
 	

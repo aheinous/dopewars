@@ -1,4 +1,4 @@
-extends Label
+extends Control
 
 
 const DEBUG_PRINT = false
