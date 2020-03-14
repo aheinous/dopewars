@@ -9,7 +9,3 @@ onready var tuiVBox = $Panel/tuiVBox/
 
 func _ready():
 	hide()
-
-
-func _on_text_resized():
-	refresh()
