@@ -3,35 +3,31 @@ extends "res://tui/tuiPopup.gd"
 signal placeButtonPressed
 
 const TUIButton = preload("res://tui/tuiButton_pure.tscn")
+const TUILabel = preload("res://tui/tuiLabel_pure.tscn")
 
-onready var cancelButton = $Panel/cancelButton
+onready var vbox = $Panel/tuiVBox
+
+var placeButtons = []
 
 func _ready():
-	var charPos = Vector2(1,1)
-	var maxCharWidth = 0
 	for place in gameModel.places():
 		var button = TUIButton.instance()
 		button.text = place
-		panel.add_child(button)
+		vbox.add_child(button)
 		button.connect("pressed", self, "onPlaceButtonPressed", [place])
-		button.rect_position = (charPos * TUI.cSize)
-		maxCharWidth = max(maxCharWidth, button.charSize.x)
-		charPos.y += button.charSize.y
-
-	charPos.y += 1 # spacer
-	cancelButton.rect_position = charPos * TUI.cSize
-	charPos.y += cancelButton.charSize.y
-
-	for button in panel.get_children():
-		button.rect_size.x = maxCharWidth * TUI.cWidth
-
-	panel.rect_size = Vector2(maxCharWidth+2, charPos.y+1) * TUI.cSize
-#	panel.recenter()
-
+		placeButtons.append(button)
+	var spacer = TUILabel.instance()
+	vbox.add_child(spacer)
+	spacer.text = ""
+	var cancelButton = TUIButton.instance()
+	cancelButton.text = "Cancel"
+	vbox.add_child(cancelButton)
+	cancelButton.connect("pressed", self, "_on_cancelButton_pressed")
+	refresh()
 
 
 func setupAndShow():
-	for button in panel.get_children():
+	for button in placeButtons:
 		button.disabled = (button.text == gameModel.stats().curPlace)
 	_showPopup()
 
@@ -44,8 +40,3 @@ func onPlaceButtonPressed(place):
 func _on_cancelButton_pressed():
 	_hidePopup()
 
-
-func _on_tuiJetPopup_resized():
-#	panel.recenter()
-	pass
-	

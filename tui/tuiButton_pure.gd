@@ -23,7 +23,7 @@ func tuiDraw(tui):
 	if _halfButton:
 		tui.drawToTUI(self, tui.skinnyButtonStr(rect_size, text))
 	else:
-		tui.drawToTUI(self, tui.boxString(rect_size, text))
+		tui.drawToTUI(self, tui.boxStringCS(charSize, text))
 	# print("%s rect size. ratio: %s, %s" % [text, rect_size, rect_size/TUI.cSize])
 
 
