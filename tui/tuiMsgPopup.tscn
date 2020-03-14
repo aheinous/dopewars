@@ -1,15 +1,25 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://tui/tuiMsgPopup.gd" type="Script" id=1]
 [ext_resource path="res://tui/tuiPopup.tscn" type="PackedScene" id=2]
 [ext_resource path="res://tui/tuiButton_pure.tscn" type="PackedScene" id=3]
 [ext_resource path="res://tui/tuiLabel_pure.tscn" type="PackedScene" id=4]
+[ext_resource path="res://tui/tuiHBox.tscn" type="PackedScene" id=5]
+[ext_resource path="res://tui/tuiVBox.tscn" type="PackedScene" id=6]
 
 [node name="tuiMsgPopup" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
 
-[node name="OkayButton" parent="Panel" index="0" instance=ExtResource( 3 )]
-text = "Okay"
+[node name="tuiVBox" parent="Panel" index="0" instance=ExtResource( 6 )]
 
-[node name="Text" parent="Panel" index="1" instance=ExtResource( 4 )]
-[connection signal="pressed" from="Panel/OkayButton" to="." method="_on_OkayButton_pressed"]
+[node name="tuiHBox" parent="Panel/tuiVBox" index="0" instance=ExtResource( 5 )]
+alignment = 1
+
+[node name="Text" parent="Panel/tuiVBox/tuiHBox" index="0" instance=ExtResource( 4 )]
+
+[node name="tuiHBox2" parent="Panel/tuiVBox" index="1" instance=ExtResource( 5 )]
+alignment = 1
+
+[node name="OkayButton" parent="Panel/tuiVBox/tuiHBox2" index="0" instance=ExtResource( 3 )]
+text = "Okay"
+[connection signal="pressed" from="Panel/tuiVBox/tuiHBox2/OkayButton" to="." method="_on_OkayButton_pressed"]

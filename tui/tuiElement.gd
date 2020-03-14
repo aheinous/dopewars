@@ -12,7 +12,21 @@ func _ready():
 	_isReady = true
 	refresh()
 
+func refresh():
+	_recursiveRefreshCharSize()
+	_recursiveRefresh()
 
+
+func _recursiveRefreshCharSize():
+	for child in get_children():
+		child._recursiveRefreshCharSize()
+	refreshCharSize(false)
+	# print(get_path(), ' charSize:', charSize, getMinCharSize())
+
+func _recursiveRefresh():
+	for child in get_children():
+		child._recursiveRefresh()
+	_onRefresh()
 
 # func recenter():
 # 	self.rect_position = util.vec2_roundToMult((get_parent().rect_size - self.rect_size) / 2, TUI.cSize) 
@@ -30,7 +44,7 @@ func setCharSize(sz : Vector2):
 func getCharSize():
 	return charSize
 
-func refreshCharSize():
+func refreshCharSize(refreshOnChange=true):
 	var sz = Vector2()
 	var minSz = getMinCharSize()
 	sz.x = max(_preferredCharSize.x, minSz.x)
@@ -38,7 +52,8 @@ func refreshCharSize():
 	if sz != charSize:
 		charSize = sz
 		# rect_size = charSize * TUI.cSize
-		refresh()
+		if refreshOnChange:
+			refresh()
 	
 
 
@@ -68,6 +83,6 @@ func getMinCharSize():
 # 	set_custom_minimum_size(charSize() * TUI.cSize)
 
 
-func refresh():
-	for child in get_children():
-		child.refresh()
+
+func _onRefresh():
+	pass

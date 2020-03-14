@@ -39,8 +39,8 @@ func _hvVector(vec : Vector2 = Vector2()):
 
 
 
-func refresh():
-	refreshCharSize()
+func _onRefresh():
+	refreshCharSize(false)
 
 	var szNeeded = _hvVector(getMinCharSize())
 	var selfSize = _hvVector(charSize)
@@ -65,15 +65,12 @@ func refresh():
 			child.setCharWidth(selfSize.tanDir)
 		pos.packedDir += _hvVector(child.charSize).packedDir
 
-	for child in get_children():
-		child.refresh()
 		
-
 
 func getMinCharSize():
 	var minSz = _hvVector()
 	for child in get_children():
-		var childSz = _hvVector(child.charSize)
+		var childSz = _hvVector(child.getMinCharSize())
 		minSz.tanDir = max(minSz.tanDir, childSz.tanDir)
 		minSz.packedDir += childSz.packedDir
 	return minSz.vec2()
