@@ -6,7 +6,7 @@ extends Node
 
 
 
-const colWidths_chars_drugs = [8, 9, 9]
+const colWidths_chars_drugs = [8, 10, 9]
 const colWidths_chars_guns = [22, 6, 9]
 
 

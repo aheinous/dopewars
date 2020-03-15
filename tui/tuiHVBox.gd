@@ -40,6 +40,10 @@ func _hvVector(vec : Vector2 = Vector2()):
 
 
 func _onRefresh():
+	if get_path() as String == "/root/Game/MarginContainer/tuiVBox":
+		print('here')
+	print(get_path())
+	
 	refreshCharSize(false)
 
 	var szNeeded = _hvVector(getMinCharSize())

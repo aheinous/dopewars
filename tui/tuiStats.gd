@@ -1,4 +1,4 @@
-extends "tuiLabel.gd"
+extends "res://tui/tuiLabel_pure.gd"
 
 
 func populate():
@@ -20,3 +20,5 @@ func populate():
 	
 	text = location + "\n" + cash + " " + guns + "\n" 
 	text += debt + " " + bitches + "\n" + space + " " + bank + "\n" + health + " " + day
+	
+	setText(text)

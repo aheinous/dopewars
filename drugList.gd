@@ -1,4 +1,4 @@
-extends "res://tuiItemList.gd"
+extends "res://tuiItemList_pure.gd"
 
 
 func populate():

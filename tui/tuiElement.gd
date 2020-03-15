@@ -1,5 +1,6 @@
 extends Control
 
+signal charSizeChanged
 
 var charSize : Vector2 = Vector2.ZERO setget setCharSize, getCharSize 
 var charPos : Vector2 = Vector2.ZERO setget setCharPos, getCharPos 
@@ -54,6 +55,7 @@ func refreshCharSize(refreshOnChange=true):
 		# rect_size = charSize * TUI.cSize
 		if refreshOnChange:
 			refresh()
+		emit_signal("charSizeChanged")
 	
 
 

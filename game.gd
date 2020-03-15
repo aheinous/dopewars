@@ -1,8 +1,8 @@
 extends Control
 
-onready var drugList = $MarginContainer/VBoxContainer/drugList
+onready var drugList = $MarginContainer/tuiVBox/drugList
 #onready var stats = $MarginContainer/VBoxContainer/stats
-onready var stats = $MarginContainer/VBoxContainer/tuiStats
+onready var stats = $MarginContainer/tuiVBox/tuiStats
 
 
 onready var buySellDropPopup = $buySellDropPopup
@@ -56,6 +56,7 @@ func _on_jetButton_pressed():
 
 func _process(delta):
 	stats.populate()
+	$"MarginContainer/tuiVBox".refresh()
 	match gameModel.curState():
 		gameModel.State.DRUG_MENU:
 			state_drugMenu()
