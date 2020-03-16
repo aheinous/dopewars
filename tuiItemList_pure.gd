@@ -70,5 +70,3 @@ func onItemButtonPressed(itemName):
 	emit_signal("itemButtonPressed", itemName)
 
 
-func getMinCharSize():
-	return Vector2(50,30)

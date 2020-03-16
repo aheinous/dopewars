@@ -1,9 +1,8 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://textUI_theme.tres" type="Theme" id=1]
 [ext_resource path="res://game.gd" type="Script" id=2]
 [ext_resource path="res://tui/tuiStats.tscn" type="PackedScene" id=3]
-[ext_resource path="res://tui/tuiStats.gd" type="Script" id=4]
 [ext_resource path="res://drugList.gd" type="Script" id=5]
 [ext_resource path="res://tui/tuiButton_pure.tscn" type="PackedScene" id=6]
 [ext_resource path="res://tuiJetPopup.tscn" type="PackedScene" id=7]
@@ -45,14 +44,10 @@ margin_top = 30.0
 margin_right = 640.0
 margin_bottom = 960.0
 
-[node name="tuiStats" type="Control" parent="MarginContainer/tuiVBox" instance=ExtResource( 3 )]
+[node name="tuiStats" parent="MarginContainer/tuiVBox" instance=ExtResource( 3 )]
 margin_left = 320.0
 margin_right = 320.0
 margin_bottom = 25.0
-script = ExtResource( 4 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="drugList" type="Control" parent="MarginContainer/tuiVBox"]
 margin_left = 320.0
@@ -60,6 +55,9 @@ margin_top = 45.0
 margin_right = 320.0
 margin_bottom = 45.0
 script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="jetButton" parent="MarginContainer/tuiVBox" instance=ExtResource( 6 )]
 margin_left = 320.0

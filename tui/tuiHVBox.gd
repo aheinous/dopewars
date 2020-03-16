@@ -39,10 +39,26 @@ func _hvVector(vec : Vector2 = Vector2()):
 
 
 
+func _ready():
+	for child in get_children():
+		child.connect("charSizeChanged", self, "_onChildCharSizeChanged")
+	
+
+
+func add_child(child, legible_unique_name: bool =false):
+	child.connect("charSizeChanged", self, "_onChildCharSizeChanged")
+	.add_child(child, legible_unique_name)
+
+
+func _onChildCharSizeChanged():
+	_onRefresh()
+
+
+
 func _onRefresh():
-	if get_path() as String == "/root/Game/MarginContainer/tuiVBox":
-		print('here')
-	print(get_path())
+#	# if get_path() as String == "/root/Game/MarginContainer/tuiVBox":
+#	# 	print('here')
+#	# print(get_path())
 	
 	refreshCharSize(false)
 
@@ -62,6 +78,8 @@ func _onRefresh():
 	var pos = _hvVector()
 	pos.packedDir = start
 	for child in get_children():
+		if child.is_queued_for_deletion():
+			continue
 		child.setCharPos(pos.vec2())
 		if _orientation == HORIZONTAL:
 			child.setCharHeight(selfSize.tanDir)
@@ -74,6 +92,8 @@ func _onRefresh():
 func getMinCharSize():
 	var minSz = _hvVector()
 	for child in get_children():
+		if child.is_queued_for_deletion():
+			continue
 		var childSz = _hvVector(child.getMinCharSize())
 		minSz.tanDir = max(minSz.tanDir, childSz.tanDir)
 		minSz.packedDir += childSz.packedDir
