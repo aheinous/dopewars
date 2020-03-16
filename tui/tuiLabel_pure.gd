@@ -4,20 +4,23 @@ var text = 'default' setget setText
 
 export var numColumns : int = 50
 
-enum MODE {LEFT_ALIGNED, CENTERED, SKINNY_BUTTON}
-var mode = MODE.LEFT_ALIGNED
+enum Mode {LEFT_ALIGNED, CENTERED, SKINNY_BUTTON, PLAIN}
+export (Mode) var mode = Mode.LEFT_ALIGNED
 
 func _ready():
 	TUI.registerElement(self)
 	setText(text)
 
 func tuiDraw(tui):
-	if mode == MODE.LEFT_ALIGNED:
-		tui.drawToTUI(self, _wrappedText())
-	elif mode == MODE.SKINNY_BUTTON:
-		tui.drawToTUI(self, tui.skinnyButtonStr(rect_size, _wrappedText()))
-	elif mode == MODE.CENTERED:
-		tui.drawToTUI(self, tui.centeredStr(rect_size, _wrappedText()))		
+	match mode:
+		Mode.LEFT_ALIGNED:
+			tui.drawToTUI(self, _wrappedText())
+		Mode.SKINNY_BUTTON:
+			tui.drawToTUI(self, util.skinnyButtonStr(charSize, _wrappedText()))
+		Mode.CENTERED:
+			tui.drawToTUI(self, util.centeredStr(charSize, _wrappedText()))	
+		Mode.PLAIN:
+			tui.drawToTUI(self, text)
 
 
 func setText(s:String):
@@ -30,4 +33,12 @@ func _wrappedText():
 
 
 func getMinCharSize():
-	return util.getCharSize(_wrappedText())
+	match mode:
+		Mode.LEFT_ALIGNED:
+			return util.getCharSize(_wrappedText())
+		Mode.SKINNY_BUTTON:
+			return util.getCharSize(util.skinnyButtonStr(Vector2.ZERO, _wrappedText()))
+		Mode.CENTERED:
+			return util.getCharSize(util.centeredStr(Vector2.ZERO, _wrappedText()))	
+		Mode.PLAIN:
+			return util.getCharSize(text)

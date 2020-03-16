@@ -174,3 +174,47 @@ static func getCharSize(s):
 		nCols = max(nCols, ln.length())
 	return Vector2(nCols, lines.size())
 
+
+
+func skinnyButtonStr(charSize, text=""):
+	return "│" + util.lrpad_chars(charSize.x-2, text) + "│"
+	
+		
+	
+func centeredStr(charSize, text=""):
+	return util.lrpad_chars(charSize.x, text)
+
+
+static func boxString(charSize, text="", half=false):
+	var box_nCols : int = charSize.x
+	var box_nLines : int = charSize.y
+	box_nCols = max(box_nCols, text.length() + 2)
+	box_nLines = max(box_nLines, 3)
+
+
+	var extraLines = box_nLines - 3
+	var extraLines_bottom = extraLines / 2
+	var extraLines_top = extraLines - extraLines_bottom
+
+
+	var s = "┌"
+	for _colnum in range(1, box_nCols-1):
+		s += "─"
+	s += "┐\n"
+
+	for _i in range(extraLines_top):
+		s += "│" + util.nSpaces(box_nCols-2) + "│\n"
+
+	s += "│" + util.lrpad_chars(box_nCols-2, text) + "│\n"
+
+	for _i in range(extraLines_bottom):
+		s += "│" + util.nSpaces(box_nCols-2) + "│\n"
+
+	if half:
+		return s.substr(0, s.length()-1)
+
+	s += "└"
+	for _colnum in range(1, box_nCols-1):
+		s += "─"
+	s += "┘"
+	return s

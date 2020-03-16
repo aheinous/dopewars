@@ -2,8 +2,8 @@
 
 [ext_resource path="res://tui/tuiStats.gd" type="Script" id=1]
 
-[node name="tuiStats" type="Label"]
+[node name="tuiStats" type="Control"]
 margin_right = 1024.0
 margin_bottom = 68.0
-text = "sdafsdfs"
 script = ExtResource( 1 )
+mode = 3

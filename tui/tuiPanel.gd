@@ -5,7 +5,7 @@ extends "res://tui/tuiElement.gd"
 func tuiDraw(tui):
 	if not is_visible_in_tree():
 		return 
-	tui.drawToTUI(self, tui.boxStringCS(charSize))
+	tui.drawToTUI(self, util.boxString(charSize))
 
 
 

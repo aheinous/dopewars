@@ -13,7 +13,7 @@ func _addHeader(colWidths):
 			util.rpad_chars(colWidths[0], "NAME"),
 			util.rpad_chars(colWidths[1], "PRICE"),
 			util.lpad_chars(colWidths[2], "QUANTITY") ]
-	header.mode = header.MODE.SKINNY_BUTTON
+	header.mode = header.Mode.SKINNY_BUTTON
 	self.add_child(header)
 
 
@@ -32,7 +32,7 @@ func _addSpacer(colWidths):
 		util.rpad_chars(colWidths[0], ""),
 		util.rpad_chars(colWidths[1], ""),
 		util.lpad_chars(colWidths[2], "") ]
-	spacer.mode = spacer.MODE.SKINNY_BUTTON
+	spacer.mode = spacer.Mode.SKINNY_BUTTON
 	self.add_child(spacer)
 
 

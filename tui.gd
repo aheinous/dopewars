@@ -242,20 +242,20 @@ func drawToTUI(owner, string):
 		colnum += 1
 
 
-
+# TODO remove
 func skinnyButtonStr(size, text=""):
 	var box_nCols = round(size.x as float / cWidth) as int
-	return "│" + util.lrpad_chars(box_nCols-2, text) + "│\n"
+	return "│" + util.lrpad_chars(box_nCols-2, text) + "│"
 
 	
-
+# TODO remove
 func centeredStr(size, text=""):
 	var box_nCols = round(size.x as float / cWidth) as int
-	return util.lrpad_chars(box_nCols, text) + "\n"
+	return util.lrpad_chars(box_nCols, text) 
 
 	
 
-
+# TODO remove
 func boxString(size, text="", half=false):
 	var box_nCols = round(size.x as float / cWidth) as int
 	var box_nLines = round(size.y as float/ cHeight) as int
@@ -291,37 +291,37 @@ func boxString(size, text="", half=false):
 	return s
 
 
-func boxStringCS(size, text="", half=false):
-		var box_nCols : int = size.x
-		var box_nLines : int = size.y
-		box_nCols = max(box_nCols, text.length() + 2)
-		box_nLines = max(box_nLines, 3)
+# static func boxStringCS(size, text="", half=false):
+# 		var box_nCols : int = size.x
+# 		var box_nLines : int = size.y
+# 		box_nCols = max(box_nCols, text.length() + 2)
+# 		box_nLines = max(box_nLines, 3)
 	
 	
-		var extraLines = box_nLines - 3
-		var extraLines_bottom = extraLines / 2
-		var extraLines_top = extraLines - extraLines_bottom
+# 		var extraLines = box_nLines - 3
+# 		var extraLines_bottom = extraLines / 2
+# 		var extraLines_top = extraLines - extraLines_bottom
 	
 	
-		var s = "┌"
-		for _colnum in range(1, box_nCols-1):
-			s += "─"
-		s += "┐\n"
+# 		var s = "┌"
+# 		for _colnum in range(1, box_nCols-1):
+# 			s += "─"
+# 		s += "┐\n"
 	
-		for _i in range(extraLines_top):
-			s += "│" + util.nSpaces(box_nCols-2) + "│\n"
+# 		for _i in range(extraLines_top):
+# 			s += "│" + util.nSpaces(box_nCols-2) + "│\n"
 	
-		s += "│" + util.lrpad_chars(box_nCols-2, text) + "│\n"
+# 		s += "│" + util.lrpad_chars(box_nCols-2, text) + "│\n"
 	
-		for _i in range(extraLines_bottom):
-			s += "│" + util.nSpaces(box_nCols-2) + "│\n"
+# 		for _i in range(extraLines_bottom):
+# 			s += "│" + util.nSpaces(box_nCols-2) + "│\n"
 	
-		if half:
-			return s.substr(0, s.length()-1)
+# 		if half:
+# 			return s.substr(0, s.length()-1)
 	
-		s += "└"
-		for _colnum in range(1, box_nCols-1):
-			s += "─"
-		s += "┘"
-		return s
+# 		s += "└"
+# 		for _colnum in range(1, box_nCols-1):
+# 			s += "─"
+# 		s += "┘"
+# 		return s
 	

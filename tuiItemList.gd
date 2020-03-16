@@ -16,7 +16,7 @@ func _addHeader(colWidths):
 			util.rpad_chars(colWidths[1], "PRICE"),
 			util.lpad_chars(colWidths[2], "QUANTITY") ]
 #	header.align = Label.ALIGN_CENTER
-	header.mode = header.MODE.SKINNY_BUTTON
+	header.mode = header.Mode.SKINNY_BUTTON
 	self.add_child(header)
 
 
