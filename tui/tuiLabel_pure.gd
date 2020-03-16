@@ -12,15 +12,7 @@ func _ready():
 	setText(text)
 
 func tuiDraw(tui):
-	match mode:
-		Mode.LEFT_ALIGNED:
-			tui.drawToTUI(self, _wrappedText())
-		Mode.SKINNY_BUTTON:
-			tui.drawToTUI(self, util.skinnyButtonStr(charSize, _wrappedText()))
-		Mode.CENTERED:
-			tui.drawToTUI(self, util.centeredStr(charSize, _wrappedText()))	
-		Mode.PLAIN:
-			tui.drawToTUI(self, text)
+	tui.drawToTUI(self, _formatText(charSize))
 
 
 func setText(s:String):
@@ -28,17 +20,25 @@ func setText(s:String):
 	refreshCharSize()
 
 
+
+func _formatText(size):
+	match mode:
+		Mode.LEFT_ALIGNED:
+			return _wrappedText()
+		Mode.SKINNY_BUTTON:
+			return util.skinnyButtonStr(size, _wrappedText())
+		Mode.CENTERED:
+			return util.centeredStr(size, _wrappedText())
+		Mode.PLAIN:
+			return text
+		_:
+			assert(false)
+
+			
 func _wrappedText():
 	return util.wordWrap(text, numColumns)
 
 
+
 func getMinCharSize():
-	match mode:
-		Mode.LEFT_ALIGNED:
-			return util.getCharSize(_wrappedText())
-		Mode.SKINNY_BUTTON:
-			return util.getCharSize(util.skinnyButtonStr(Vector2.ZERO, _wrappedText()))
-		Mode.CENTERED:
-			return util.getCharSize(util.centeredStr(Vector2.ZERO, _wrappedText()))	
-		Mode.PLAIN:
-			return util.getCharSize(text)
+	return util.getCharSize(_formatText(Vector2.ZERO))
