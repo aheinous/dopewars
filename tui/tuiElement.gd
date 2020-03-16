@@ -14,20 +14,9 @@ func _ready():
 	refresh()
 
 func refresh():
-	_recursiveRefreshCharSize()
-	_recursiveRefresh()
+	propagate_call("refreshCharSize", [false])
+	propagate_call("_onRefresh")
 
-
-func _recursiveRefreshCharSize():
-	for child in get_children():
-		child._recursiveRefreshCharSize()
-	refreshCharSize(false)
-	# print(get_path(), ' charSize:', charSize, getMinCharSize())
-
-func _recursiveRefresh():
-	for child in get_children():
-		child._recursiveRefresh()
-	_onRefresh()
 
 # func recenter():
 # 	self.rect_position = util.vec2_roundToMult((get_parent().rect_size - self.rect_size) / 2, TUI.cSize) 
