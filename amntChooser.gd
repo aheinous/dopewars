@@ -11,16 +11,18 @@ onready var max_button = $tuiVBox/tuiHBox/max
 var value
 var max_value
 var verb 
+var preunit
 
 
 
 
-func setup(verb, max_value, start=-1):
+func setup(verb, max_value, start=-1, preunit=""):
 
 	print("amntChooser setup: %s, %s" % [verb, max_value])
 
 	self.verb = verb
 	self.max_value = max_value
+	self.preunit = preunit
 
 	if start == -1:
 		start = max_value
@@ -40,7 +42,7 @@ func _refreshText():
 	else:
 		text = verb + " how many?"
 
-	text += ": " + String(value)
+	text += ": " + preunit + String(value)
 	label.text = text
 
 func getValue():

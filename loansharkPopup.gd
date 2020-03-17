@@ -4,7 +4,7 @@ extends "res://amntPopup.gd"
 
 func setupAndShow():
 	text.text = "Cash: $%s\nDebt: $%s" % [util.toCommaSepStr(gameModel.getCash()), util.toCommaSepStr(gameModel.getDebt())]
-	amntChooser.setup("Pay", gameModel.mostCanPayback())
+	amntChooser.setup("Pay", gameModel.mostCanPayback(), -1, "$")
 	_showPopup()
 
 
@@ -14,7 +14,7 @@ func _on_cancelButton_pressed():
 #	emit_signal("done")
 
 
-func _on_payButton_pressed():
+func _on_okayButton_pressed():
 	gameModel.payback(amntChooser.getValue() as int)
 	_hidePopup()
 #	emit_signal("done")
