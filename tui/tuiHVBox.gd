@@ -2,6 +2,7 @@ extends "res://tui/tuiElement.gd"
 
 enum AlignMode {ALIGN_BEGIN, ALIGN_CENTER, ALIGN_END}
 export (AlignMode) var alignment = AlignMode.ALIGN_BEGIN
+export (int) var spacing = 0
 
 var _orientation = HORIZONTAL
 
@@ -86,15 +87,21 @@ func _onRefresh():
 		else:
 			child.setCharWidth(selfSize.tanDir)
 		pos.packedDir += _hvVector(child.charSize).packedDir
+		pos.packedDir += spacing
 
 		
 
 func getMinCharSize():
 	var minSz = _hvVector()
+	var first = true
+
 	for child in get_children():
 		if child.is_queued_for_deletion():
 			continue
 		var childSz = _hvVector(child.getMinCharSize())
+		if first:
+			first = false
+			minSz.packedDir += spacing
 		minSz.tanDir = max(minSz.tanDir, childSz.tanDir)
 		minSz.packedDir += childSz.packedDir
 	return minSz.vec2()

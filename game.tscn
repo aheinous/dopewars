@@ -37,6 +37,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 640.0
 margin_bottom = 930.0
+spacing = 1
 
 [node name="tuiStats" parent="tuiCenter/tuiVBox" instance=ExtResource( 3 )]
 margin_left = 320.0
