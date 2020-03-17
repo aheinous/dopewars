@@ -1,8 +1,9 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://textUI_theme.tres" type="Theme" id=1]
 [ext_resource path="res://game.gd" type="Script" id=2]
 [ext_resource path="res://tui/tuiStats.tscn" type="PackedScene" id=3]
+[ext_resource path="res://tui/tuiCenter.tscn" type="PackedScene" id=4]
 [ext_resource path="res://drugList.gd" type="Script" id=5]
 [ext_resource path="res://tui/tuiButton_pure.tscn" type="PackedScene" id=6]
 [ext_resource path="res://tuiJetPopup.tscn" type="PackedScene" id=7]
@@ -29,27 +30,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_constants/margin_top = 30
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="tuiCenter" parent="." instance=ExtResource( 4 )]
 
-[node name="tuiVBox" parent="MarginContainer" instance=ExtResource( 19 )]
+[node name="tuiVBox" parent="tuiCenter" instance=ExtResource( 19 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 30.0
 margin_right = 640.0
-margin_bottom = 960.0
+margin_bottom = 930.0
 
-[node name="tuiStats" parent="MarginContainer/tuiVBox" instance=ExtResource( 3 )]
+[node name="tuiStats" parent="tuiCenter/tuiVBox" instance=ExtResource( 3 )]
 margin_left = 320.0
 margin_right = 320.0
 margin_bottom = 25.0
 
-[node name="drugList" type="Control" parent="MarginContainer/tuiVBox"]
+[node name="drugList" type="Control" parent="tuiCenter/tuiVBox"]
 margin_left = 320.0
 margin_top = 45.0
 margin_right = 320.0
@@ -59,7 +53,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="jetButton" parent="MarginContainer/tuiVBox" instance=ExtResource( 6 )]
+[node name="jetButton" parent="tuiCenter/tuiVBox" instance=ExtResource( 6 )]
 margin_left = 320.0
 margin_top = 65.0
 margin_right = 320.0
@@ -105,8 +99,8 @@ script = ExtResource( 18 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="itemButtonPressed" from="MarginContainer/tuiVBox/drugList" to="." method="_on_drugList_itemButtonPressed"]
-[connection signal="pressed" from="MarginContainer/tuiVBox/jetButton" to="." method="_on_jetButton_pressed"]
+[connection signal="itemButtonPressed" from="tuiCenter/tuiVBox/drugList" to="." method="_on_drugList_itemButtonPressed"]
+[connection signal="pressed" from="tuiCenter/tuiVBox/jetButton" to="." method="_on_jetButton_pressed"]
 [connection signal="placeButtonPressed" from="tuiJetPopup" to="." method="_on_tuiJetPopup_placeButtonPressed"]
 [connection signal="done" from="tuiMsgPopup" to="." method="_on_popupDone"]
 [connection signal="okayPressed" from="tuiMsgPopup" to="." method="_on_msgPopup_okayPressed"]
