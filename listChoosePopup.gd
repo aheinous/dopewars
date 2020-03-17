@@ -1,10 +1,9 @@
-extends CenterContainer
+extends "res://tui/tuiPopup.gd"
 
-onready var text = $PanelContainer/VBoxContainer/text
-onready var buttonA = $PanelContainer/VBoxContainer/HBoxContainer/buttonA
-onready var buttonB = $PanelContainer/VBoxContainer/HBoxContainer/buttonB
+onready var text = $Panel/VBoxContainer/text
+onready var buttonA = $Panel/VBoxContainer/HBoxContainer/buttonA
+onready var buttonB = $Panel/VBoxContainer/HBoxContainer/buttonB
 
-signal cancelPressed
 
 func _ready():
 	hide()
@@ -14,12 +13,12 @@ func _setupAndShow(desc, lblA, lblB):
 	text.text = desc
 	buttonA.text = lblA
 	buttonB.text = lblB
-	show()
+	refresh()
+	_showPopup()
 
 
 func _on_cancelButton_pressed():
-	hide()
-	emit_signal("cancelPressed")
+	_hidePopup()
 
 
 func _on_buttonA_pressed():
