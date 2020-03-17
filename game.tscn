@@ -104,6 +104,8 @@ __meta__ = {
 [connection signal="placeButtonPressed" from="tuiJetPopup" to="." method="_on_tuiJetPopup_placeButtonPressed"]
 [connection signal="done" from="tuiMsgPopup" to="." method="_on_popupDone"]
 [connection signal="okayPressed" from="tuiMsgPopup" to="." method="_on_msgPopup_okayPressed"]
+[connection signal="noPressed" from="tuiChoicePopup" to="." method="_on_choicePopup_noPressed"]
+[connection signal="yesPressed" from="tuiChoicePopup" to="." method="_on_choicePopup_yesPressed"]
 [connection signal="done" from="loansharkPopup" to="." method="_on_popupDone"]
 [connection signal="buyPressed" from="chooseBuySellPopup" to="." method="_on_chooseBuySellPopup_buyPressed"]
 [connection signal="sellPressed" from="chooseBuySellPopup" to="." method="_on_chooseBuySellPopup_sellPressed"]
