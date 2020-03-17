@@ -12,5 +12,3 @@ func _onRefresh():
 	assert(get_child_count() == 1)
 	var child = get_children()[0]
 	child.charPos = (charSize/2  - child.charSize/2).round()
-	# print('->',child.charPos, charSize, Vector2(TUI.nCols, TUI.nLines), child.charSize)
-	# print('rsz', self.rect_size, $"/root/Game/TUI_Overlay".rect_size, $"/root/Game".rect_size)

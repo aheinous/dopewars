@@ -57,7 +57,6 @@ func _on_jetButton_pressed():
 
 func _process(delta):
 	stats.populate()
-	$"tuiCenter/tuiVBox".refresh()
 	match gameModel.curState():
 		gameModel.State.DRUG_MENU:
 			state_drugMenu()
