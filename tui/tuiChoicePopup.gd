@@ -37,8 +37,7 @@ func setupAndShow(var msg):
 	charPos.y += yesButton.charSize.y
 	panel.rect_position = TUI.cSize
 	panel.charSize = Vector2( max(yesButton.charSize.x+noButton.charSize.x, \
-								text.charSize.x)+2, charPos.y+1) 
-	panel.recenter()
+								text.charSize.x)+2, charPos.y+1)
 	_showPopup()
 	
 
