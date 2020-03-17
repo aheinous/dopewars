@@ -81,3 +81,6 @@ func _process(delta):
 		for child in TUI._childrenInDrawOrder(get_tree().get_root()):
 			if child.has_method("debugPrint"):
 				child.debugPrint()
+				
+	if Input.is_action_just_pressed("refresh"):
+		$"/root/Game".refresh()
