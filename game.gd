@@ -77,6 +77,7 @@ func _process(delta):
 		_:
 			print("curState: ",gameModel.curState())
 			assert(false)
+	refresh()
 	set_process(false)
 
 func state_highscores():
