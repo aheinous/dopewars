@@ -18,7 +18,7 @@ const syms = [
 	[' 4 ', ' 5 ', ' 6 '],
 	[' 7 ', ' 8 ', ' 9 '],
 	[' 0 ', ' k ', ' M '],
-	[' <- ', ' Max '] \
+	[' <- ', ' Max '] 
 ]
 
 
@@ -41,14 +41,14 @@ func _ready():
 func getValue():
 	if usrtext.length() == 0:
 		return 0
-	var postfix = ''
+	var suffix = ''
 	var s = usrtext
 
 	if s[-1] in ['k', 'M']:
-		postfix = s[-1]
+		suffix = s[-1]
 		s = s.substr(0, s.length()-1)
 	var val = s.to_int()
-	match postfix:
+	match suffix:
 		'k':
 			val *= 1000
 		'M':
@@ -60,14 +60,14 @@ func _updateDispText():
 	if usrtext.length() == 0:
 		numLabel.setText(preunit + '0')
 		return
-	var postfix = ''
+	var suffix = ''
 	var s = usrtext
 
 	if s[-1] in ['k', 'M']:
-		postfix = s[-1]
+		suffix = s[-1]
 		s = s.substr(0, s.length()-1)
 	s = util.sToCommaSepStr(s)
-	numLabel.setText(preunit + s + postfix)
+	numLabel.setText(preunit + s + suffix)
 
 
 	
@@ -82,14 +82,14 @@ func _onButtonPressed(s):
 				return
 			if usrtext.length() > 0 and usrtext[-1] in ['k', 'M']:
 				return
-			if usrtext.length() == 0 and s in ['k', 'M']:
+			if usrtext.length() == 0 and s in ['k', 'M', '0']:
 				return
 			usrtext += s
 	_updateDispText()
 
 
 func _setupAndShow(start, maxval, preunit, text, verb):
-	usrtext = start as String
+	usrtext = '' if start==0 else start as String
 	self.preunit = preunit
 	self.maxval = maxval
 	textLabel.setText(text)
@@ -99,7 +99,7 @@ func _setupAndShow(start, maxval, preunit, text, verb):
 
 
 func _on_okayButton_pressed():
-	pass # Replace with function body.
+	pass
 
 
 func _on_cancelButton_pressed():

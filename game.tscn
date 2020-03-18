@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://textUI_theme.tres" type="Theme" id=1]
 [ext_resource path="res://game.gd" type="Script" id=2]
@@ -9,10 +9,8 @@
 [ext_resource path="res://tuiJetPopup.tscn" type="PackedScene" id=7]
 [ext_resource path="res://tui/tuiMsgPopup.tscn" type="PackedScene" id=8]
 [ext_resource path="res://tui/tuiChoicePopup.tscn" type="PackedScene" id=9]
-[ext_resource path="res://loansharkPopup.tscn" type="PackedScene" id=10]
 [ext_resource path="res://chooseBuySellPopup.tscn" type="PackedScene" id=11]
-[ext_resource path="res://buySellDropPopup.tscn" type="PackedScene" id=12]
-[ext_resource path="res://bankPopup.tscn" type="PackedScene" id=13]
+[ext_resource path="res://tui/tuiBankPopup.tscn" type="PackedScene" id=12]
 [ext_resource path="res://bankChoosePopup.tscn" type="PackedScene" id=14]
 [ext_resource path="res://gunStorePopup.tscn" type="PackedScene" id=15]
 [ext_resource path="res://highscoresPopup.tscn" type="PackedScene" id=16]
@@ -21,6 +19,7 @@
 [ext_resource path="res://tui/tuiVBox.tscn" type="PackedScene" id=19]
 [ext_resource path="res://tui/tuiNumEnter.tscn" type="PackedScene" id=20]
 [ext_resource path="res://tui/tuiBuySellDropPopup.tscn" type="PackedScene" id=21]
+[ext_resource path="res://tui/tuiLoansharkPopup.tscn" type="PackedScene" id=22]
 
 [node name="Game" type="Control"]
 anchor_right = 1.0
@@ -75,7 +74,7 @@ visible = false
 [node name="tuiChoicePopup" parent="." instance=ExtResource( 9 )]
 visible = false
 
-[node name="loansharkPopup" parent="." instance=ExtResource( 10 )]
+[node name="loansharkPopup" parent="." instance=ExtResource( 22 )]
 visible = false
 
 [node name="chooseBuySellPopup" parent="." instance=ExtResource( 11 )]
@@ -84,10 +83,7 @@ visible = false
 [node name="buySellDropPopup" parent="." instance=ExtResource( 21 )]
 visible = false
 
-[node name="buySellDropPopup_old" parent="." instance=ExtResource( 12 )]
-visible = false
-
-[node name="bankPopup" parent="." instance=ExtResource( 13 )]
+[node name="bankPopup" parent="." instance=ExtResource( 12 )]
 visible = false
 
 [node name="bankChoosePopup" parent="." instance=ExtResource( 14 )]
@@ -119,7 +115,6 @@ __meta__ = {
 [connection signal="buyPressed" from="chooseBuySellPopup" to="." method="_on_chooseBuySellPopup_buyPressed"]
 [connection signal="sellPressed" from="chooseBuySellPopup" to="." method="_on_chooseBuySellPopup_sellPressed"]
 [connection signal="done" from="buySellDropPopup" to="." method="_on_popupDone"]
-[connection signal="done" from="buySellDropPopup_old" to="." method="_on_popupDone"]
 [connection signal="done" from="bankPopup" to="." method="_on_popupDone"]
 [connection signal="despositPressed" from="bankChoosePopup" to="." method="_on_bankChoosePopup_despositPressed"]
 [connection signal="withdrawPressed" from="bankChoosePopup" to="." method="_on_bankChoosePopup_withdrawPressed"]
