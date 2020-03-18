@@ -22,7 +22,7 @@ var dataGrid := []
 
 var font : Font = load("res://FixedSys24.tres")
 
-var activeSubtree = null
+var _activeSubtreeStack = []
 
 var _lastPressOwner = null
 var _mouseCCoordOwner = null
@@ -167,14 +167,22 @@ func registerElement(elem):
 	elem.connect("draw", TUI, "onNeedRedraw") 
 	elem.connect("visibility_changed", TUI, "onNeedRedraw") 
 
+func pushActiveSubtree(node):
+	if _activeSubtreeStack.size() > 0 and _activeSubtreeStack[-1] == node:
+		return
+	_activeSubtreeStack.push_back(node)
+
+func popActiveSubtree():
+	return _activeSubtreeStack.pop_back()
+
 
 func _inActiveSubtree(node):
-	if activeSubtree == null:
+	if _activeSubtreeStack.size() == 0:
 		return true
 	while true:
 		if node == null:
 			return false
-		if node == activeSubtree:
+		if node == _activeSubtreeStack[-1]:
 			return true
 		node = node.get_parent()
 

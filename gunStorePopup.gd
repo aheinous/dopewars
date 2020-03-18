@@ -1,23 +1,17 @@
-extends CenterContainer
+extends "res://tui/tuiPopup.gd"
 
-onready var list = $PanelContainer/VBoxContainer/gunList
+onready var list = $Panel/VBoxContainer/gunList
 onready var chooseBuySellPopup = $chooseBuySellPopup
-
-signal done
-
-
-func _ready():
-	hide()
 
 
 func setupAndShow():
 	list.populate()
-	show()
+	_showPopup()
+
 
 func _on_leaveButton_pressed():
 	gameModel.leaveGunStore()
-	emit_signal("done")
-	hide()
+	_hidePopup()
 
 
 func buy(gunName):
@@ -40,6 +34,7 @@ func _on_gunList_itemButtonPressed(gunName):
 
 func _on_chooseBuySellPopup_buyPressed(gun):
 	buy(gun)
+
 
 func _on_chooseBuySellPopup_sellPressed(gun):
 	sell(gun)

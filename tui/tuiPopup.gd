@@ -5,17 +5,11 @@ signal done
 onready var panel = $Panel
 
 func _showPopup():
-	TUI.activeSubtree = self
+	TUI.pushActiveSubtree(self)
 	show()
 
 
 func _hidePopup():
-	TUI.activeSubtree = null
+	TUI.popActiveSubtree()
 	hide()
 	emit_signal("done")
-
-
-
-# func _on_tuiPopup_resized():
-# 	# panel.recenter()
-# 	refresh()

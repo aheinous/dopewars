@@ -1,6 +1,6 @@
 extends "res://tui/tuiElement.gd"
 
-var text = 'default' setget setText
+export var text = 'default' setget setText
 
 export var numColumns : int = 50
 

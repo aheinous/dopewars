@@ -57,10 +57,6 @@ func _onChildCharSizeChanged():
 
 
 func _onRefresh():
-#	# if get_path() as String == "/root/Game/MarginContainer/tuiVBox":
-#	# 	print('here')
-#	# print(get_path())
-	
 	refreshCharSize(false)
 
 	var szNeeded = _hvVector(getMinCharSize())
@@ -98,10 +94,11 @@ func getMinCharSize():
 	for child in get_children():
 		if child.is_queued_for_deletion():
 			continue
-		var childSz = _hvVector(child.getMinCharSize())
 		if first:
 			first = false
+		else:
 			minSz.packedDir += spacing
+		var childSz = _hvVector(child.getMinCharSize())
 		minSz.tanDir = max(minSz.tanDir, childSz.tanDir)
 		minSz.packedDir += childSz.packedDir
 	return minSz.vec2()

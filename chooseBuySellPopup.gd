@@ -13,8 +13,8 @@ func setupAndShow(item):
 
 func _on_buttonA_pressed():
 	emit_signal("buyPressed", item)
-	hide()
+	_hidePopup()
 
 func _on_buttonB_pressed():
 	emit_signal("sellPressed", item)
-	hide()
+	_hidePopup()
