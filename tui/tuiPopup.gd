@@ -7,6 +7,7 @@ onready var panel = $Panel
 func _showPopup():
 	TUI.pushActiveSubtree(self)
 	show()
+	refresh()
 
 
 func _hidePopup():

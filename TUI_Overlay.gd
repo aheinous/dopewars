@@ -4,7 +4,7 @@ extends Control
 const DEBUG_PRINT = false
 
 enum DrawMode {BOTH, GUI_ONLY, TUI_ONLY}
-var drawMode = DrawMode.BOTH
+var drawMode = DrawMode.TUI_ONLY
 var _lastMouseCCoords = null
 
 func _ready():

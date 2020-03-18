@@ -1,0 +1,47 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://tui/tuiNumEnter.gd" type="Script" id=1]
+[ext_resource path="res://tui/tuiVBox.tscn" type="PackedScene" id=2]
+[ext_resource path="res://tui/tuiPanel.tscn" type="PackedScene" id=3]
+[ext_resource path="res://tui/tuiLabel.tscn" type="PackedScene" id=4]
+[ext_resource path="res://tui/tuiHBox.tscn" type="PackedScene" id=5]
+[ext_resource path="res://tui/tuiVBox.gd" type="Script" id=6]
+[ext_resource path="res://tui/tuiButton_pure.tscn" type="PackedScene" id=7]
+
+[node name="tuiNumEnter" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" parent="." instance=ExtResource( 3 )]
+
+[node name="tuiVBox" parent="Panel" instance=ExtResource( 2 )]
+spacing = 1
+
+[node name="tuiVBox" parent="Panel/tuiVBox" instance=ExtResource( 2 )]
+
+[node name="tuiLabel" parent="Panel/tuiVBox/tuiVBox" instance=ExtResource( 4 )]
+text = "How much?"
+
+[node name="Panel" parent="Panel/tuiVBox/tuiVBox" instance=ExtResource( 3 )]
+
+[node name="tuiLabel" parent="Panel/tuiVBox/tuiVBox/Panel" instance=ExtResource( 4 )]
+text = "$500k"
+
+[node name="buttonGrid" parent="Panel/tuiVBox/tuiVBox" instance=ExtResource( 5 )]
+script = ExtResource( 6 )
+
+[node name="tuiHBox" parent="Panel/tuiVBox" instance=ExtResource( 5 )]
+alignment = 1
+spacing = 1
+
+[node name="cancelButton" parent="Panel/tuiVBox/tuiHBox" instance=ExtResource( 7 )]
+text = "Cancel"
+
+[node name="okayButton" parent="Panel/tuiVBox/tuiHBox" instance=ExtResource( 7 )]
+text = "Okay"
+[connection signal="pressed" from="Panel/tuiVBox/tuiHBox/cancelButton" to="." method="_on_cancelButton_pressed"]
+[connection signal="pressed" from="Panel/tuiVBox/tuiHBox/okayButton" to="." method="_on_okayButton_pressed"]

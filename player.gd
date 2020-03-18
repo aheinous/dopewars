@@ -13,7 +13,7 @@ var drugCounts := {}
 
 func _init(rng):
 	self.rng = rng
-	cash = 2000
+	cash = 2000000
 	numAccomplices = 8
 
 func _getName():

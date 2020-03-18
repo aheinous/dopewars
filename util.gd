@@ -67,8 +67,12 @@ static func isNAN(x):
 	return x != x
 
 
-static func toCommaSepStr(number):
-	var string = str(number)
+static func toCommaSepStr(number : int):
+	return sToCommaSepStr(str(number))
+
+
+
+static func sToCommaSepStr(string : String):
 	var mod = string.length() % 3
 	var res = ""
 

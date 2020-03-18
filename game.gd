@@ -135,3 +135,4 @@ func _on_bankChoosePopup_withdrawPressed():
 func _on_bankChoosePopup_despositPressed():
 	bankPopup.setupAndShow("Deposit")
 
+

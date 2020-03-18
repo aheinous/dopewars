@@ -41,3 +41,4 @@ func getMinCharSize():
 func is_disabled():
 	return disabled
 
+

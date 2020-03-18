@@ -561,7 +561,9 @@ func _possibleCopsOfferOrEvent():
 	elif i < 50:
 		_randomEvent()
 	else:
-		_startCopFight()
+		# TODO: uncomment
+#		_startCopFight()
+		pass
 
 
 func totalMoney():
