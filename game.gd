@@ -136,3 +136,5 @@ func _on_bankChoosePopup_despositPressed():
 	bankPopup.setupAndShow("Deposit")
 
 
+func _on_bankChoosePopup_cancelPressed():
+	gameModel.leaveBank()
