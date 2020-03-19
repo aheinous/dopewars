@@ -36,6 +36,7 @@ func _ready():
 			row.add_child(button)
 			button.connect("pressed", self, "_onButtonPressed", 
 					[syms[rowNum][colNum].strip_edges()])
+	numLabel.numColumns = maxchars + preunit.length()
 			
 
 func getValue():
@@ -53,7 +54,7 @@ func getValue():
 			val *= 1000
 		'M':
 			val *= (1000*1000)
-	return min(val, maxval)
+	return val
 
 
 func _updateDispText():
@@ -86,6 +87,7 @@ func _onButtonPressed(s):
 				return
 			usrtext += s
 	_updateDispText()
+	okayButton.disabled = getValue() > maxval
 
 
 func _setupAndShow(start, maxval, preunit, text, verb):
@@ -104,3 +106,28 @@ func _on_okayButton_pressed():
 
 func _on_cancelButton_pressed():
 	_hidePopup()
+
+
+func _input(event):
+	if not is_visible_in_tree() or not TUI._inActiveSubtree(self):
+		return
+	if event is InputEventKey and event.pressed:
+#		print('focus:', is_visible_in_tree(), has_focus(), TUI._inActiveSubtree(self))
+		print('key press: ', event.scancode)
+		var sc = event.scancode
+		var s = ''
+		if sc >= KEY_0 and sc <= KEY_9: 
+			s = OS.get_scancode_string(sc)
+		elif sc >= KEY_KP_0 and sc <= KEY_KP_9: 
+			s = OS.get_scancode_string(sc)	
+		elif sc == KEY_K:
+			s = 'k'
+		elif sc == KEY_M:
+			s = 'M'
+		elif sc == KEY_BACKSPACE:
+			s = '<-'
+
+		print('s: "', s , '"')
+		if s.length() > 0:
+			_onButtonPressed(s)
+			refresh()

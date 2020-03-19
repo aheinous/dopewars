@@ -4,7 +4,7 @@ export var text = 'default' setget setText
 
 export var numColumns : int = 50
 
-enum Mode {LEFT_ALIGNED, CENTERED, SKINNY_BUTTON, PLAIN}
+enum Mode {LEFT_ALIGNED, CENTERED, RIGHT_ALIGNED, SKINNY_BUTTON, PLAIN}
 export (Mode) var mode = Mode.LEFT_ALIGNED
 
 func _ready():
@@ -31,6 +31,8 @@ func _formatText(size):
 			return util.centeredStr(size, _wrappedText())
 		Mode.PLAIN:
 			return text
+		Mode.RIGHT_ALIGNED:
+			return util.lpad_chars(max(numColumns, size.x), text)
 		_:
 			assert(false)
 
@@ -41,4 +43,6 @@ func _wrappedText():
 
 
 func getMinCharSize():
+	if get_path() as String == '/root/Game/buySellDropPopup/Panel/tuiVBox/tuiVBox/Panel/tuiLabel':
+		print('mcs: ', get_path())
 	return util.getCharSize(_formatText(Vector2.ZERO))

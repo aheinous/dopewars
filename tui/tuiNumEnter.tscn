@@ -30,6 +30,8 @@ text = "How much?"
 
 [node name="tuiLabel" parent="Panel/tuiVBox/tuiVBox/Panel" instance=ExtResource( 4 )]
 text = "$500k"
+numColumns = 2
+mode = 2
 
 [node name="buttonGrid" parent="Panel/tuiVBox/tuiVBox" instance=ExtResource( 5 )]
 script = ExtResource( 6 )
