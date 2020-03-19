@@ -241,6 +241,8 @@ func drawToTUI(owner, string):
 		if colnum >= nCols or linenum >= nLines:
 			# print("tui drawing offscreen")
 			continue
+		if colnum < 0 or linenum < 0:
+			continue
 		dataGrid[linenum][colnum].c = c
 		dataGrid[linenum][colnum].owner = owner
 		dataGrid[linenum][colnum].fg = color

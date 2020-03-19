@@ -43,6 +43,4 @@ func _wrappedText():
 
 
 func getMinCharSize():
-	if get_path() as String == '/root/Game/buySellDropPopup/Panel/tuiVBox/tuiVBox/Panel/tuiLabel':
-		print('mcs: ', get_path())
 	return util.getCharSize(_formatText(Vector2.ZERO))

@@ -44,6 +44,7 @@ spacing = 1
 margin_left = 320.0
 margin_right = 320.0
 margin_bottom = 25.0
+mode = 4
 
 [node name="drugList" type="Control" parent="tuiCenter/tuiVBox"]
 margin_left = 320.0
