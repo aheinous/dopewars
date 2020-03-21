@@ -24,6 +24,7 @@ const syms = [
 
 var preunit = ''
 var usrtext = ''
+var instaclear = true
 
 func _ready():
 	for rowNum in range(syms.size()):
@@ -76,6 +77,7 @@ func _onButtonPressed(s):
 	match s:
 		'Max':
 			usrtext = maxval as String
+			instaclear = true
 		'<-':
 			usrtext = usrtext.substr(0,usrtext.length()-1)
 		_:
@@ -83,9 +85,14 @@ func _onButtonPressed(s):
 				return
 			if usrtext.length() > 0 and usrtext[-1] in ['k', 'M']:
 				return
-			if usrtext.length() == 0 and s in ['k', 'M', '0']:
+			if (usrtext.length() == 0 or instaclear) and s in ['k', 'M', '0']:
 				return
-			usrtext += s
+			
+			if instaclear:
+				instaclear = false
+				usrtext = s
+			else:
+				usrtext += s
 	_updateDispText()
 	okayButton.disabled = getValue() > maxval
 
@@ -96,6 +103,7 @@ func _setupAndShow(start, maxval, preunit, text, verb):
 	self.maxval = maxval
 	textLabel.setText(text)
 	okayButton.text = verb
+	instaclear = true
 	_updateDispText()
 	_showPopup()
 
