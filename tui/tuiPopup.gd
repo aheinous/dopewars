@@ -10,7 +10,8 @@ func _showPopup():
 	refresh()
 
 
-func _hidePopup():
+func _hidePopup(emitDone = true):
 	TUI.popActiveSubtree()
 	hide()
-	emit_signal("done")
+	if emitDone:
+		emit_signal("done")
