@@ -77,6 +77,8 @@ func _onRefresh():
 	for child in get_children():
 		if child.is_queued_for_deletion():
 			continue
+		if not child.is_visible_in_tree():
+			continue
 		child.setCharPos(pos.vec2())
 		if _orientation == HORIZONTAL:
 			child.setCharHeight(selfSize.tanDir)
@@ -93,6 +95,8 @@ func getMinCharSize():
 
 	for child in get_children():
 		if child.is_queued_for_deletion():
+			continue
+		if not child.is_visible_in_tree():
 			continue
 		if first:
 			first = false

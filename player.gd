@@ -46,7 +46,7 @@ class _InvetoryItem:
 		var counts = player.gunCounts if type == ItemType.GUN else player.drugCounts
 		counts[itemName] -= 1
 		if counts[itemName] == 0:
-			counts.earse(itemName)		
+			counts.erase(itemName)		
 		player.availSpace += space
 		self.dropped = true
 			

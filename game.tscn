@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://textUI_theme.tres" type="Theme" id=1]
 [ext_resource path="res://game.gd" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://tuiJetPopup.tscn" type="PackedScene" id=7]
 [ext_resource path="res://tui/tuiMsgPopup.tscn" type="PackedScene" id=8]
 [ext_resource path="res://tui/tuiChoicePopup.tscn" type="PackedScene" id=9]
+[ext_resource path="res://tui/tuiFightPopup.tscn" type="PackedScene" id=10]
 [ext_resource path="res://chooseBuySellPopup.tscn" type="PackedScene" id=11]
 [ext_resource path="res://tui/tuiBankPopup.tscn" type="PackedScene" id=12]
 [ext_resource path="res://bankChoosePopup.tscn" type="PackedScene" id=14]
@@ -96,7 +97,15 @@ visible = false
 [node name="highscoresPopup" parent="." instance=ExtResource( 16 )]
 visible = false
 
-[node name="fightPopup" parent="." instance=ExtResource( 17 )]
+[node name="fightPopup" parent="." instance=ExtResource( 10 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 320.0
+margin_top = 480.0
+margin_right = 320.0
+margin_bottom = 480.0
+
+[node name="fightPopup_old" parent="." instance=ExtResource( 17 )]
 
 [node name="TUI_Overlay" type="Control" parent="."]
 anchor_right = 1.0
@@ -124,3 +133,4 @@ __meta__ = {
 [connection signal="done" from="gunStorePopup" to="." method="_on_popupDone"]
 [connection signal="done" from="highscoresPopup" to="." method="_on_popupDone"]
 [connection signal="done" from="fightPopup" to="." method="_on_popupDone"]
+[connection signal="done" from="fightPopup_old" to="." method="_on_popupDone"]

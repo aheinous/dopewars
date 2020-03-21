@@ -1,0 +1,32 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://tui/tuiFightPopup.gd" type="Script" id=1]
+[ext_resource path="res://tui/tuiVBox.tscn" type="PackedScene" id=2]
+[ext_resource path="res://tui/tuiLabel.tscn" type="PackedScene" id=3]
+[ext_resource path="res://tui/tuiPanel.tscn" type="PackedScene" id=4]
+[ext_resource path="res://tui/tuiButton_pure.tscn" type="PackedScene" id=5]
+[ext_resource path="res://tui/tuiHBox.tscn" type="PackedScene" id=6]
+
+[node name="fightPopup" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" parent="." instance=ExtResource( 4 )]
+
+[node name="tuiVBox" parent="Panel" instance=ExtResource( 2 )]
+
+[node name="text" parent="Panel/tuiVBox" instance=ExtResource( 3 )]
+
+[node name="tuiHBox" parent="Panel/tuiVBox" instance=ExtResource( 6 )]
+alignment = 1
+spacing = 1
+
+[node name="StandFightButton" parent="Panel/tuiVBox/tuiHBox" instance=ExtResource( 5 )]
+
+[node name="RunDealDrugsButton" parent="Panel/tuiVBox/tuiHBox" instance=ExtResource( 5 )]
+[connection signal="pressed" from="Panel/tuiVBox/tuiHBox/StandFightButton" to="." method="_on_StandFightButton_pressed"]
+[connection signal="pressed" from="Panel/tuiVBox/tuiHBox/RunDealDrugsButton" to="." method="_on_RunDealDrugsButton_pressed"]
