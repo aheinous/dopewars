@@ -2,7 +2,7 @@
 
 [ext_resource path="res://tui/tuiFightPopup.gd" type="Script" id=1]
 [ext_resource path="res://tui/tuiVBox.tscn" type="PackedScene" id=2]
-[ext_resource path="res://tui/tuiLabel.tscn" type="PackedScene" id=3]
+[ext_resource path="res://tui/tuiLabel_pure.tscn" type="PackedScene" id=3]
 [ext_resource path="res://tui/tuiPanel.tscn" type="PackedScene" id=4]
 [ext_resource path="res://tui/tuiButton_pure.tscn" type="PackedScene" id=5]
 [ext_resource path="res://tui/tuiHBox.tscn" type="PackedScene" id=6]
