@@ -172,8 +172,11 @@ func pushActiveSubtree(node):
 		return
 	_activeSubtreeStack.push_back(node)
 
-func popActiveSubtree():
-	return _activeSubtreeStack.pop_back()
+func popActiveSubtree(node):
+	var idx = _activeSubtreeStack.find_last(node)
+	assert(idx != -1)
+	_activeSubtreeStack.remove(idx)
+
 
 
 func _inActiveSubtree(node):
