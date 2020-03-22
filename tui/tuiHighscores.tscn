@@ -1,0 +1,27 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://tui/tuiPopup.tscn" type="PackedScene" id=1]
+[ext_resource path="res://tui/tuiButton_pure.tscn" type="PackedScene" id=2]
+[ext_resource path="res://tui/tuiLabel_pure.tscn" type="PackedScene" id=3]
+[ext_resource path="res://tui/tuiHighscores.gd" type="Script" id=4]
+[ext_resource path="res://tui/tuiVBox.tscn" type="PackedScene" id=5]
+[ext_resource path="res://tui/tuiHBox.tscn" type="PackedScene" id=6]
+
+[node name="tuiHighscores" instance=ExtResource( 1 )]
+script = ExtResource( 4 )
+
+[node name="tuiVBox" parent="Panel" index="0" instance=ExtResource( 5 )]
+
+[node name="title" parent="Panel/tuiVBox" index="0" instance=ExtResource( 3 )]
+text = "-- HIGHSCORES --"
+mode = 1
+
+[node name="tuiHBox" parent="Panel/tuiVBox" index="1" instance=ExtResource( 6 )]
+alignment = 1
+
+[node name="scores" parent="Panel/tuiVBox/tuiHBox" index="0" instance=ExtResource( 3 )]
+mode = 4
+
+[node name="restartButton" parent="Panel/tuiVBox" index="2" instance=ExtResource( 2 )]
+text = "New Game"
+[connection signal="pressed" from="Panel/tuiVBox/restartButton" to="." method="_on_restartButton_pressed"]

@@ -1,8 +1,6 @@
-extends CenterContainer
+extends "res://tui/tuiPopup.gd"
 
-onready var scores = $PanelContainer/VBoxContainer/scores
-
-signal done
+onready var scores = $Panel/tuiVBox/tuiHBox/scores
 
 
 func _ready():
@@ -10,7 +8,6 @@ func _ready():
 
 func setupAndShow():
 	var s = ""
-	var font = scores.get_font("font")
 	var scoreStrs = []
 	var markerStrs = []
 	for i in range(gameModel.highscores.size()-1):
@@ -19,11 +16,10 @@ func setupAndShow():
 		scoreStrs.append(util.toCommaSepStr(gameModel.highscores[i]))
 		markerStrs.append(" *" if i == gameModel.highscoreIndex else "")
 
-	scores.text = util.lpadColumnStr(font, [scoreStrs, markerStrs])
-	show()
+	scores.text = util.lpadColumnStr([scoreStrs, markerStrs])
+	_showPopup()
 
 
 func _on_restartButton_pressed():
 	gameModel.reset()
-	hide()
-	emit_signal("done")
+	_hidePopup()

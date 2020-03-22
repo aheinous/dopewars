@@ -43,14 +43,13 @@ static func rpad_chars(tgt_width, s):
 	return s + nSpaces(tgt_width - s.length())
 
 
-static func lpadColumnStr(font, cols):
+static func lpadColumnStr(cols):
 	for col in cols:
 		var colWidth = 0
 		for s in col:
-			print(colWidth, ", " ,s,", ", font, ", ",font.get_string_size(s))
-			colWidth = max(colWidth, font.get_string_size(s).x)
+			colWidth = max(colWidth, s.length())
 		for i in range(col.size()):
-			col[i] = lpad_pixels(font, colWidth, col[i])
+			col[i] = lpad_chars(colWidth, col[i])
 
 	var output = ""
 	for rowIdx in range(cols[0].size()):

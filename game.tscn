@@ -12,9 +12,9 @@
 [ext_resource path="res://tui/tuiFightPopup.tscn" type="PackedScene" id=10]
 [ext_resource path="res://chooseBuySellPopup.tscn" type="PackedScene" id=11]
 [ext_resource path="res://tui/tuiBankPopup.tscn" type="PackedScene" id=12]
+[ext_resource path="res://tui/tuiHighscores.tscn" type="PackedScene" id=13]
 [ext_resource path="res://bankChoosePopup.tscn" type="PackedScene" id=14]
 [ext_resource path="res://gunStorePopup.tscn" type="PackedScene" id=15]
-[ext_resource path="res://highscoresPopup.tscn" type="PackedScene" id=16]
 [ext_resource path="res://TUI_Overlay.gd" type="Script" id=18]
 [ext_resource path="res://tui/tuiVBox.tscn" type="PackedScene" id=19]
 [ext_resource path="res://tui/tuiNumEnter.tscn" type="PackedScene" id=20]
@@ -93,8 +93,13 @@ visible = false
 [node name="gunStorePopup" parent="." instance=ExtResource( 15 )]
 visible = false
 
-[node name="highscoresPopup" parent="." instance=ExtResource( 16 )]
-visible = false
+[node name="highscoresPopup" parent="." instance=ExtResource( 13 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 320.0
+margin_top = 480.0
+margin_right = 320.0
+margin_bottom = 480.0
 
 [node name="fightPopup" parent="." instance=ExtResource( 10 )]
 anchor_right = 0.0
