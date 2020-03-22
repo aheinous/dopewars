@@ -28,6 +28,7 @@ spacing = 1
 [node name="Panel" parent="Panel/tuiVBox/tuiVBox" instance=ExtResource( 3 )]
 
 [node name="tuiLabel" parent="Panel/tuiVBox/tuiVBox/Panel" instance=ExtResource( 4 )]
+mode = 2
 
 [node name="buttonGrid" parent="Panel/tuiVBox/tuiVBox" instance=ExtResource( 5 )]
 script = ExtResource( 6 )
