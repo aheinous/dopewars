@@ -19,6 +19,10 @@ __meta__ = {
 
 [node name="tuiVBox" parent="Panel" instance=ExtResource( 2 )]
 
+[node name="titleText" parent="Panel/tuiVBox" instance=ExtResource( 3 )]
+text = "-- Fight --"
+mode = 1
+
 [node name="text" parent="Panel/tuiVBox" instance=ExtResource( 3 )]
 
 [node name="tuiHBox" parent="Panel/tuiVBox" instance=ExtResource( 6 )]
