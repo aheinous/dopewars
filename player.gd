@@ -39,7 +39,12 @@ class _InvetoryItem:
 		self.dropped = false
 
 	func toStr():
-		return 'Item:[%s, %s, %s, %s]' % ["GUN" if self.type==ItemType.GUN else "DRUG", self.itemName, self.space, "dropped" if self.dropped else "not dropped"]
+		return 'Item:[%s, %s, %s, %s]' % [
+			"GUN" if self.type==ItemType.GUN else "DRUG", 
+			self.itemName, 
+			self.space, 
+			"dropped" if self.dropped else "not dropped"
+		]
 
 
 	func drop(player):
