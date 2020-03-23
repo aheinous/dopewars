@@ -561,8 +561,7 @@ func _possibleCopsOfferOrEvent():
 	elif i < 50:
 		_randomEvent()
 	else:
-		# TODO: uncomment
-#		_startCopFight()
+		_startCopFight()
 		pass
 
 
