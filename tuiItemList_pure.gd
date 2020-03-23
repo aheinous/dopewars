@@ -43,7 +43,7 @@ func _addButton(item, colWidths):
 	button.setText ("%s %s %s" % [
 								util.rpad_chars(colWidths[0], item.itemName),
 								util.lpad_chars(colWidths[1],
-									"$"+util.toCommaSepStr(item.price) if item.price != -1 else "Ain't here"),
+									"$"+util.toCommaSepStr(item.price) if item.price != -1 else "Not here"),
 								util.lpad_chars(colWidths[2], str(item.quantity))
 								])
 	button.setHalfButton(true)
