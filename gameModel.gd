@@ -570,6 +570,7 @@ func totalMoney():
 
 
 func _ready():
+	_loadHighscores()
 	reset()
 
 func curState():
@@ -585,6 +586,7 @@ func places():
 
 
 func reset():
+
 	_rng = RandomNumberGenerator.new()
 	_rng.randomize()
 	
@@ -603,37 +605,54 @@ func reset():
 
 
 
-var highscores = [
-	10000000,
-	1000000,
-	100000,
-	10000,
-	1000,
-	100,
-	10,
-	1,
-]
+var highscores
 
 var highscoreIndex = -1
 
+const SAVEPATH = "user://highscores.save"
+const MAX_HIGHSCORE_COUNT = 20
+
+func _loadHighscores():
+	var saveFile = File.new()
+	if saveFile.file_exists(SAVEPATH):
+		saveFile.open(SAVEPATH, File.READ)
+		highscores = parse_json(saveFile.get_line())
+	else:
+		print('savefile not found. loading default scores')
+		highscores = []
+	printHighscores()
+
+func _saveHighscores():
+#	print('saving highscores')
+	var saveFile = File.new()
+	saveFile.open("user://highscores.save", File.WRITE)
+	var s = to_json(highscores)
+	print('savefile: "%s"' % s)
+	saveFile.store_line(s)
+	saveFile.close()
+
 
 func _insertScoreAt(i, score):
-	highscores.insert(i, score)
+	print('insert score %s at %s' % [score, i])
+	if i == highscores.size():
+		highscores.append(score)
+	else:
+		highscores.insert(i, score)
 	highscoreIndex = i
+	if highscores.size() > MAX_HIGHSCORE_COUNT:
+		highscores = highscores.slice(0, MAX_HIGHSCORE_COUNT-1)
+	_saveHighscores()
 	printHighscores()
 
 func _addHighscore(score):
-	if highscores.size() == 0:
-		_insertScoreAt(0, score)
-		return
-	for i in range(highscores.size()-1):
+	for i in range(highscores.size()):
 		if score >= highscores[i]:
 			_insertScoreAt(i, score)
 			return
-	_insertScoreAt(highscores.size()-1, score)
+	_insertScoreAt(highscores.size(), score)
 
 
 func printHighscores():
 	print("HIGHSCORES:")
-	for i in range(highscores.size()-1):
+	for i in range(highscores.size()):
 		print("\t%s %10s" % ["*" if i==highscoreIndex else " ", highscores[i]])
