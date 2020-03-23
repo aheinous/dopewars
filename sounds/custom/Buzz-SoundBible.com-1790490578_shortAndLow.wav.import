@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Buzz-SoundBible.com-1790490578_shortAndLow.wav-c65d724c598b1af5aca0ff9d096cfe09.sample"
+
+[deps]
+
+source_file="res://sounds/custom/Buzz-SoundBible.com-1790490578_shortAndLow.wav"
+dest_files=[ "res://.import/Buzz-SoundBible.com-1790490578_shortAndLow.wav-c65d724c598b1af5aca0ff9d096cfe09.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=true
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

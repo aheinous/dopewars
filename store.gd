@@ -8,11 +8,13 @@ class StoreItem:
 	var itemName : String
 	var price : int
 	var quantity : int
+	var enabled : bool
 
-	func _init(itemName, price, quantity):
+	func _init(itemName, price, quantity, enabled):
 		self.itemName = itemName
 		self.price = price
 		self.quantity = quantity
+		self.enabled = enabled
 
 
 
@@ -112,7 +114,12 @@ func itemsHere(preferedOrder):
 	var items = []
 	for itemName in preferedOrder:
 		if itemName in _itemPrices:
-			items.append(StoreItem.new(itemName, price(itemName), numHave(itemName)))
+			items.append(StoreItem.new(
+					itemName, 
+					price(itemName), 
+					numHave(itemName), 
+					canBuy(itemName) or canSell(itemName)
+			))
 	return items
 
 
@@ -120,7 +127,12 @@ func itemsOwnedAndNotHere(preferedOrder):
 	var items = []
 	for itemName in preferedOrder:
 		if itemName in _ownedQuantities and not itemName in _itemPrices:
-			items.append(StoreItem.new(itemName, price(itemName), numHave(itemName)))
+			items.append(StoreItem.new(
+					itemName, 
+					price(itemName), 
+					numHave(itemName), 
+					canBuy(itemName) or canSell(itemName)
+			))
 	return items
 
 

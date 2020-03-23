@@ -5,25 +5,32 @@ export var disabled := false
 export var text := 'default'
 signal pressed
 
+export var errorOnPress := false
 
 #onready var blipSound = $'blipSound'
 #onready var bee = $'blipSound'
 
 
-enum Sounds {blip, beep}
+enum Sounds {none, blip, beep, train, error}
 
 export (Sounds) var sound = Sounds.blip
 
 onready var _sounds = {
 	Sounds.blip : $blipSound,
-	Sounds.beep : $beepSound
+	Sounds.beep : $beepSound,
+	Sounds.train : $trainSound,
+	Sounds.error : $errorSound
 } 
 
 
 
 func _onSelfPressed():
 	print('button "', text, '" pressed')
-	_sounds[sound].play()
+	if errorOnPress:
+		_sounds[Sounds.error].play()
+	else:
+		if sound != Sounds.none:
+			_sounds[sound].play()
 
 func _ready():
 	TUI.registerElement(self)

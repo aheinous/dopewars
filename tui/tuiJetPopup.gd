@@ -15,6 +15,7 @@ func _ready():
 		button.text = place
 		vbox.add_child(button)
 		button.connect("pressed", self, "onPlaceButtonPressed", [place])
+		button.sound = button.Sounds.train
 		placeButtons.append(button)
 	var spacer = TUILabel.instance()
 	vbox.add_child(spacer)
