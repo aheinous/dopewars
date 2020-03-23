@@ -2,7 +2,7 @@
 
 [ext_resource path="res://listChoosePopup.gd" type="Script" id=1]
 [ext_resource path="res://tui/tuiLabel_pure.gd" type="Script" id=2]
-[ext_resource path="res://tui/tuiButton_pure.gd" type="Script" id=3]
+[ext_resource path="res://tui/tuiButton_pure.tscn" type="PackedScene" id=3]
 [ext_resource path="res://tui/tuiVBox.gd" type="Script" id=4]
 [ext_resource path="res://tui/tuiPanel.gd" type="Script" id=6]
 
@@ -35,35 +35,15 @@ margin_top = 24.0
 margin_right = 98.0
 margin_bottom = 116.0
 script = ExtResource( 4 )
-
-[node name="buttonA" type="Control" parent="Panel/VBoxContainer/HBoxContainer"]
-margin_right = 98.0
-margin_bottom = 20.0
-grow_horizontal = 2
-size_flags_horizontal = 3
-script = ExtResource( 3 )
-
-[node name="buttonB" type="Control" parent="Panel/VBoxContainer/HBoxContainer"]
-margin_top = 36.0
-margin_right = 98.0
-margin_bottom = 56.0
-grow_horizontal = 2
-size_flags_horizontal = 3
-script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="cancelButton" type="Control" parent="Panel/VBoxContainer/HBoxContainer"]
-margin_top = 72.0
-margin_right = 98.0
-margin_bottom = 92.0
-grow_horizontal = 2
-size_flags_horizontal = 3
-script = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="buttonA" parent="Panel/VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
+
+[node name="buttonB" parent="Panel/VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
+
+[node name="cancelButton" parent="Panel/VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
 text = "Cancel"
 [connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/buttonA" to="." method="_on_buttonA_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/buttonB" to="." method="_on_buttonB_pressed"]

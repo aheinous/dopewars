@@ -4,7 +4,7 @@
 [ext_resource path="res://gunList.gd" type="Script" id=2]
 [ext_resource path="res://chooseBuySellPopup.tscn" type="PackedScene" id=3]
 [ext_resource path="res://tui/tuiLabel_pure.gd" type="Script" id=4]
-[ext_resource path="res://tui/tuiButton_pure.gd" type="Script" id=5]
+[ext_resource path="res://tui/tuiButton_pure.tscn" type="PackedScene" id=5]
 [ext_resource path="res://tui/tuiVBox.gd" type="Script" id=6]
 [ext_resource path="res://tui/tuiPanel.gd" type="Script" id=7]
 
@@ -44,11 +44,7 @@ margin_right = 161.0
 margin_bottom = 34.0
 script = ExtResource( 2 )
 
-[node name="leaveButton" type="Control" parent="Panel/VBoxContainer"]
-margin_top = 54.0
-margin_right = 161.0
-margin_bottom = 74.0
-script = ExtResource( 5 )
+[node name="leaveButton" parent="Panel/VBoxContainer" instance=ExtResource( 5 )]
 text = "Leave"
 
 [node name="chooseBuySellPopup" parent="." instance=ExtResource( 3 )]
