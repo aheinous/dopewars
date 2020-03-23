@@ -118,16 +118,10 @@ func onNeedRedraw():
 			
 
 func _process(delta):
-	# print("_process()")
-	# if cWidth == 0:
-	# 	return
-
 	set_process(false)
-	# _redrawNeeded = false
 	
 	_clear()
 
-	# print("iterating children")
 	for child in _drawableElements():
 		child.tuiDraw(self)
 	if _overlay != null:
@@ -226,11 +220,6 @@ func drawToTUI(owner, string):
 	if _isDisabled(owner):
 		color = Colors["DISABLED"]
 
-	# var pressable = owner.has_user_signal("pressed") and _inActiveSubtree(owner) and not _isDisabled(owner)
-	# print("PRESSABLE:" , string, pressable, owner.has_user_signal("pressed"))
-	# if string == "Okay":
-	# 	print("...")
-
 	var pressable = _isPressable(owner)
 
 	# if owner.has_method("get_text"):
@@ -242,7 +231,6 @@ func drawToTUI(owner, string):
 			colnum = startcol
 			continue
 		if colnum >= nCols or linenum >= nLines:
-			# print("tui drawing offscreen")
 			continue
 		if colnum < 0 or linenum < 0:
 			continue
@@ -253,88 +241,3 @@ func drawToTUI(owner, string):
 
 		
 		colnum += 1
-
-
-# TODO remove
-func skinnyButtonStr(size, text=""):
-	var box_nCols = round(size.x as float / cWidth) as int
-	return "│" + util.lrpad_chars(box_nCols-2, text) + "│"
-
-	
-# TODO remove
-func centeredStr(size, text=""):
-	var box_nCols = round(size.x as float / cWidth) as int
-	return util.lrpad_chars(box_nCols, text) 
-
-	
-
-# TODO remove
-func boxString(size, text="", half=false):
-	var box_nCols = round(size.x as float / cWidth) as int
-	var box_nLines = round(size.y as float/ cHeight) as int
-	box_nCols = max(box_nCols, text.length() + 2)
-	box_nLines = max(box_nLines, 3)
-
-
-	var extraLines = box_nLines - 3
-	var extraLines_bottom = extraLines / 2
-	var extraLines_top = extraLines - extraLines_bottom
-
-
-	var s = "┌"
-	for _colnum in range(1, box_nCols-1):
-		s += "─"
-	s += "┐\n"
-
-	for _i in range(extraLines_top):
-		s += "│" + util.nSpaces(box_nCols-2) + "│\n"
-
-	s += "│" + util.lrpad_chars(box_nCols-2, text) + "│\n"
-
-	for _i in range(extraLines_bottom):
-		s += "│" + util.nSpaces(box_nCols-2) + "│\n"
-
-	if half:
-		return s.substr(0, s.length()-1)
-
-	s += "└"
-	for _colnum in range(1, box_nCols-1):
-		s += "─"
-	s += "┘"
-	return s
-
-
-# static func boxStringCS(size, text="", half=false):
-# 		var box_nCols : int = size.x
-# 		var box_nLines : int = size.y
-# 		box_nCols = max(box_nCols, text.length() + 2)
-# 		box_nLines = max(box_nLines, 3)
-	
-	
-# 		var extraLines = box_nLines - 3
-# 		var extraLines_bottom = extraLines / 2
-# 		var extraLines_top = extraLines - extraLines_bottom
-	
-	
-# 		var s = "┌"
-# 		for _colnum in range(1, box_nCols-1):
-# 			s += "─"
-# 		s += "┐\n"
-	
-# 		for _i in range(extraLines_top):
-# 			s += "│" + util.nSpaces(box_nCols-2) + "│\n"
-	
-# 		s += "│" + util.lrpad_chars(box_nCols-2, text) + "│\n"
-	
-# 		for _i in range(extraLines_bottom):
-# 			s += "│" + util.nSpaces(box_nCols-2) + "│\n"
-	
-# 		if half:
-# 			return s.substr(0, s.length()-1)
-	
-# 		s += "└"
-# 		for _colnum in range(1, box_nCols-1):
-# 			s += "─"
-# 		s += "┘"
-# 		return s
-	
