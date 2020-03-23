@@ -37,6 +37,7 @@ func _ready():
 			row.add_child(button)
 			button.connect("pressed", self, "_onButtonPressed", 
 					[syms[rowNum][colNum].strip_edges()])
+			button.sound = button.Sounds.beep
 	numLabel.numColumns = maxchars + preunit.length()
 			
 

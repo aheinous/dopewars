@@ -6,8 +6,24 @@ export var text := 'default'
 signal pressed
 
 
+#onready var blipSound = $'blipSound'
+#onready var bee = $'blipSound'
+
+
+enum Sounds {blip, beep}
+
+export (Sounds) var sound = Sounds.blip
+
+onready var _sounds = {
+	Sounds.blip : $blipSound,
+	Sounds.beep : $beepSound
+} 
+
+
+
 func _onSelfPressed():
 	print('button "', text, '" pressed')
+	_sounds[sound].play()
 
 func _ready():
 	TUI.registerElement(self)
