@@ -11,9 +11,11 @@ func setupAndShow():
 	var scoreStrs = []
 	var markerStrs = []
 	for i in range(gameModel.highscores.size()):
-#		s += util.lpad_pixels(font, 300, str(gameModel.highscores[i]))
-#		s += " *\n" if i == gameModel.highscoreIndex else "\n"
-		scoreStrs.append(util.toCommaSepStr(gameModel.highscores[i]))
+		var score = gameModel.highscores[i]
+		if score < 0:
+			scoreStrs.append('-$' + util.toCommaSepStr(-score))
+		else:
+			scoreStrs.append('$' + util.toCommaSepStr(score))
 		markerStrs.append(" *" if i == gameModel.highscoreIndex else "")
 
 	scores.text = util.lpadColumnStr([scoreStrs, markerStrs])
