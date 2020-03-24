@@ -66,6 +66,7 @@ func _playerAttacksCops():
 	if res == MoveRes.DEAD:
 		_fightOver = true
 		_player.copsKilled += 1
+		_turnRes.append(MoveRes.NONE)
 	else:
 		_copsAttackPlayer()
 
