@@ -1,6 +1,8 @@
 extends Node
 
 
+signal stateChanged(prev,cur)
+
 const Player = preload('player.gd')
 const Store = preload('store.gd')
 # const Cop = preload('cop.gd')
@@ -141,6 +143,9 @@ func fightOver():
 func copHealth():
 	return _copFight.copHealth()
 
+func fightTurnRes():
+	return _copFight.getTurnRes()
+
 
 func finishFight():
 	print("you chose to FINISH FIGHT.")
@@ -252,8 +257,8 @@ func jet(place):
 	_player.debt += ((_player.debt / 10) as int)
 	_player.bank += ((_player.bank / 20) as int)
 
-	_possibleSaying()
 	_possibleCopsOfferOrEvent()
+	_possibleSaying()
 
 	if place == "Ghetto":
 		_pushChoice("Would you like to visit Dan's House of Guns?", funcref(self, "visitGunStore"))
@@ -319,11 +324,19 @@ func chooseNo():
 
 
 func _setState(nextState):
+	var prevState = _curState
 	_curState = nextState
-	_maybeMsgQueueState()
-
+	_maybeMsgQueueState_proper()
+	emit_signal('stateChanged', prevState, _curState)
+	
 
 func _maybeMsgQueueState():
+	var prevState = _curState
+	_maybeMsgQueueState_proper()
+	emit_signal('stateChanged', prevState, _curState)
+
+
+func _maybeMsgQueueState_proper():
 	if _curState == State.DRUG_MENU and _queue.size() >= 1:
 		_curState = State.MSG_QUEUE
 	elif _curState == State.MSG_QUEUE and _queue.size() == 0:
@@ -331,6 +344,8 @@ func _maybeMsgQueueState():
 			_curState = State.HIGHSCORES
 		else:
 			_curState = State.DRUG_MENU
+
+	
 
 
 
@@ -547,6 +562,10 @@ func _endGame(msg=null):
 
 func _possibleCopsOfferOrEvent():
 	print("_possibleCopsOfferOrEvent()")
+
+	# _startCopFight() # TODO
+	# return 
+
 	var i = 99
 	if totalMoney() >   3000000:
 		i = 129
@@ -562,7 +581,6 @@ func _possibleCopsOfferOrEvent():
 		_randomEvent()
 	else:
 		_startCopFight()
-		pass
 
 
 func totalMoney():

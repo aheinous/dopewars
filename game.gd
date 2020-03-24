@@ -22,6 +22,16 @@ onready var fightPopup = $fightPopup
 onready var msgPopup = $tuiMsgPopup
 
 
+func _ready():
+	gameModel.connect('stateChanged', self, '_onStateChanged')
+
+func _onStateChanged(prev, cur):
+	print('state changed: ', prev, ' ', cur)
+	if prev == gameModel.State.COP_FIGHT and cur != gameModel.State.COP_FIGHT:
+		$"JetSound".play()
+	if prev == gameModel.State.DRUG_MENU and cur != gameModel.State.COP_FIGHT:
+		$"JetSound".play()
+
 func buyDrug(drug):
 	buySellDropPopup.setupAndShow("Buy", drug)
 

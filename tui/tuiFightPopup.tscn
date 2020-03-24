@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://tui/tuiFightPopup.gd" type="Script" id=1]
 [ext_resource path="res://tui/tuiVBox.tscn" type="PackedScene" id=2]
@@ -6,6 +6,12 @@
 [ext_resource path="res://tui/tuiPanel.tscn" type="PackedScene" id=4]
 [ext_resource path="res://tui/tuiButton_pure.tscn" type="PackedScene" id=5]
 [ext_resource path="res://tui/tuiHBox.tscn" type="PackedScene" id=6]
+[ext_resource path="res://sounds/19.5degs/losebitch.wav" type="AudioStream" id=7]
+[ext_resource path="res://sounds/19313__anton__duh.wav" type="AudioStream" id=8]
+[ext_resource path="res://sounds/sfx_deathscream_human14.wav" type="AudioStream" id=9]
+[ext_resource path="res://sounds/19.5degs/run.wav" type="AudioStream" id=10]
+[ext_resource path="res://sounds/19.5degs/colt.wav" type="AudioStream" id=11]
+[ext_resource path="res://sounds/custom/93758__toyoto__wooshs-02_shorter.wav" type="AudioStream" id=12]
 
 [node name="fightPopup" type="Control"]
 anchor_right = 1.0
@@ -32,5 +38,25 @@ spacing = 1
 [node name="StandFightButton" parent="Panel/tuiVBox/tuiHBox" instance=ExtResource( 5 )]
 
 [node name="RunDealDrugsButton" parent="Panel/tuiVBox/tuiHBox" instance=ExtResource( 5 )]
+
+[node name="HitSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+
+[node name="RunSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+volume_db = 24.0
+
+[node name="MissSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 12 )
+volume_db = 9.163
+
+[node name="DeadCopSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+
+[node name="DeadBitchSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+
+[node name="StandSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
 [connection signal="pressed" from="Panel/tuiVBox/tuiHBox/StandFightButton" to="." method="_on_StandFightButton_pressed"]
 [connection signal="pressed" from="Panel/tuiVBox/tuiHBox/RunDealDrugsButton" to="." method="_on_RunDealDrugsButton_pressed"]

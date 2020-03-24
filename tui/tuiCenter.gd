@@ -9,4 +9,5 @@ func _onResized():
 	
 func _onRefresh():
 	for child in get_children():
-		child.charPos = (charSize/2  - child.charSize/2).round()
+		if child.has_method("getCharSize"):
+			child.charPos = (charSize/2  - child.charSize/2).round()

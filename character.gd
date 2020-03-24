@@ -5,7 +5,7 @@ var numAccomplices := 0
 var rng
 
 
-enum AttackRes {MISS, NONFATAL_HIT, ACCOMPLICE_KILLED, DEAD}
+enum MoveRes {NONE, MISS, NONFATAL_HIT, ACCOMPLICE_KILLED, DEAD, ESCAPE, FAILED_ESCAPE, STAND}
 
 
 func _getName():
@@ -47,7 +47,7 @@ func attack(other):
 	else:
 		# miss
 		print('miss')
-		return AttackRes.MISS
+		return MoveRes.MISS
 
 
 func _calcDamage(other):
@@ -67,13 +67,13 @@ func takeDamage(amnt):
 			numAccomplices -= 1
 			health = 100
 			_onAccompliceKilled()
-			return AttackRes.ACCOMPLICE_KILLED
+			return MoveRes.ACCOMPLICE_KILLED
 		else:
 			health = 0
-			return AttackRes.DEAD
+			return MoveRes.DEAD
 	else:
 		health -= amnt
-		return AttackRes.NONFATAL_HIT
+		return MoveRes.NONFATAL_HIT
 
 
 

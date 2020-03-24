@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/93758__toyoto__wooshs-02_shorter.wav-4907e57e456622cc4b850f0720712aa5.sample"
+
+[deps]
+
+source_file="res://sounds/custom/93758__toyoto__wooshs-02_shorter.wav"
+dest_files=[ "res://.import/93758__toyoto__wooshs-02_shorter.wav-4907e57e456622cc4b850f0720712aa5.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

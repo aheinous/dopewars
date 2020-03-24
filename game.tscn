@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://textUI_theme.tres" type="Theme" id=1]
 [ext_resource path="res://game.gd" type="Script" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://tui/tuiHighscores.tscn" type="PackedScene" id=13]
 [ext_resource path="res://bankChoosePopup.tscn" type="PackedScene" id=14]
 [ext_resource path="res://gunStorePopup.tscn" type="PackedScene" id=15]
+[ext_resource path="res://sounds/19.5degs/train.wav" type="AudioStream" id=16]
 [ext_resource path="res://TUI_Overlay.gd" type="Script" id=18]
 [ext_resource path="res://tui/tuiVBox.tscn" type="PackedScene" id=19]
 [ext_resource path="res://tui/tuiNumEnter.tscn" type="PackedScene" id=20]
@@ -110,6 +111,10 @@ script = ExtResource( 18 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="JetSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 16 )
+volume_db = 3.207
 [connection signal="itemButtonPressed" from="tuiCenter/tuiVBox/drugList" to="." method="_on_drugList_itemButtonPressed"]
 [connection signal="pressed" from="tuiCenter/tuiVBox/jetButton" to="." method="_on_jetButton_pressed"]
 [connection signal="placeButtonPressed" from="tuiJetPopup" to="." method="_on_tuiJetPopup_placeButtonPressed"]

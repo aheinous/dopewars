@@ -5,6 +5,12 @@ onready var standFightButton = $Panel/tuiVBox/tuiHBox/StandFightButton
 onready var runDealDrugsButton = $Panel/tuiVBox/tuiHBox/RunDealDrugsButton
 
 
+const MoveRes = preload('res://character.gd').MoveRes
+
+
+var _soundQueue = []
+
+
 func _ready():
 	hide()
 
@@ -42,8 +48,72 @@ func setupAndShow():
 		standFightButton.setText( "Fight" if gameModel.canFight() else "Stand" )
 		standFightButton.show()
 		runDealDrugsButton.setText("Run")
+	_playSounds()
 	
 	_showPopup()
+
+
+
+func _processSoundQueue():
+	while _soundQueue.size() > 0:
+		var curSound = _soundQueue.pop_front()
+		curSound.play()
+		yield(curSound, "finished")
+
+
+
+func _playSounds():
+	var turnRes = gameModel.fightTurnRes()
+	print('turn res: ', turnRes)
+
+	match turnRes[0]:
+		MoveRes.NONE:
+			pass
+		MoveRes.MISS:
+			_soundQueue.push_back($HitSound)
+			_soundQueue.push_back($MissSound)
+		MoveRes.NONFATAL_HIT:
+			_soundQueue.push_back($HitSound)
+		MoveRes.ACCOMPLICE_KILLED:
+			_soundQueue.push_back($HitSound)
+			_soundQueue.push_back($DeadCopSound)
+		MoveRes.DEAD:
+			_soundQueue.push_back($HitSound)
+			_soundQueue.push_back($DeadCopSound)
+		MoveRes.ESCAPE:
+			_soundQueue.push_back($RunSound)
+		MoveRes.FAILED_ESCAPE:
+			_soundQueue.push_back($RunSound)
+		MoveRes.STAND:
+			_soundQueue.push_back($StandSound)
+		_:
+			assert(false)
+
+
+	match turnRes[1]:
+		MoveRes.NONE:
+			pass
+		MoveRes.MISS:
+			_soundQueue.push_back($HitSound)
+			_soundQueue.push_back($MissSound)
+		MoveRes.NONFATAL_HIT:
+			_soundQueue.push_back($HitSound)
+		MoveRes.ACCOMPLICE_KILLED:
+			_soundQueue.push_back($HitSound)
+			_soundQueue.push_back($DeadBitchSound)
+		MoveRes.DEAD:
+			_soundQueue.push_back($HitSound)
+			_soundQueue.push_back($DeadCopSound)
+		_:
+			assert(false)
+
+	_processSoundQueue()
+
+	
+			
+	
+		
+
 
 
 func _on_StandFightButton_pressed():

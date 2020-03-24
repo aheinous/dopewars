@@ -1,7 +1,7 @@
 const Player = preload('player.gd')
 const Cop = preload('cop.gd')
 
-const AttackRes = Player.AttackRes
+const MoveRes = Player.MoveRes
 
 var _player : Player
 var _cop : Cop
@@ -9,6 +9,7 @@ var _fightText = []
 var _fightOver = false
 var _rng
 var _onPlayerDeath
+var _turnRes = []
 
 func _init(player, rng, onPlayerDeath):
 	self._player = player
@@ -17,6 +18,7 @@ func _init(player, rng, onPlayerDeath):
 	self._cop = Cop.new( config.cops[_player.copsKilled], rng )
 	_fightText.append("%s and %s deputies - %s - are chasing you, man!" \
 			% [_cop._getName(), _cop.getNumDeputies(), _cop.howArmed()])
+	_turnRes = [MoveRes.NONE]
 	_copsAttackPlayer()
 
 
@@ -25,17 +27,20 @@ func _copsAttackPlayer():
 	var res = _cop.attack(_player)
 	var fmt = ""
 	match res:
-		AttackRes.MISS:
+		MoveRes.MISS:
 			fmt = "\n%s shoots at you... and misses!"
-		AttackRes.NONFATAL_HIT:
+		MoveRes.NONFATAL_HIT:
 			fmt = "\n%s hits you, man!"
-		AttackRes.ACCOMPLICE_KILLED:
+		MoveRes.ACCOMPLICE_KILLED:
 			fmt = "\n%s shoots at you... and kills a bitch!"
-		AttackRes.DEAD:
+		MoveRes.DEAD:
 			fmt = "\n%s wasted you, man! What a drag!"
+		_:
+			assert(false)
 	_fightText[-1] += fmt % _cop._getName()
+	_turnRes.append(res)
 
-	if res == AttackRes.DEAD:
+	if res == MoveRes.DEAD:
 		_fightOver = true
 		_onPlayerDeath.call_func()
 
@@ -45,17 +50,20 @@ func _playerAttacksCops():
 	var res = _player.attack(_cop)
 	var fmt = ""
 	match res:
-		AttackRes.MISS:
+		MoveRes.MISS:
 			fmt = "You missed %s!"
-		AttackRes.NONFATAL_HIT:
+		MoveRes.NONFATAL_HIT:
 			fmt = "You hit %s!"
-		AttackRes.ACCOMPLICE_KILLED:
+		MoveRes.ACCOMPLICE_KILLED:
 			fmt = "You hit %s and killed a deputy!"
-		AttackRes.DEAD:
+		MoveRes.DEAD:
 			fmt = "You killed %s!"
+		_:
+			assert(false)
 	_fightText.append(fmt % _cop._getName())
+	_turnRes = [res]
 
-	if res == AttackRes.DEAD:
+	if res == MoveRes.DEAD:
 		_fightOver = true
 		_player.copsKilled += 1
 	else:
@@ -82,6 +90,9 @@ func fightOver():
 func copHealth():
 	return _cop.health
 
+func getTurnRes():
+	return _turnRes
+
 # Actions
 
 # func finishFight():
@@ -105,6 +116,7 @@ func stand():
 	print("you chose to STAND.")
 	_fightText.append("You stand there like a dummy.")
 	# print(_fightText)
+	_turnRes = [MoveRes.STAND]
 	_copsAttackPlayer()
 
 func run():
@@ -112,6 +124,8 @@ func run():
 	if _rng.randi_range(0, 99) < 60:
 		_fightText.append("You got away!")
 		_fightOver = true
+		_turnRes = [MoveRes.ESCAPE, MoveRes.NONE]
 	else:
 		_fightText.append("Panic! You can't get away!")
+		_turnRes = [MoveRes.FAILED_ESCAPE]
 		_copsAttackPlayer()
