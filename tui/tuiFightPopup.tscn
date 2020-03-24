@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://tui/tuiFightPopup.gd" type="Script" id=1]
 [ext_resource path="res://tui/tuiVBox.tscn" type="PackedScene" id=2]
@@ -12,6 +12,8 @@
 [ext_resource path="res://sounds/19.5degs/run.wav" type="AudioStream" id=10]
 [ext_resource path="res://sounds/19.5degs/colt.wav" type="AudioStream" id=11]
 [ext_resource path="res://sounds/custom/93758__toyoto__wooshs-02_shorter.wav" type="AudioStream" id=12]
+[ext_resource path="res://sounds/custom/474557__zeteny-zpx__hit-ouch.wav" type="AudioStream" id=13]
+[ext_resource path="res://sounds/Chuckle-SoundBible.com-1339500982.wav" type="AudioStream" id=14]
 
 [node name="fightPopup" type="Control"]
 anchor_right = 1.0
@@ -58,5 +60,13 @@ stream = ExtResource( 7 )
 
 [node name="StandSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
+
+[node name="EscapeSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 14 )
+volume_db = 11.912
+
+[node name="OuchSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+volume_db = 15.0
 [connection signal="pressed" from="Panel/tuiVBox/tuiHBox/StandFightButton" to="." method="_on_StandFightButton_pressed"]
 [connection signal="pressed" from="Panel/tuiVBox/tuiHBox/RunDealDrugsButton" to="." method="_on_RunDealDrugsButton_pressed"]

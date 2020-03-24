@@ -82,6 +82,7 @@ func _playSounds():
 			_soundQueue.push_back($DeadCopSound)
 		MoveRes.ESCAPE:
 			_soundQueue.push_back($RunSound)
+			_soundQueue.push_back($EscapeSound)
 		MoveRes.FAILED_ESCAPE:
 			_soundQueue.push_back($RunSound)
 		MoveRes.STAND:
@@ -98,6 +99,7 @@ func _playSounds():
 			_soundQueue.push_back($MissSound)
 		MoveRes.NONFATAL_HIT:
 			_soundQueue.push_back($HitSound)
+			_soundQueue.push_back($OuchSound)
 		MoveRes.ACCOMPLICE_KILLED:
 			_soundQueue.push_back($HitSound)
 			_soundQueue.push_back($DeadBitchSound)

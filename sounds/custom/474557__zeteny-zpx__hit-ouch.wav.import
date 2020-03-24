@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/474557__zeteny-zpx__hit-ouch.wav-10f2b2a4d7d2d40ae96a6473b548ce20.sample"
+
+[deps]
+
+source_file="res://sounds/custom/474557__zeteny-zpx__hit-ouch.wav"
+dest_files=[ "res://.import/474557__zeteny-zpx__hit-ouch.wav-10f2b2a4d7d2d40ae96a6473b548ce20.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

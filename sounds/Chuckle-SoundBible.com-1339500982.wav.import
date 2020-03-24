@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Chuckle-SoundBible.com-1339500982.wav-c161ce89496dc6cff024a272a8b40dea.sample"
+
+[deps]
+
+source_file="res://sounds/Chuckle-SoundBible.com-1339500982.wav"
+dest_files=[ "res://.import/Chuckle-SoundBible.com-1339500982.wav-c161ce89496dc6cff024a272a8b40dea.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
