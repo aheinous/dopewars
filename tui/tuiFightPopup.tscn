@@ -43,6 +43,7 @@ spacing = 1
 
 [node name="HitSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 11 )
+volume_db = 3.0
 
 [node name="RunSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 10 )
@@ -50,7 +51,7 @@ volume_db = 24.0
 
 [node name="MissSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 12 )
-volume_db = 9.163
+volume_db = 12.0
 
 [node name="DeadCopSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 9 )
@@ -60,6 +61,7 @@ stream = ExtResource( 7 )
 
 [node name="StandSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
+volume_db = -4.0
 
 [node name="EscapeSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 14 )

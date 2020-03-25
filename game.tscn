@@ -114,7 +114,7 @@ __meta__ = {
 
 [node name="JetSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 16 )
-volume_db = 3.207
+volume_db = 10.0
 [connection signal="itemButtonPressed" from="tuiCenter/tuiVBox/drugList" to="." method="_on_drugList_itemButtonPressed"]
 [connection signal="pressed" from="tuiCenter/tuiVBox/jetButton" to="." method="_on_jetButton_pressed"]
 [connection signal="placeButtonPressed" from="tuiJetPopup" to="." method="_on_tuiJetPopup_placeButtonPressed"]

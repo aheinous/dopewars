@@ -16,11 +16,12 @@ __meta__ = {
 
 [node name="blipSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
+volume_db = -5.0
 pitch_scale = 0.8
 
 [node name="beepSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 2 )
-volume_db = -7.0
+volume_db = -9.0
 pitch_scale = 0.8
 
 [node name="trainSound" type="AudioStreamPlayer" parent="."]
