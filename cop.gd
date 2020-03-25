@@ -10,6 +10,7 @@ func _init(cfg, rng):
 
 	var gunCount = cfg.copGun + cfg.deputyGun*numAccomplices
 	gunCounts = {config.guns[cfg.gunIndex].gunName: gunCount}
+	self.cash = rng.randi_range(cfg.minCash, cfg.maxCash+1)
 
 
 func _attackRating():

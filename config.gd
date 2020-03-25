@@ -112,6 +112,8 @@ class CopConfig:
 	var gunIndex : int
 	var copGun : int
 	var deputyGun : int
+	var minCash : int
+	var maxCash : int
 
 	func _init(	copName,	\
 				armour,	\
@@ -122,7 +124,10 @@ class CopConfig:
 				maxDeputies,	\
 				gunIndex,	\
 				copGun,	\
-				deputyGun):
+				deputyGun,
+				minCash,
+				maxCash
+				):
 		self.copName = copName
 		self.armour = armour
 		self.deputyArmour = deputyArmour
@@ -133,6 +138,9 @@ class CopConfig:
 		self.gunIndex = gunIndex
 		self.copGun = copGun
 		self.deputyGun = deputyGun
+		self.minCash = minCash
+		self.maxCash = maxCash
+
 
 
 
@@ -176,9 +184,9 @@ var guns = [
 
 
 var cops = [
-	CopConfig.new("Officer Hardass", 4, 3, 30, 30, 2, 8, 0, 1, 1),
-	CopConfig.new("Officer Bob", 15, 4, 30, 20, 4, 10, 0, 2, 1),
-	CopConfig.new("Agent Smith", 50, 6, 20, 20, 6, 18, 1, 3, 2)
+	CopConfig.new("Officer Hardass", 4, 3, 30, 30, 2, 8, 0, 1, 1, 1000, 2000),
+	CopConfig.new("Officer Bob", 15, 4, 30, 20, 4, 10, 0, 2, 1, 10000, 20000),
+	CopConfig.new("Agent Smith", 50, 6, 20, 20, 6, 18, 1, 3, 2, 5*1000*1000, 7*1000*1000)
 ]
 
 

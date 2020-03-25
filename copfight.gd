@@ -49,18 +49,21 @@ func _copsAttackPlayer():
 func _playerAttacksCops():
 	var res = _player.attack(_cop)
 	var fmt = ""
-	match res:
-		MoveRes.MISS:
-			fmt = "You missed %s!"
-		MoveRes.NONFATAL_HIT:
-			fmt = "You hit %s!"
-		MoveRes.ACCOMPLICE_KILLED:
-			fmt = "You hit %s and killed a deputy!"
-		MoveRes.DEAD:
-			fmt = "You killed %s!"
-		_:
-			assert(false)
-	_fightText.append(fmt % _cop._getName())
+	if res == MoveRes.DEAD:
+		fmt = "You killed %s! You found $%s on the body!"
+		_fightText.append(fmt % [_cop._getName(), util.toCommaSepStr(_cop.cash)])
+		_player.cash += _cop.cash
+	else:
+		match res:
+			MoveRes.MISS:
+				fmt = "You missed %s!"
+			MoveRes.NONFATAL_HIT:
+				fmt = "You hit %s!"
+			MoveRes.ACCOMPLICE_KILLED:
+				fmt = "You hit %s and killed a deputy!"
+			_:
+				assert(false)
+		_fightText.append(fmt % _cop._getName())
 	_turnRes = [res]
 
 	if res == MoveRes.DEAD:
