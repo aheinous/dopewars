@@ -8,7 +8,7 @@ onready var runDealDrugsButton = $Panel/tuiVBox/tuiHBox/RunDealDrugsButton
 const MoveRes = preload('res://character.gd').MoveRes
 
 
-var _soundQueue = []
+var _soundPlayerInstance = 0
 
 
 func _ready():
@@ -54,11 +54,21 @@ func setupAndShow():
 
 
 
-func _processSoundQueue():
-	while _soundQueue.size() > 0:
-		var curSound = _soundQueue.pop_front()
-		curSound.play()
-		yield(curSound, "finished")
+
+func _stopSounds():
+	_soundPlayerInstance += 1
+
+
+func _playSounds_proper(sounds):
+	_soundPlayerInstance += 1
+	var selfSoundPlayerInstance = _soundPlayerInstance
+
+	for sound in sounds:
+		if selfSoundPlayerInstance != _soundPlayerInstance:
+			return
+		sound.play()
+		yield(sound, "finished")
+
 
 
 
@@ -66,27 +76,29 @@ func _playSounds():
 	var turnRes = gameModel.fightTurnRes()
 	print('turn res: ', turnRes)
 
+	var sounds = []
+
 	match turnRes[0]:
 		MoveRes.NONE:
 			pass
 		MoveRes.MISS:
-			_soundQueue.push_back($HitSound)
-			_soundQueue.push_back($MissSound)
+			sounds.push_back($HitSound)
+			sounds.push_back($MissSound)
 		MoveRes.NONFATAL_HIT:
-			_soundQueue.push_back($HitSound)
+			sounds.push_back($HitSound)
 		MoveRes.ACCOMPLICE_KILLED:
-			_soundQueue.push_back($HitSound)
-			_soundQueue.push_back($DeadCopSound)
+			sounds.push_back($HitSound)
+			sounds.push_back($DeadCopSound)
 		MoveRes.DEAD:
-			_soundQueue.push_back($HitSound)
-			_soundQueue.push_back($DeadCopSound)
+			sounds.push_back($HitSound)
+			sounds.push_back($DeadCopSound)
 		MoveRes.ESCAPE:
-			_soundQueue.push_back($RunSound)
-			_soundQueue.push_back($EscapeSound)
+			sounds.push_back($RunSound)
+			sounds.push_back($EscapeSound)
 		MoveRes.FAILED_ESCAPE:
-			_soundQueue.push_back($RunSound)
+			sounds.push_back($RunSound)
 		MoveRes.STAND:
-			_soundQueue.push_back($StandSound)
+			sounds.push_back($StandSound)
 		_:
 			assert(false)
 
@@ -95,21 +107,21 @@ func _playSounds():
 		MoveRes.NONE:
 			pass
 		MoveRes.MISS:
-			_soundQueue.push_back($HitSound)
-			_soundQueue.push_back($MissSound)
+			sounds.push_back($HitSound)
+			sounds.push_back($MissSound)
 		MoveRes.NONFATAL_HIT:
-			_soundQueue.push_back($HitSound)
-			_soundQueue.push_back($OuchSound)
+			sounds.push_back($HitSound)
+			sounds.push_back($OuchSound)
 		MoveRes.ACCOMPLICE_KILLED:
-			_soundQueue.push_back($HitSound)
-			_soundQueue.push_back($DeadBitchSound)
+			sounds.push_back($HitSound)
+			sounds.push_back($DeadBitchSound)
 		MoveRes.DEAD:
-			_soundQueue.push_back($HitSound)
-			_soundQueue.push_back($DeadCopSound)
+			sounds.push_back($HitSound)
+			sounds.push_back($DeadCopSound)
 		_:
 			assert(false)
 
-	_processSoundQueue()
+	_playSounds_proper(sounds)
 
 	
 			
@@ -129,6 +141,7 @@ func _on_StandFightButton_pressed():
 func _on_RunDealDrugsButton_pressed():
 	if gameModel.fightOver():
 		gameModel.finishFight()
+		_stopSounds()
 		_hidePopup()
 	else:
 		gameModel.run()
