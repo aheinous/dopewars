@@ -95,12 +95,6 @@ visible = false
 visible = false
 
 [node name="highscoresPopup" parent="." instance=ExtResource( 13 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 320.0
-margin_top = 480.0
-margin_right = 320.0
-margin_bottom = 480.0
 
 [node name="fightPopup" parent="." instance=ExtResource( 10 )]
 
