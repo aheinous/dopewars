@@ -439,6 +439,9 @@ var _copFight : CopFight
 
 func _startCopFight():
 	print("COP FIGHT")
+	if _player.copsKilled >= config.cops.size():
+		print('ALL COPS DEAD!')
+		return
 	_setState(State.COP_FIGHT)
 	_copFight = CopFight.new(_player, _rng, funcref(self, "_endGame"))
 
