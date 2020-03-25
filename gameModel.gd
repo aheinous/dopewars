@@ -269,6 +269,11 @@ func jet(place):
 		_pushChoice("Would you like to visit the bank?", funcref(self, "visitBank"))
 	_setupDrugsHere()
 
+	if _curState == State.DRUG_MENU: # emit state change signal
+		_setState(State.DRUG_MENU)
+
+
+
 
 ######### Msg Queue
 
