@@ -11,7 +11,7 @@ func _addHeader(colWidths):
 	
 	header.text = "%s %s %s" % [
 			util.rpad_chars(colWidths[0], "NAME"),
-			util.rpad_chars(colWidths[1], "PRICE"),
+			util.lpad_chars(colWidths[1], "PRICE"),
 			util.lpad_chars(colWidths[2], "QUANTITY") ]
 	header.mode = header.Mode.SKINNY_BUTTON
 	self.add_child(header)
