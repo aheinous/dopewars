@@ -20,9 +20,7 @@ func _defendRating():
 	return ._defendRating() - cfg.defendPenalty
 
 func _armour():
-	if numAccomplices == 0:
-		return cfg.armour
-	return cfg.deputyArmour
+	return cfg.armour
 
 
 func _getName():

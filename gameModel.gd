@@ -575,14 +575,17 @@ func _possibleCopsOfferOrEvent():
 	# return 
 
 	var i = 99
-	if totalMoney() >   3000000:
-		i = 129
-	elif totalMoney() > 1000000:
-		i = 114
+	if totalMoney() >   2 * 1000 * 1000:
+		i = 150
+	elif totalMoney() > 1000 * 1000:
+		i = 130
+	elif totalMoney() > 100 * 1000:
+		i = 110
 	if _rng.randi_range(0,i) <= 75:
 		return
 
-	i = _rng.randi_range(0, 79 + config.placesByName[_player.curPlace].police)
+	i = _rng.randi_range(0, 79 + config.placesByName[_player.curPlace].police 
+								+ (totalMoney() / 100*1000) as int )
 	if i < 33:
 		_randomOffer()
 	elif i < 50:

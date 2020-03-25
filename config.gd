@@ -7,7 +7,7 @@ extends Node
 
 
 const colWidths_chars_drugs = [8, 10, 9]
-const colWidths_chars_guns = [22, 6, 9]
+const colWidths_chars_guns = [22, 7, 9]
 
 
 
@@ -92,19 +92,20 @@ class GunConfig:
 	var price : int
 	var space : int
 	var damage : int
+	var splash : bool
 
-	func _init(gunName, price, space, damage):
+	func _init(gunName, price, space, damage, splash = false):
 		self.gunName = gunName
 		self.price = price
 		self.space = space
 		self.damage = damage
-
+		self.splash = splash
 
 
 class CopConfig:
 	var copName : String
 	var armour : int
-	var deputyArmour : int
+	# var deputyArmour : int
 	var attackPenalty : int
 	var defendPenalty : int
 	var minDeputies : int
@@ -115,22 +116,22 @@ class CopConfig:
 	var minCash : int
 	var maxCash : int
 
-	func _init(	copName,	\
-				armour,	\
-				deputyArmour,	\
-				attackPenalty,	\
-				defendPenalty,	\
-				minDeputies,	\
-				maxDeputies,	\
-				gunIndex,	\
-				copGun,	\
+	func _init(	copName,	
+				armour,	
+				# deputyArmour,	
+				attackPenalty,	
+				defendPenalty,	
+				minDeputies,	
+				maxDeputies,	
+				gunIndex,	
+				copGun,	
 				deputyGun,
 				minCash,
 				maxCash
 				):
 		self.copName = copName
 		self.armour = armour
-		self.deputyArmour = deputyArmour
+		# self.deputyArmour = deputyArmour
 		self.attackPenalty = attackPenalty
 		self.defendPenalty = defendPenalty
 		self.minDeputies = minDeputies
@@ -176,17 +177,18 @@ var places = [
 
 
 var guns = [
-		GunConfig.new("Baretta", 3000, 4, 5),
-		GunConfig.new(".38 Special", 3500, 4, 9),
-		GunConfig.new("Ruger", 2900, 4, 4),
-		GunConfig.new("Saturday Night Special", 3100, 4, 7),
+		GunConfig.new("Baretta", 3000, 4, 10),
+		GunConfig.new(".38 Special", 3500, 4, 18),
+		GunConfig.new("Ruger", 2900, 4, 8),
+		GunConfig.new("Saturday Night Special", 3100, 4, 14),
+		GunConfig.new("Rocket Launcher", 20000, 6, 50, true)
 ]
 
 
 var cops = [
-	CopConfig.new("Officer Hardass", 4, 3, 30, 30, 2, 8, 0, 1, 1, 1000, 2000),
-	CopConfig.new("Officer Bob", 15, 4, 30, 20, 4, 10, 0, 2, 1, 10000, 20000),
-	CopConfig.new("Agent Smith", 50, 6, 20, 20, 6, 18, 1, 3, 2, 5*1000*1000, 7*1000*1000)
+	CopConfig.new("Officer Hardass", 3, 30, 30, 2, 8, 0, 1, 1, 1000, 2000),
+	CopConfig.new("Officer Bob", 5, 30, 20, 4, 10, 0, 2, 1, 100*1000, 250*1000),
+	CopConfig.new("Agent Smith", 20, 20, 20, 6, 18, 1, 3, 2, 5*1000*1000, 7*1000*1000)
 ]
 
 

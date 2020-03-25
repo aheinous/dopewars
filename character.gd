@@ -8,6 +8,11 @@ var rng
 enum MoveRes {NONE, MISS, NONFATAL_HIT, ACCOMPLICE_KILLED, DEAD, ESCAPE, FAILED_ESCAPE, STAND}
 
 
+class Damage:
+	var normal: int = 0
+	var splash : int = 0
+
+
 func _getName():
 	return "character"
 
@@ -30,8 +35,9 @@ func _defendRating():
 
 
 func _armour():
-	if numAccomplices == 0:
-		return 100
+	# if numAccomplices == 0:
+	# 	return 100
+	# return 50
 	return 50
 
 
@@ -51,29 +57,54 @@ func attack(other):
 
 
 func _calcDamage(other):
-	var damage = 0
+	var damage = Damage.new()
 	for gunName in gunCounts:
 		var count = gunCounts[gunName]
 		for i in range(count):
-			damage += rng.randi_range(0, config.gunsByName[gunName].damage-1)
-	damage = (damage * 100 / other._armour()) as int
-	damage = max(1, damage)
+			if config.gunsByName[gunName].splash:
+				damage.splash += rng.randi_range(0, config.gunsByName[gunName].damage-1)
+			else:
+				damage.normal += rng.randi_range(0, config.gunsByName[gunName].damage-1)
+	damage.normal = (damage.normal * 100 / other._armour()) as int
+	damage.normal = max(1, damage.normal)
+
+	damage.splash = (damage.splash * 100 / other._armour()) as int
+	damage.splash = max(0, damage.splash)
+	
 	return damage
 	
-func takeDamage(amnt):
-	print("%s taking %s damage" % [_getName(), amnt])
-	if health - amnt <= 0:
+func takeDamage(damage):
+	print("%s taking %s damage" % [_getName(), damage])
+	var accompliceKilled = false
+	if health - damage.normal <= 0:
 		if numAccomplices > 0:
 			numAccomplices -= 1
 			health = 100
 			_onAccompliceKilled()
-			return MoveRes.ACCOMPLICE_KILLED
+			# return MoveRes.ACCOMPLICE_KILLED
+			accompliceKilled = true
 		else:
 			health = 0
 			return MoveRes.DEAD
 	else:
-		health -= amnt
-		return MoveRes.NONFATAL_HIT
+		health -= damage.normal
+		# return MoveRes.NONFATAL_HIT
+
+	while damage.splash > 0:
+		if health > damage.splash:
+			health -= damage.splash
+			damage.splash = 0
+		else:
+			damage.splash -= health
+			if numAccomplices == 0:
+				health = 0
+				return MoveRes.DEAD
+			numAccomplices -= 1
+			accompliceKilled = true
+			_onAccompliceKilled()
+			health = 100
+
+	return MoveRes.ACCOMPLICE_KILLED if accompliceKilled else MoveRes.NONFATAL_HIT
 
 
 
