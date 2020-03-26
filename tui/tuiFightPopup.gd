@@ -28,11 +28,11 @@ func setupAndShow():
 	var sep = '-------------------------------------------------\n'
 
 	s = 'You have: %s bitch%s\n' % [bitches, "" if bitches==1 else "es"]
-	s += '%s health: %s%%\n' % ['Bitch' if bitches >= 1 else 'Your', youHealth]
+	s += '%s health: %s\n' % ['Bitch' if bitches >= 1 else 'Your', youHealth]
 	s+= sep
 	
 	s+= '%s has: %s %s\n' % [copName, deputies, "deputy" if deputies==1 else "deputies"]
-	s+= '%s health: %s%%\n' % ['Deputy' if deputies >= 1 else copName, copHealth]
+	s+= '%s health: %s\n' % ['Deputy' if deputies >= 1 else copName, copHealth]
 	s+= sep
 
 	s+= fightText
