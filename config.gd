@@ -177,10 +177,10 @@ var places = [
 
 
 var guns = [
-		GunConfig.new("Baretta", 3000, 4, 10),
-		GunConfig.new(".38 Special", 3500, 4, 18),
-		GunConfig.new("Ruger", 2900, 4, 8),
-		GunConfig.new("Saturday Night Special", 3100, 4, 14),
+		GunConfig.new("Baretta", 3000, 4, 5),
+		GunConfig.new(".38 Special", 3500, 4, 9),
+		GunConfig.new("Ruger", 2900, 4, 4),
+		GunConfig.new("Saturday Night Special", 3100, 4, 7),
 		GunConfig.new("Rocket Launcher", 75000, 10, 20, true)
 ]
 
