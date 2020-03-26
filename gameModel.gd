@@ -571,27 +571,40 @@ func _endGame(msg=null):
 func _possibleCopsOfferOrEvent():
 	print("_possibleCopsOfferOrEvent()")
 
-	# _startCopFight() # TODO
+	#_startCopFight() # TODO
 	# return 
 
-	var i = 99
-	if totalMoney() >   2 * 1000 * 1000:
-		i = 150
-	elif totalMoney() > 1000 * 1000:
-		i = 130
-	elif totalMoney() > 100 * 1000:
-		i = 110
-	if _rng.randi_range(0,i) <= 75:
-		return
+	# var i = 99
+	# if totalMoney() >   2 * 1000 * 1000:
+	# 	i = 150
+	# elif totalMoney() > 1000 * 1000:
+	# 	i = 130
+	# elif totalMoney() > 100 * 1000:
+	# 	i = 110
+	# if _rng.randi_range(0,i) <= 75:
+	# 	return
 
-	i = _rng.randi_range(0, 79 + config.placesByName[_player.curPlace].police 
-								+ (totalMoney() / 100*1000) as int )
-	if i < 33:
-		_randomOffer()
-	elif i < 50:
-		_randomEvent()
-	else:
+	# i = _rng.randi_range(0, 79 + config.placesByName[_player.curPlace].police 
+	# 							+ (totalMoney() / 100*1000) as int )
+	# if i < 33:
+	# 	_randomOffer()
+	# elif i < 50:
+	# 	_randomEvent()
+	# else:
+	# 	_startCopFight()
+
+
+	var r = _rng.randi_range(0, 80 
+								+ config.placesByName[_player.curPlace].police
+								+ (totalMoney() / 200*1000) as int )
+	if r > 82:
 		_startCopFight()
+
+	r = _rng.randi_range(0, 150)
+	if r < 33:
+		_randomOffer()
+	elif r < 50:
+		_randomEvent()
 
 
 func totalMoney():

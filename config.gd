@@ -169,7 +169,7 @@ var places = [
 		PlaceConfig.new("Ghetto", 8, 13, 5),
 		PlaceConfig.new("Central Park", 6, 13, 15),
 		PlaceConfig.new("Manhattan", 4, 11, 90),
-		PlaceConfig.new("Coney Island", 6, 13, 20),
+		PlaceConfig.new("Coney Island", 10, 13, 70),
 		PlaceConfig.new("Brooklyn", 4, 12, 70),
 		PlaceConfig.new("Queens", 6, 13, 50),
 		PlaceConfig.new("Staten Island", 6, 13, 20)
@@ -181,14 +181,14 @@ var guns = [
 		GunConfig.new(".38 Special", 3500, 4, 18),
 		GunConfig.new("Ruger", 2900, 4, 8),
 		GunConfig.new("Saturday Night Special", 3100, 4, 14),
-		GunConfig.new("Rocket Launcher", 20000, 6, 50, true)
+		GunConfig.new("Rocket Launcher", 75000, 10, 20, true)
 ]
 
 
 var cops = [
 	CopConfig.new("Officer Hardass", 3, 30, 30, 2, 8, 0, 1, 1, 1000, 2000),
 	CopConfig.new("Officer Bob", 5, 30, 20, 4, 10, 0, 2, 1, 100*1000, 250*1000),
-	CopConfig.new("Agent Smith", 20, 20, 20, 6, 18, 1, 3, 2, 5*1000*1000, 7*1000*1000)
+	CopConfig.new("Agent Smith", 20, 20, 20, 6, 18, 1, 3, 2, 3*1000*1000, 5*1000*1000)
 ]
 
 
