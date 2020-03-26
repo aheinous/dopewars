@@ -5,7 +5,7 @@ var numAccomplices := 0
 var rng
 
 
-enum MoveRes {NONE, MISS, NONFATAL_HIT, ACCOMPLICE_KILLED, DEAD, ESCAPE, FAILED_ESCAPE, STAND}
+enum MoveRes {NONE, MISS, NONFATAL_HIT, ACCOMPLICE_KILLED, MULTI_ACCOMPLICE_KILLED, DEAD, ESCAPE, FAILED_ESCAPE, STAND}
 
 
 class Damage:
@@ -75,14 +75,14 @@ func _calcDamage(other):
 	
 func takeDamage(damage):
 	print("%s taking %s damage" % [_getName(), damage])
-	var accompliceKilled = false
+	var accomplicesKilled = 0
 	if health - damage.normal <= 0:
 		if numAccomplices > 0:
 			numAccomplices -= 1
 			health = 100
 			_onAccompliceKilled()
 			# return MoveRes.ACCOMPLICE_KILLED
-			accompliceKilled = true
+			accomplicesKilled += 1
 		else:
 			health = 0
 			return MoveRes.DEAD
@@ -100,11 +100,17 @@ func takeDamage(damage):
 				health = 0
 				return MoveRes.DEAD
 			numAccomplices -= 1
-			accompliceKilled = true
+			accomplicesKilled += 1
 			_onAccompliceKilled()
 			health = 100
 
-	return MoveRes.ACCOMPLICE_KILLED if accompliceKilled else MoveRes.NONFATAL_HIT
+	match accomplicesKilled:
+		0:
+			return MoveRes.NONFATAL_HIT
+		1:
+			return MoveRes.ACCOMPLICE_KILLED
+		_:
+			return MoveRes.MULTI_ACCOMPLICE_KILLED
 
 
 

@@ -61,6 +61,8 @@ func _playerAttacksCops():
 				fmt = "You hit %s!"
 			MoveRes.ACCOMPLICE_KILLED:
 				fmt = "You hit %s and killed a deputy!"
+			MoveRes.MULTI_ACCOMPLICE_KILLED:
+				fmt = "You hit %s and killed multiple deputies!"
 			_:
 				assert(false)
 		_fightText.append(fmt % _cop._getName())

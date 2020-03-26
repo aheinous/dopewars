@@ -86,7 +86,7 @@ func _playSounds():
 			sounds.push_back($MissSound)
 		MoveRes.NONFATAL_HIT:
 			sounds.push_back($HitSound)
-		MoveRes.ACCOMPLICE_KILLED:
+		MoveRes.ACCOMPLICE_KILLED, MoveRes.MULTI_ACCOMPLICE_KILLED:
 			sounds.push_back($HitSound)
 			sounds.push_back($DeadCopSound)
 		MoveRes.DEAD:
@@ -112,7 +112,7 @@ func _playSounds():
 		MoveRes.NONFATAL_HIT:
 			sounds.push_back($HitSound)
 			sounds.push_back($OuchSound)
-		MoveRes.ACCOMPLICE_KILLED:
+		MoveRes.ACCOMPLICE_KILLED, MoveRes.MULTI_ACCOMPLICE_KILLED:
 			sounds.push_back($HitSound)
 			sounds.push_back($DeadBitchSound)
 		MoveRes.DEAD:
