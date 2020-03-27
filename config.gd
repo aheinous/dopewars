@@ -7,7 +7,7 @@ extends Node
 
 
 const colWidths_chars_drugs = [8, 10, 9]
-const colWidths_chars_guns = [22, 7, 9]
+const colWidths_chars_guns = [22, 8, 9]
 
 
 
@@ -71,6 +71,9 @@ class DrugConfig:
 		self.canBeLow = canBeLow
 		self.canBeHigh = canBeHigh
 		self.lowString = lowString
+
+	func meanPrice():
+		return ((minPrice + maxPrice) / 2) as int
 
 
 class PlaceConfig:
@@ -181,14 +184,14 @@ var guns = [
 		GunConfig.new(".38 Special", 3500, 4, 9),
 		GunConfig.new("Ruger", 2900, 4, 4),
 		GunConfig.new("Saturday Night Special", 3100, 4, 7),
-		GunConfig.new("Rocket Launcher", 75000, 10, 20, true)
+		GunConfig.new("Rocket Launcher", 120*1000, 10, 12, true)
 ]
 
 
 var cops = [
-	CopConfig.new("Officer Hardass", 3, 30, 30, 2, 8, 0, 1, 1, 1000, 2000),
-	CopConfig.new("Officer Bob", 5, 30, 20, 4, 10, 0, 2, 1, 100*1000, 250*1000),
-	CopConfig.new("Agent Smith", 20, 20, 20, 6, 18, 1, 3, 2, 3*1000*1000, 5*1000*1000)
+	CopConfig.new("Officer Hardass", 3, 30, 30, 2, 8, 0, 1, 1, 30*1000, 50*1000),
+	CopConfig.new("Officer Bob", 5, 30, 20, 4, 10, 0, 2, 1, 1000, 2*1000),
+	CopConfig.new("Agent Smith", 20, 20, 20, 6, 18, 1, 3, 2, 2*1000*1000, 3*1000*1000)
 ]
 
 

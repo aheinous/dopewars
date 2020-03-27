@@ -594,13 +594,17 @@ func _possibleCopsOfferOrEvent():
 	# 	_startCopFight()
 
 
-	var r = _rng.randi_range(0, 80 
-								+ config.placesByName[_player.curPlace].police
-								+ (totalMoney() / 200*1000) as int )
+	var rMax = (80 
+		+ config.placesByName[_player.curPlace].police
+		+ (10 if (netWorth() > 100 * 1000) else 0)
+		+ (10 if (netWorth() > 1000 * 1000) else 0 )
+		+ (50 if (netWorth() > 3 * 1000 * 1000) else 0))
+	print('rMax: ', rMax )
+	var r = _rng.randi_range(0, rMax)
 	if r > 82:
 		_startCopFight()
 
-	r = _rng.randi_range(0, 150)
+	r = _rng.randi_range(0, 200)
 	if r < 33:
 		_randomOffer()
 	elif r < 50:
@@ -609,6 +613,18 @@ func _possibleCopsOfferOrEvent():
 
 func totalMoney():
 	return _player.cash + _player.bank - _player.debt
+
+func netWorth():
+	var nw = totalMoney()
+
+	for drugName in _player.drugCounts.keys():
+		nw += config.drugsByName[drugName].meanPrice() * _player.drugCounts[drugName]
+
+	for gunName in _player.gunCounts.keys():
+		nw += config.gunsByName[gunName].price * _player.gunCounts[gunName]
+
+	print('net worth: ', nw)
+	return nw
 
 
 func _ready():
