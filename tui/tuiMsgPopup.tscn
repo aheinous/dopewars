@@ -16,6 +16,7 @@ script = ExtResource( 1 )
 alignment = 1
 
 [node name="Text" parent="Panel/tuiVBox/tuiHBox" index="0" instance=ExtResource( 4 )]
+numColumns = 32
 
 [node name="tuiHBox2" parent="Panel/tuiVBox" index="1" instance=ExtResource( 5 )]
 alignment = 1

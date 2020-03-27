@@ -4,15 +4,18 @@ extends "res://tui/tuiLabel_pure.gd"
 func populate():
 	var fmt = " %-8s %10s"
 
-	var cash =  util.centerFill(19, "Cash:", "$" + util.toCommaSepStr(gameModel.getCash()))
-	var guns =  util.centerFill(19, "Guns:", str(gameModel.getNumGuns()))
-	var debt =  util.centerFill(19, "Debt:", "$" + util.toCommaSepStr(gameModel.getDebt()))
-	var bitches =  util.centerFill(19, "Bitches:", str(gameModel.getBitches()))
-	var space =  util.centerFill(19, "Space:", str(gameModel.getAvailSpace()) + " / " + str(gameModel.getTotalSpace()))
-	var bank =  util.centerFill(19, "Bank:", "$" + util.toCommaSepStr(gameModel.getBank()))
-	# var bank =  util.centerFill(19, "Bank:", "$5,000,000,000")
-	var health =  util.centerFill(19, "Health:", str(gameModel.getHealth()))
-	var day =  util.centerFill(19, "Day:", str(gameModel.getDay()) + " / " + str(gameModel.getFinalDay()) )
+
+	var cols = 16
+
+	var cash =  util.centerFill(cols, "Cash:", "$" + util.toCommaSepStr(gameModel.getCash()))
+	var guns =  util.centerFill(cols, "Guns:", str(gameModel.getNumGuns()))
+	var debt =  util.centerFill(cols, "Debt:", "$" + util.toCommaSepStr(gameModel.getDebt()))
+	var bitches =  util.centerFill(cols, "Bitches:", str(gameModel.getBitches()))
+	var space =  util.centerFill(cols, "Space:", str(gameModel.getAvailSpace()) + " / " + str(gameModel.getTotalSpace()))
+	var bank =  util.centerFill(cols, "Bank:", "$" + util.toCommaSepStr(gameModel.getBank()))
+	# var bank =  util.centerFill(cols, "Bank:", "$5,000,000,000")
+	var health =  util.centerFill(cols, "Health:", str(gameModel.getHealth()))
+	var day =  util.centerFill(cols, "Day:", str(gameModel.getDay()) + " / " + str(gameModel.getFinalDay()) )
 
 
 	var nCols = (cash+guns).length()

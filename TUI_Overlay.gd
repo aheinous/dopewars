@@ -3,8 +3,8 @@ extends Control
 
 const DEBUG_PRINT = false
 
-enum DrawMode {BOTH, GUI_ONLY, TUI_ONLY}
-var drawMode = DrawMode.TUI_ONLY
+#enum DrawMode {BOTH, GUI_ONLY, TUI_ONLY}
+#var drawMode = DrawMode.BOTH
 var _lastMouseCCoords = null
 
 func _ready():
@@ -15,22 +15,21 @@ func _ready():
 	TUI.setOverlay(self)
 
 
+	OS.set_window_size(Vector2(34,28) * TUI.cSize)
+
 
 func _drawChar(var linenum, var colnum):
 	var tl = Vector2(colnum, linenum) * TUI.cSize
 	var bl = Vector2(colnum, linenum+1) * TUI.cSize
 	
-	if drawMode == DrawMode.BOTH and (linenum + colnum) % 2 == 0:
-		draw_rect(Rect2(tl, TUI.cSize), Color(1, 0, 0, 0.06))
+	# if  (linenum + colnum) % 2 == 0:
+	# 	draw_rect(Rect2(tl, TUI.cSize), Color(1, 1, 1, .1))
 	draw_string(TUI.font, bl, TUI.dataGrid[linenum][colnum].c, TUI.dataGrid[linenum][colnum].fg)
 
 
 
 func _draw():
-	if drawMode == DrawMode.GUI_ONLY:
-		return
-	if drawMode == DrawMode.TUI_ONLY:
-		draw_rect(Rect2(Vector2(), rect_size), Color(0,0,0))
+	draw_rect(Rect2(Vector2(), rect_size), Color(0,0,0))
 
 	for linenum in range(TUI.nLines):
 
@@ -73,14 +72,14 @@ func _input(event):
 
 
 func _process(delta):
-	if Input.is_action_just_pressed("toggle_tui"):
-		print("toggle tui")
-		drawMode = (drawMode + 1) % DrawMode.size()
-		update()
-
-		for child in TUI._childrenInDrawOrder(get_tree().get_root()):
-			if child.has_method("debugPrint"):
-				child.debugPrint()
+#	if Input.is_action_just_pressed("toggle_tui"):
+#		print("toggle tui")
+#		drawMode = (drawMode + 1) % DrawMode.size()
+#		update()
+#
+#		for child in TUI._childrenInDrawOrder(get_tree().get_root()):
+#			if child.has_method("debugPrint"):
+#				child.debugPrint()
 				
 	if Input.is_action_just_pressed("refresh"):
 		$"/root/Game".refresh()

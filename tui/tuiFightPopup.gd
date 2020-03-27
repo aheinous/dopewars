@@ -25,7 +25,7 @@ func setupAndShow():
 	var copName = gameModel.curCop()
 
 
-	var sep = '-------------------------------------------------\n'
+	var sep = '--------------------------------\n'
 
 	s = 'You have: %s bitch%s\n' % [bitches, "" if bitches==1 else "es"]
 	s += '%s health: %s\n' % ['Bitch' if bitches >= 1 else 'Your', youHealth]
@@ -35,7 +35,7 @@ func setupAndShow():
 	s+= '%s health: %s\n' % ['Deputy' if deputies >= 1 else copName, copHealth]
 	s+= sep
 
-	s+= fightText
+	s+= util.wordWrap(fightText, sep.length())
 
 	text.setText(s)
 

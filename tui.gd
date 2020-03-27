@@ -20,6 +20,12 @@ var nLines := 0
 var dataGrid := []
 
 
+var minCol = 999999
+var maxCol = 0
+var minLn = 99999999
+var maxLn = 0
+
+
 var font : Font = load("res://FixedSys24.tres")
 
 var _activeSubtreeStack = []
@@ -149,6 +155,7 @@ func _onMouseRelease(cCoords):
 		owner.emit_signal("pressed")
 	_lastPressOwner = null
 	onNeedRedraw()
+	print('(%s, %s) -> (%s, %s)' % [minCol, minLn, maxCol, maxLn])
 
 func _onMouseMove(cCoords):
 	# var owner = dataGrid[cCoords.y][cCoords.x].owner
@@ -235,4 +242,13 @@ func drawToTUI(owner, string):
 			dataGrid[linenum][colnum].owner = owner
 			dataGrid[linenum][colnum].fg = color
 			dataGrid[linenum][colnum].pressable = pressable
+
+		if c != " ":
+			minCol = min(minCol, colnum)
+			minLn = min(minLn, linenum)
+			maxCol = max(maxCol, colnum)
+			maxLn = max(maxLn, linenum)
+			
 		colnum += 1
+
+
