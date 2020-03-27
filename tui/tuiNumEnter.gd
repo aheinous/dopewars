@@ -13,13 +13,22 @@ var maxval
 
 var maxchars = 12
 
+#const syms = [		
+#	[' 1 ', ' 2 ', ' 3 '],
+#	[' 4 ', ' 5 ', ' 6 '],
+#	[' 7 ', ' 8 ', ' 9 '],
+#	[' 0 ', ' k ', ' M '],
+#	[' <- ', ' Max '] 
+#]
+
+
 const syms = [		
-	[' 1 ', ' 2 ', ' 3 '],
-	[' 4 ', ' 5 ', ' 6 '],
-	[' 7 ', ' 8 ', ' 9 '],
-	[' 0 ', ' k ', ' M '],
-	[' <- ', ' Max '] 
+	[' 1 ', ' 2 ', ' 3 ', ' <-- '],
+	[' 4 ', ' 5 ', ' 6 ', ' Max '],
+	[' 7 ', ' 8 ', ' 9 ', '  +  '],
+	[' 0 ', ' k ', ' M ', '  -  '],
 ]
+
 
 
 var preunit = ''
@@ -30,7 +39,7 @@ func _ready():
 	for rowNum in range(syms.size()):
 		var row = HBox.instance()
 		buttonGrid.add_child(row)
-		row.alignment = row.AlignMode.ALIGN_CENTER
+		row.alignment = row.AlignMode.ALIGN_BEGIN
 		for colNum in range(syms[rowNum].size()):
 			var button = TuiButton.instance()
 			button.setText(syms[rowNum][colNum])
@@ -79,8 +88,13 @@ func _onButtonPressed(s):
 		'Max':
 			usrtext = maxval as String
 			instaclear = true
-		'<-':
+		'<--':
 			usrtext = usrtext.substr(0,usrtext.length()-1)
+		'+':
+			usrtext = (getValue() + 1) as String
+		'-':
+			if getValue() > 0:
+				usrtext = (getValue() - 1) as String
 		_:
 			if usrtext.length() >= maxchars:
 				return
@@ -128,15 +142,19 @@ func _input(event):
 		if sc >= KEY_0 and sc <= KEY_9: 
 			s = OS.get_scancode_string(sc)
 		elif sc >= KEY_KP_0 and sc <= KEY_KP_9: 
-			s = OS.get_scancode_string(sc)	
+			s = (sc - KEY_KP_0) as String
 		elif sc == KEY_K:
 			s = 'k'
 		elif sc == KEY_M:
 			s = 'M'
 		elif sc == KEY_BACKSPACE:
-			s = '<-'
-
-		print('s: "', s , '"')
+			s = '<--'
+		elif event.get_unicode() == 45: # minus
+			s = '-'
+		elif event.get_unicode() == 43: # plus
+			s = '+'
+		
+#		print('s: "', s , '" ie: "', OS.get_scancode_string(sc), '"' , event.get_unicode())
 		if s.length() > 0:
 			_onButtonPressed(s)
 			refresh()
