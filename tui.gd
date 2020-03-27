@@ -230,14 +230,9 @@ func drawToTUI(owner, string):
 			linenum += 1
 			colnum = startcol
 			continue
-		if colnum >= nCols or linenum >= nLines:
-			continue
-		if colnum < 0 or linenum < 0:
-			continue
-		dataGrid[linenum][colnum].c = c
-		dataGrid[linenum][colnum].owner = owner
-		dataGrid[linenum][colnum].fg = color
-		dataGrid[linenum][colnum].pressable = pressable
-
-		
+		if colnum >= 0 and colnum < nCols and linenum >= 0 and linenum < nLines:
+			dataGrid[linenum][colnum].c = c
+			dataGrid[linenum][colnum].owner = owner
+			dataGrid[linenum][colnum].fg = color
+			dataGrid[linenum][colnum].pressable = pressable
 		colnum += 1
