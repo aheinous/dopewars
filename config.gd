@@ -183,7 +183,6 @@ var guns = [
 		GunConfig.new("Baretta", 3000, 4, 5),
 		GunConfig.new(".38 Special", 3500, 4, 9),
 		GunConfig.new("Ruger", 2900, 4, 4),
-		GunConfig.new("Saturday Night Special", 3100, 4, 7),
 		GunConfig.new("Rocket Launcher", 120*1000, 10, 12, true)
 ]
 

@@ -178,6 +178,14 @@ static func getCharSize(s):
 	return Vector2(nCols, lines.size())
 
 
+class SplitLines:
+	var lines = []
+	var numCols : int = 0
+
+	func _init(s : String):
+		lines = s.split('\n')
+		for ln in lines:
+			numCols = max(numCols, ln.length()) as int
 
 func skinnyButtonStr(charSize, text=""):
 	return "│" + util.lrpad_chars(charSize.x-2, text) + "│"
@@ -189,13 +197,14 @@ func centeredStr(charSize, text=""):
 
 
 static func boxString(charSize, text="", half=false):
+	var splitLines = SplitLines.new(text)
 	var box_nCols : int = charSize.x
 	var box_nLines : int = charSize.y
-	box_nCols = max(box_nCols, text.length() + 2)
-	box_nLines = max(box_nLines, 3)
+	box_nCols = max(box_nCols, splitLines.numCols + 2) as int
+	box_nLines = max(box_nLines, 3) as int
 
 
-	var extraLines = box_nLines - 3
+	var extraLines = box_nLines - 2 - splitLines.lines.size()
 	var extraLines_bottom = extraLines / 2
 	var extraLines_top = extraLines - extraLines_bottom
 
@@ -208,7 +217,9 @@ static func boxString(charSize, text="", half=false):
 	for _i in range(extraLines_top):
 		s += "│" + util.nSpaces(box_nCols-2) + "│\n"
 
-	s += "│" + util.lrpad_chars(box_nCols-2, text) + "│\n"
+
+	for ln in splitLines.lines:
+		s += "│" + util.lrpad_chars(box_nCols-2, ln) + "│\n"
 
 	for _i in range(extraLines_bottom):
 		s += "│" + util.nSpaces(box_nCols-2) + "│\n"

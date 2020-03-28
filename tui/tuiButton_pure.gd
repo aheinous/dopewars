@@ -58,7 +58,9 @@ func setText(s:String):
 
 	
 func getMinCharSize():
-	return Vector2(text.length()+2, 1 if _halfButton else 3)
+	var cs = util.getCharSize(text)
+	cs += Vector2(2,0) if _halfButton else Vector2(2,2)
+	return cs
 
 
 func is_disabled():

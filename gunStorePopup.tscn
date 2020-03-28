@@ -29,13 +29,27 @@ margin_top = 7.0
 margin_right = 168.0
 margin_bottom = 81.0
 script = ExtResource( 6 )
-spacing = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Control" parent="Panel/VBoxContainer"]
 margin_right = 161.0
 margin_bottom = 14.0
 script = ExtResource( 4 )
 text = "-- Dan's House of Guns --"
+mode = 1
+
+[node name="CashLbl" type="Control" parent="Panel/VBoxContainer"]
+margin_right = 161.0
+margin_bottom = 14.0
+script = ExtResource( 4 )
+mode = 1
+
+[node name="SpaceLbl" type="Control" parent="Panel/VBoxContainer"]
+margin_right = 161.0
+margin_bottom = 14.0
+script = ExtResource( 4 )
 mode = 1
 
 [node name="gunList" type="Control" parent="Panel/VBoxContainer"]

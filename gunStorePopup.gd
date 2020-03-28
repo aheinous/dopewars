@@ -2,10 +2,19 @@ extends "res://tui/tuiPopup.gd"
 
 onready var list = $Panel/VBoxContainer/gunList
 onready var chooseBuySellPopup = $chooseBuySellPopup
-
+onready var spaceLbl = $Panel/VBoxContainer/SpaceLbl
+onready var cashLbl = $Panel/VBoxContainer/CashLbl
 
 func setupAndShow():
 	list.populate()
+	
+	var cols = 24
+	var space =  "Space: " + str(gameModel.getAvailSpace()) + " / " + str(gameModel.getTotalSpace())
+	var cash =  "Cash: $" + util.toCommaSepStr(gameModel.getCash())
+	
+	cashLbl.setText(cash)
+	spaceLbl.setText(space)
+	
 	_showPopup()
 
 
