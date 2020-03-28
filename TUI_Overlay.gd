@@ -14,16 +14,17 @@ func _ready():
 	mouse_filter = MOUSE_FILTER_STOP
 	TUI.setOverlay(self)
 
-
-	OS.set_window_size(Vector2(34,28) * TUI.cSize)
+	# var winSz = Vector2(34,28) * TUI.cSize
+	# print('setting window size: ', winSz)
+	# OS.set_window_size(winSz)
 
 
 func _drawChar(var linenum, var colnum):
 	var tl = Vector2(colnum, linenum) * TUI.cSize
 	var bl = Vector2(colnum, linenum+1) * TUI.cSize
 	
-	# if  (linenum + colnum) % 2 == 0:
-	# 	draw_rect(Rect2(tl, TUI.cSize), Color(1, 1, 1, .1))
+	if  (linenum + colnum) % 2 == 0:
+		draw_rect(Rect2(tl, TUI.cSize), Color(1, 1, 1, .1))
 	draw_string(TUI.font, bl, TUI.dataGrid[linenum][colnum].c, TUI.dataGrid[linenum][colnum].fg)
 
 
