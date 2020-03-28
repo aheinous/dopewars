@@ -1,6 +1,5 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=21 format=2]
 
-[ext_resource path="res://textUI_theme.tres" type="Theme" id=1]
 [ext_resource path="res://game.gd" type="Script" id=2]
 [ext_resource path="res://tui/tuiStats.tscn" type="PackedScene" id=3]
 [ext_resource path="res://tui/tuiCenter.tscn" type="PackedScene" id=4]
@@ -26,7 +25,6 @@
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 1
-theme = ExtResource( 1 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
