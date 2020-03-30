@@ -14,8 +14,6 @@ func _ready():
 	refresh()
 
 func refresh():
-	propagate_call("refreshCharSize", [false])
-	propagate_call("_onRefresh")
 	TUI.onNeedRedraw()
 
 

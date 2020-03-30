@@ -32,6 +32,7 @@ var _activeSubtreeStack = []
 
 var _lastPressOwner = null
 var _mouseCCoordOwner = null
+var _mouseDown = false
 
 
 class CharData:
@@ -117,14 +118,21 @@ func _drawableElements():
 			tgts.append(child)
 	return tgts
 
+
+var cnt = 0
 func onNeedRedraw():
-	# print('onNeedRedraw()')
+	cnt += 1
+	print(cnt, ': onNeedRedraw()')
 	# _redrawNeeded = true
 	set_process(true)
 			
 
 func _process(delta):
 	set_process(false)
+
+	$'/root/Game'.propagate_call("refreshCharSize", [false])
+	$'/root/Game'.propagate_call("_onRefresh")
+	
 	
 	_clear()
 
@@ -142,6 +150,7 @@ func _isCoordPressable(cCoords):
 
 
 func _onMousePress(cCoords):
+	_mouseDown	= true
 	if _isCoordPressable(cCoords):
 		_lastPressOwner = _getCharOwner(cCoords)
 	else:
@@ -149,6 +158,7 @@ func _onMousePress(cCoords):
 	onNeedRedraw()
 
 func _onMouseRelease(cCoords):
+	_mouseDown = false
 	# var owner = dataGrid[cCoords.y][cCoords.x].owner
 	var owner = _getCharOwner(cCoords)
 	if owner != null and owner == _lastPressOwner and _inActiveSubtree(owner):
@@ -162,7 +172,8 @@ func _onMouseMove(cCoords):
 	var owner = _getCharOwner(cCoords)
 	if owner != _mouseCCoordOwner:
 		_mouseCCoordOwner = owner
-		onNeedRedraw()
+		if _mouseDown:
+			onNeedRedraw()
 
 func registerElement(elem):
 	elem.connect("draw", TUI, "onNeedRedraw") 
