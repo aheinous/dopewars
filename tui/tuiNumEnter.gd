@@ -4,6 +4,7 @@ onready var buttonGrid = $"Panel/tuiVBox/tuiVBox/buttonGrid"
 onready var numLabel =   $"Panel/tuiVBox/tuiVBox/Panel/tuiLabel"
 onready var textLabel =  $"Panel/tuiVBox/tuiVBox/tuiLabel"
 onready var okayButton = $"Panel/tuiVBox/tuiHBox/okayButton"
+onready var sound = $'beepSound'
 
 const TuiButton = preload("res://tui/tuiButton_pure.tscn")
 const HBox = preload("res://tui/tuiHBox.tscn")
@@ -46,7 +47,7 @@ func _ready():
 			row.add_child(button)
 			button.connect("pressed", self, "_onButtonPressed", 
 					[syms[rowNum][colNum].strip_edges()])
-			button.sound = button.Sounds.beep
+			button.sound = button.Sounds.none
 	numLabel.numColumns = maxchars + preunit.length()
 			
 
@@ -84,6 +85,7 @@ func _updateDispText():
 
 	
 func _onButtonPressed(s):
+	sound.play()
 	match s:
 		'Max':
 			usrtext = maxval as String

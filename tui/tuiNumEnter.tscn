@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://tui/tuiNumEnter.gd" type="Script" id=1]
 [ext_resource path="res://tui/tuiVBox.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://tui/tuiHBox.tscn" type="PackedScene" id=5]
 [ext_resource path="res://tui/tuiVBox.gd" type="Script" id=6]
 [ext_resource path="res://tui/tuiButton_pure.tscn" type="PackedScene" id=7]
+[ext_resource path="res://sounds/sfx_sounds_Blip4.wav" type="AudioStream" id=8]
 
 [node name="tuiNumEnter" type="Control"]
 anchor_right = 1.0
@@ -39,8 +40,15 @@ spacing = 1
 
 [node name="okayButton" parent="Panel/tuiVBox/tuiHBox" instance=ExtResource( 7 )]
 text = "Okay"
+pressTriggerAction = "ui_accept"
 
 [node name="cancelButton" parent="Panel/tuiVBox/tuiHBox" instance=ExtResource( 7 )]
 text = "Cancel"
+pressTriggerAction = "ui_cancel"
+
+[node name="beepSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+volume_db = -9.0
+pitch_scale = 0.6
 [connection signal="pressed" from="Panel/tuiVBox/tuiHBox/okayButton" to="." method="_on_okayButton_pressed"]
 [connection signal="pressed" from="Panel/tuiVBox/tuiHBox/cancelButton" to="." method="_on_cancelButton_pressed"]
