@@ -37,10 +37,10 @@ script = ExtResource( 6 )
 alignment = 1
 spacing = 1
 
-[node name="cancelButton" parent="Panel/tuiVBox/tuiHBox" instance=ExtResource( 7 )]
-text = "Cancel"
-
 [node name="okayButton" parent="Panel/tuiVBox/tuiHBox" instance=ExtResource( 7 )]
 text = "Okay"
-[connection signal="pressed" from="Panel/tuiVBox/tuiHBox/cancelButton" to="." method="_on_cancelButton_pressed"]
+
+[node name="cancelButton" parent="Panel/tuiVBox/tuiHBox" instance=ExtResource( 7 )]
+text = "Cancel"
 [connection signal="pressed" from="Panel/tuiVBox/tuiHBox/okayButton" to="." method="_on_okayButton_pressed"]
+[connection signal="pressed" from="Panel/tuiVBox/tuiHBox/cancelButton" to="." method="_on_cancelButton_pressed"]
