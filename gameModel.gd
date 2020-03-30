@@ -463,8 +463,8 @@ func gameFinished():
 func _possibleSaying():
 	if _rng.randi_range(0, 99) < 15:
 		if _rng.randi() % 2 == 0:
-			var s = "The lady next to you on the subway said,\n"
-			s += "\"%s\"\n(at least, you -think- that's what she said)"
+			var s = "The lady next to you on the subway said, "
+			s += "\"%s\" (at least, you -think- that's what she said)"
 			s = s % config.subwaySayings[_rng.randi_range(0, config.subwaySayings.size()-1)]
 			_pushMsg(s)
 		else:
@@ -518,8 +518,8 @@ func _randomEvent():
 
 
 func _paraquatWeed():
-	var s = "There is some weed that smells like paraquat here!\nIt looks good! Will you smoke it?"
-	var cb = util.Curry.new(self, "_endGame",["You hallucinated for three days on the wildest trip you ever imagined!\nThen you died because your brain disintegrated!"])
+	var s = "There is some weed that smells like paraquat here! It looks good! Will you smoke it?"
+	var cb = util.Curry.new(self, "_endGame",["You hallucinated for three days on the wildest trip you ever imagined! Then you died because your brain disintegrated!"])
 	_pushChoice(s, cb)
 
 
