@@ -23,4 +23,5 @@ alignment = 1
 
 [node name="OkayButton" parent="Panel/tuiVBox/tuiHBox2" index="0" instance=ExtResource( 3 )]
 text = "Okay"
+pressTriggerAction = "ui_accept"
 [connection signal="pressed" from="Panel/tuiVBox/tuiHBox2/OkayButton" to="." method="_on_OkayButton_pressed"]

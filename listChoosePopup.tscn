@@ -45,6 +45,7 @@ __meta__ = {
 
 [node name="cancelButton" parent="Panel/VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
 text = "Cancel"
+pressTriggerAction = "ui_cancel"
 [connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/buttonA" to="." method="_on_buttonA_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/buttonB" to="." method="_on_buttonB_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/cancelButton" to="." method="_on_cancelButton_pressed"]

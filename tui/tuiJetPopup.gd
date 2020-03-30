@@ -41,6 +41,7 @@ func _ready():
 	spacer.text = ""
 	var cancelButton = TUIButton.instance()
 	cancelButton.text = "Cancel"
+	cancelButton.pressTriggerAction = 'ui_cancel'
 	vbox.add_child(cancelButton)
 	cancelButton.connect("pressed", self, "_on_cancelButton_pressed")
 	refresh()

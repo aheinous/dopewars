@@ -7,6 +7,8 @@ signal pressed
 
 export var errorOnPress := false
 
+export var pressTriggerAction : String = ''
+
 #onready var blipSound = $'blipSound'
 #onready var bee = $'blipSound'
 
@@ -66,4 +68,10 @@ func getMinCharSize():
 func is_disabled():
 	return disabled
 
+
+func _input(event):
+	if not is_visible_in_tree() or not TUI._inActiveSubtree(self):
+		return
+	if pressTriggerAction.length() > 0 and event.is_action_pressed(pressTriggerAction):
+		emit_signal('pressed')
 

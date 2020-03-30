@@ -24,4 +24,5 @@ mode = 4
 
 [node name="restartButton" parent="Panel/tuiVBox" index="2" instance=ExtResource( 2 )]
 text = "New Game"
+pressTriggerAction = "ui_accept"
 [connection signal="pressed" from="Panel/tuiVBox/restartButton" to="." method="_on_restartButton_pressed"]

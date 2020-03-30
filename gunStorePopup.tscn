@@ -60,6 +60,7 @@ script = ExtResource( 2 )
 
 [node name="leaveButton" parent="Panel/VBoxContainer" instance=ExtResource( 5 )]
 text = "Leave"
+pressTriggerAction = "ui_cancel"
 
 [node name="chooseBuySellPopup" parent="." instance=ExtResource( 3 )]
 visible = false

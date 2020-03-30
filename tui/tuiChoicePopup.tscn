@@ -21,8 +21,10 @@ spacing = 2
 
 [node name="YesButton" parent="Panel/tuiVBox/tuiHBox" index="0" instance=ExtResource( 1 )]
 text = " Yes "
+pressTriggerAction = "ui_accept"
 
 [node name="NoButton" parent="Panel/tuiVBox/tuiHBox" index="1" instance=ExtResource( 1 )]
 text = " No "
+pressTriggerAction = "ui_cancel"
 [connection signal="pressed" from="Panel/tuiVBox/tuiHBox/YesButton" to="." method="_on_YesButton_pressed"]
 [connection signal="pressed" from="Panel/tuiVBox/tuiHBox/NoButton" to="." method="_on_NoButton_pressed"]
