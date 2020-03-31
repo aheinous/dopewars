@@ -101,18 +101,6 @@ func getTurnRes():
 
 # Actions
 
-# func finishFight():
-# 	pass
-# 	# print("you chose to FINISH FIGHT.")
-# 	# if _gameFinished:
-# 	# 	_setState(State.HIGHSCORES)
-# 	# else:
-# 	# 	if _rng.randi_range(0,99) > config.placesByName[_player.curPlace].police and _player.health < 100:
-# 	# 		var randBitchPrice = _rng.randi_range(config.bitchPrice_low, config.bitchPrice_high-1)
-# 	# 		var doctorPrice = randBitchPrice * (100-_player.health) / 500
-# 	# 		_pushChoiceFront("Do you pay a doctor $%s to sew you up?" % util.toCommaSepStr(doctorPrice),
-# 	# 							util.Curry.new(self, '_visitDoctor', [doctorPrice]))
-# 	# 	_setState(State.DRUG_MENU)
 
 func fight():
 	print("you chose to FIGHT.")
@@ -121,7 +109,6 @@ func fight():
 func stand():
 	print("you chose to STAND.")
 	_fightText.append("You stand there like a dummy.")
-	# print(_fightText)
 	_turnRes = [MoveRes.STAND]
 	_copsAttackPlayer()
 

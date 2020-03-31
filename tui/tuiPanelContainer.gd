@@ -20,14 +20,6 @@ func tuiDraw(tui):
 
 
 func tuiRefreshMinSize():
-	# var minSize = Vector2()
-	# for child in get_children():
-	# 	var childMinSize = child.get_minimum_size()
-	# 	minSize.x = max(minSize.x, childMinSize.x)
-	# 	minSize.y = max(minSize.y, childMinSize.y)
-	# # minSize += (2 * TUI.cSize)
-	# set_custom_minimum_size(minSize)
-	pass
 	set_custom_minimum_size(util.vec2_roundUpToMult(rect_size, TUI.cSize))
 		
 

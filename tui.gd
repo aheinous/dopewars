@@ -34,7 +34,6 @@ var _lastPressOwner = null
 var _mouseCCoordOwner = null
 var _mouseDown = false
 
-# var _refreshInProgress = false
 
 
 class CharData:
@@ -122,17 +121,15 @@ func _drawableElements():
 
 
 func onNeedRedraw():
-	# if not _refreshInProgress:
-		set_process(true)
+	set_process(true)
 			
 
 func _process(_delta):
 	set_process(false)
 
-	# _refreshInProgress = true
 	$'/root/Game'.propagate_call("refreshCharSize", [false])
 	$'/root/Game'.propagate_call("_onRefresh")
-	# _refreshInProgress = false
+
 	
 	_clear()
 
@@ -159,16 +156,13 @@ func _onMousePress(cCoords):
 
 func _onMouseRelease(cCoords):
 	_mouseDown = false
-	# var owner = dataGrid[cCoords.y][cCoords.x].owner
 	var owner = _getCharOwner(cCoords)
 	if owner != null and owner == _lastPressOwner and _inActiveSubtree(owner):
 		owner.emit_signal("pressed")
 	_lastPressOwner = null
 	onNeedRedraw()
-	# print('(%s, %s) -> (%s, %s)' % [minCol, minLn, maxCol, maxLn])
 
 func _onMouseMove(cCoords):
-	# var owner = dataGrid[cCoords.y][cCoords.x].owner
 	var owner = _getCharOwner(cCoords)
 	if owner != _mouseCCoordOwner:
 		_mouseCCoordOwner = owner
@@ -239,9 +233,6 @@ func drawToTUI(owner, string):
 		color = Colors["DISABLED"]
 
 	var pressable = _isPressable(owner)
-
-	# if owner.has_method("get_text"):
-	# 	print("text, focus: %s, %s" % [owner.get_text(), owner.has_focus()])
 
 	for c in string:
 		if c == "\n":

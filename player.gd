@@ -16,14 +16,6 @@ func _init(rng):
 	cash = 2000
 	numAccomplices = 8
 
-#	drugCounts["Weed"] = 20
-#	gunCounts["Rocket Launcher"] = 5
-#	availSpace = 40
-#	self.rng = RandomNumberGenerator.new()
-#	self.rng.set_seed(1)
-#	_onAccompliceKilled()
-
-
 
 func _getName():
 	return "player"
@@ -89,9 +81,6 @@ func _onAccompliceKilled():
 	var items = _getInvetoryItemList()
 	_printItemList(items)
 
-#	print('avail/total: ', availSpace, '/', totalSpace)
-
-#	var totalSpace_start = totalSpace
 
 	var spaceRecovered = 0
 	while spaceRecovered < 10:
@@ -104,7 +93,6 @@ func _onAccompliceKilled():
 			spaceRecovered += 1
 			totalSpace -= 1
 			availSpace -= 1
-#			print('\t.')
 			continue
 			
 		
@@ -119,7 +107,6 @@ func _onAccompliceKilled():
 				or items[itemIdx].dropped:
 			# cant free more than 10
 			# cant drop an item twice
-#			print('\ts')
 			continue
 
 		# drop item
@@ -127,13 +114,7 @@ func _onAccompliceKilled():
 		spaceRecovered += items[itemIdx].space
 		availSpace -= items[itemIdx].space
 		totalSpace -= items[itemIdx].space
-#		print('\td')
 
 	assert(spaceRecovered == 10)
-
-#	totalSpace = totalSpace_start - 10
-#	# totalSpace -= 10
-#	availSpace -= 10
-
 	assert(availSpace >= 0)
 	assert(totalSpace >= 0)

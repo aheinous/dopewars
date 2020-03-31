@@ -23,9 +23,6 @@ func _rmvAllChildren():
 
 
 func _addSpacer(colWidths):
-	# var spacer = Control.new()
-	# spacer.rect_min_size.y = 8
-	# add_child(spacer)
 	var spacer = TuiLabel.instance()
 	
 	spacer.text = "%s %s %s" % [

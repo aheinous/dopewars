@@ -1,16 +1,10 @@
 extends "res://tui/tuiElement.gd"
-#extends Control
 
 onready var drugList = $tuiCenter/tuiVBox/drugList
-#onready var stats = $MarginContainer/VBoxContainer/stats
 onready var stats = $tuiCenter/tuiVBox/tuiStats
-
-
 onready var buySellDropPopup = $buySellDropPopup
 onready var chooseBuySellPopup = $chooseBuySellPopup
-#onready var jetPopup = $jetPopup
 onready var jetPopup = $tuiJetPopup
-
 onready var choicePopup = $tuiChoicePopup
 onready var loansharkPopup = $loansharkPopup
 onready var bankPopup = $bankPopup

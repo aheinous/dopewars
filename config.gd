@@ -1,11 +1,6 @@
 extends Node
 
 
-# const colWidths_drugs = [100,62,55]
-# const colWidths_guns = [150,42,55]
-
-
-
 const colWidths_chars_drugs = [8, 10, 9]
 const colWidths_chars_guns = [22, 8, 9]
 
@@ -108,7 +103,6 @@ class GunConfig:
 class CopConfig:
 	var copName : String
 	var armour : int
-	# var deputyArmour : int
 	var attackPenalty : int
 	var defendPenalty : int
 	var minDeputies : int
@@ -121,7 +115,6 @@ class CopConfig:
 
 	func _init(	copName,	
 				armour,	
-				# deputyArmour,	
 				attackPenalty,	
 				defendPenalty,	
 				minDeputies,	
@@ -134,7 +127,6 @@ class CopConfig:
 				):
 		self.copName = copName
 		self.armour = armour
-		# self.deputyArmour = deputyArmour
 		self.attackPenalty = attackPenalty
 		self.defendPenalty = defendPenalty
 		self.minDeputies = minDeputies
@@ -168,9 +160,7 @@ var drugs = [
 
 
 var places = [
-	PlaceConfig.new("Bronx", 7, 13, 10),
-	# PlaceConfig.new("Bronx", 13, 13, 10),
-		
+		PlaceConfig.new("Bronx", 7, 13, 10),
 		PlaceConfig.new("Ghetto", 8, 13, 5),
 		PlaceConfig.new("Central Park", 6, 13, 15),
 		PlaceConfig.new("Manhattan", 4, 11, 90),

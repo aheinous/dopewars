@@ -1,6 +1,5 @@
 extends "res://tui/tuiNumEnter.gd"
 
-#signal done
 
 func setupAndShow():
 	var text = "Cash: $%s\nDebt: $%s\n" % [util.toCommaSepStr(gameModel.getCash()), util.toCommaSepStr(gameModel.getDebt())]

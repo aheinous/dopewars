@@ -5,7 +5,6 @@ signal stateChanged(prev,cur)
 
 const Player = preload('player.gd')
 const Store = preload('store.gd')
-# const Cop = preload('cop.gd')
 const CopFight = preload('copfight.gd')
 
 
@@ -178,20 +177,16 @@ func run():
 
 func _nRandDrugNamesOtherThan(n, except):
 	var outputDrugNames = []
-#	var possibleDrugNames = config.drugsByName.keys()
 	while outputDrugNames.size() < n:
 		var i = _rng.randi_range(0, config.drugs.size()-1)
-#		var drugName = possibleDrugNames[i]
 		if not config.drugs[i].drugName in outputDrugNames and not config.drugs[i].drugName in except:
 			outputDrugNames.append(config.drugs[i].drugName )
 	return outputDrugNames
 
 func _nRandSpecialPriceableDrugNames(n):
 	var outputDrugNames = []
-#	var possibleDrugNames = config.drugsByName.keys()
 	while outputDrugNames.size() < n:
 		var i = _rng.randi_range(0, config.drugs.size()-1)
-#		var drugName = possibleDrugNames[i]
 		if not config.drugs[i].drugName in outputDrugNames and (config.drugs[i].canBeLow or config.drugs[i].canBeHigh):
 			outputDrugNames.append(config.drugs[i].drugName)
 	return outputDrugNames
@@ -231,10 +226,8 @@ func _setupDrugsHere():
 			else:
 				_pushMsg("Addicts are buying %s at ridiculous prices!" % drugName)
 		drugPrices[drugName] = price
-		# print('-> ', price)
 
 	for drugName in _nRandDrugNamesOtherThan(numDrugs - drugPrices.size(), drugPrices.keys()):
-		# print(drugName)
 		var minPrice = config.drugsByName[drugName].minPrice
 		var maxPrice = config.drugsByName[drugName].maxPrice
 		var price = _rng.randi_range(minPrice, maxPrice)
@@ -276,7 +269,6 @@ func jet(place):
 
 
 ######### Msg Queue
-
 
 
 var _queue
@@ -362,9 +354,6 @@ func visitPub():
 	var price = _rng.randi_range(config.bitchPrice_low, config.bitchPrice_high)
 	_pushChoiceFront( 	"Would you like to hire a bitch for $%s?" % util.toCommaSepStr(price),
 						util.Curry.new(self, "buyBitch", [price]) )
-	# _curState = State.PUB
-	# _setState(State.PUB)
-
 
 func buyBitch(price):
 	print("buyBitch(%s)" % price)
@@ -383,7 +372,6 @@ func buyBitch(price):
 
 func visitLoanShark():
 	print("visitLoanShark()")
-	# _curState = State.LOANSHARK
 	_setState(State.LOANSHARK)
 
 
@@ -399,15 +387,12 @@ func payback(amnt):
 
 
 func leaveLoanshark():
-	# _msgQueue_nextState()
 	_setState(State.DRUG_MENU)
 
 
 ########### Bank
 
 func visitBank():
-	print("visitBank()")
-	# _curState = State.BANK
 	_setState(State.BANK)
 
 
@@ -426,8 +411,6 @@ func leaveBank():
 
 
 ########### Gun Store
-
-# var _gunCounts
 
 func visitGunStore():
 	print("visitGunStore()")
@@ -494,7 +477,7 @@ func _randomOffer():
 
 
 func _randDrugWithAtLeastAmnt(amnt):
-	for i in range(5):
+	for _i in range(5):
 		var drug = _randDrug()
 		if _drugStore.numHave(drug) >= amnt:
 			return drug
@@ -572,31 +555,6 @@ func _endGame(msg=null):
 
 
 func _possibleCopsOfferOrEvent():
-	print("_possibleCopsOfferOrEvent()")
-
-	#_startCopFight() # TODO
-	# return 
-
-	# var i = 99
-	# if totalMoney() >   2 * 1000 * 1000:
-	# 	i = 150
-	# elif totalMoney() > 1000 * 1000:
-	# 	i = 130
-	# elif totalMoney() > 100 * 1000:
-	# 	i = 110
-	# if _rng.randi_range(0,i) <= 75:
-	# 	return
-
-	# i = _rng.randi_range(0, 79 + config.placesByName[_player.curPlace].police 
-	# 							+ (totalMoney() / 100*1000) as int )
-	# if i < 33:
-	# 	_randomOffer()
-	# elif i < 50:
-	# 	_randomEvent()
-	# else:
-	# 	_startCopFight()
-
-
 	var rMax = (80 
 		+ config.placesByName[_player.curPlace].police
 		+ (10 if (netWorth() > 100 * 1000) else 0)
@@ -684,7 +642,6 @@ func _loadHighscores():
 	printHighscores()
 
 func _saveHighscores():
-#	print('saving highscores')
 	var saveFile = File.new()
 	saveFile.open("user://highscores.save", File.WRITE)
 	var s = to_json(highscores)
@@ -694,7 +651,6 @@ func _saveHighscores():
 
 
 func _insertScoreAt(i, score):
-	print('insert score %s at %s' % [score, i])
 	if i == highscores.size():
 		highscores.append(score)
 	else:

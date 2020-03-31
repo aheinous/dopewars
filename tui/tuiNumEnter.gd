@@ -14,14 +14,6 @@ var maxval
 
 var maxchars = 12
 
-#const syms = [		
-#	[' 1 ', ' 2 ', ' 3 '],
-#	[' 4 ', ' 5 ', ' 6 '],
-#	[' 7 ', ' 8 ', ' 9 '],
-#	[' 0 ', ' k ', ' M '],
-#	[' <- ', ' Max '] 
-#]
-
 
 const syms = [		
 	[' 1 ', ' 2 ', ' 3 ', ' <-- '],
@@ -137,8 +129,6 @@ func _input(event):
 	if not is_visible_in_tree() or not TUI._inActiveSubtree(self):
 		return
 	if event is InputEventKey and event.pressed:
-#		print('focus:', is_visible_in_tree(), has_focus(), TUI._inActiveSubtree(self))
-		print('key press: ', event.scancode)
 		var sc = event.scancode
 		var s = ''
 		if sc >= KEY_0 and sc <= KEY_9: 
@@ -155,8 +145,7 @@ func _input(event):
 			s = '-'
 		elif event.get_unicode() == 43: # plus
 			s = '+'
-		
-#		print('s: "', s , '" ie: "', OS.get_scancode_string(sc), '"' , event.get_unicode())
+
 		if s.length() > 0:
 			_onButtonPressed(s)
 			refresh()

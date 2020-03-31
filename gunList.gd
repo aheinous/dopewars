@@ -28,7 +28,6 @@ func _addButton(item, _colWidths):
 	)
 	
 	button.setText(s)
-	# button.setHalfButton(true)
 	self.add_child(button)
 	button.connect("pressed", self, "onItemButtonPressed", [item.itemName])
 	button.errorOnPress = not item.enabled

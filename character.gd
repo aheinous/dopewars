@@ -35,9 +35,6 @@ func _defendRating():
 
 
 func _armour():
-	# if numAccomplices == 0:
-	# 	return 100
-	# return 50
 	return 50
 
 
@@ -81,14 +78,12 @@ func takeDamage(damage):
 			numAccomplices -= 1
 			health = 100
 			_onAccompliceKilled()
-			# return MoveRes.ACCOMPLICE_KILLED
 			accomplicesKilled += 1
 		else:
 			health = 0
 			return MoveRes.DEAD
 	else:
 		health -= damage.normal
-		# return MoveRes.NONFATAL_HIT
 
 	while damage.splash > 0:
 		if health > damage.splash:

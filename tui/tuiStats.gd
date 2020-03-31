@@ -13,7 +13,6 @@ func populate():
 	var bitches =  util.centerFill(cols, "Bitches:", str(gameModel.getBitches()))
 	var space =  util.centerFill(cols, "Space:", str(gameModel.getAvailSpace()) + " / " + str(gameModel.getTotalSpace()))
 	var bank =  util.centerFill(cols, "Bank:", "$" + util.toCommaSepStr(gameModel.getBank()))
-	# var bank =  util.centerFill(cols, "Bank:", "$5,000,000,000")
 	var health =  util.centerFill(cols, "Health:", str(gameModel.getHealth()))
 	var day =  util.centerFill(cols, "Day:", str(gameModel.getDay()) + " / " + str(gameModel.getFinalDay()) )
 

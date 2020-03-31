@@ -17,17 +17,10 @@ func refresh():
 	TUI.onNeedRedraw()
 
 
-# func recenter():
-# 	self.rect_position = util.vec2_roundToMult((get_parent().rect_size - self.rect_size) / 2, TUI.cSize) 
-
-
-# func charSize():
-# 	# return Vector2(rect_size.x/TUI.cWidth, rect_size.y/TUI.cHeight)
 
 
 func setCharSize(sz : Vector2):
 	_preferredCharSize = sz
-	# rect_size = sz * TUI.cSize
 	refreshCharSize()
 
 func getCharSize():
@@ -40,7 +33,6 @@ func refreshCharSize(refreshOnChange=true):
 	sz.y = max(_preferredCharSize.y, minSz.y)
 	if sz != charSize:
 		charSize = sz
-		# rect_size = charSize * TUI.cSize
 		if refreshOnChange:
 			refresh()
 		emit_signal("charSizeChanged")
@@ -68,11 +60,6 @@ func getCharPos():
 		
 func getMinCharSize():
 	return Vector2.ZERO
-
-# func refreshMinSize():
-# 	set_custom_minimum_size(charSize() * TUI.cSize)
-
-
 
 func _onRefresh():
 	pass

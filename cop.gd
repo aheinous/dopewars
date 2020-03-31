@@ -1,7 +1,7 @@
 extends "character.gd"
 
 var cfg
-# var rng
+
 
 func _init(cfg, rng):
 	self.cfg = cfg

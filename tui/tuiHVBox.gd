@@ -112,11 +112,6 @@ func getMinCharSize():
 	var minSz = _hvVector()
 	var first = true
 
-	# for child in get_children():
-	# 	if child.is_queued_for_deletion():
-	# 		continue
-	# 	if not child.is_visible_in_tree():
-	# 		continue
 	for child in _getActiveChildren():
 		if first:
 			first = false
