@@ -1,6 +1,6 @@
 extends "res://tui/tuiElement.gd"
 
-enum AlignMode {ALIGN_BEGIN, ALIGN_CENTER, ALIGN_END}
+enum AlignMode {ALIGN_BEGIN, ALIGN_CENTER, ALIGN_END, ALIGN_SPREAD}
 export (AlignMode) var alignment = AlignMode.ALIGN_BEGIN
 export (int) var spacing = 0
 
@@ -57,6 +57,10 @@ func _onChildCharSizeChanged():
 
 
 func _onRefresh():
+	
+	if get_path() as String == '/root/Game/tuiCenter/tuiVBox/tuiVBox/tuiHBox':
+		print (get_path())
+	
 	refreshCharSize(false)
 
 	var szNeeded = _hvVector(getMinCharSize())
@@ -65,20 +69,31 @@ func _onRefresh():
 
 	var start = 0
 	match alignment:
-		AlignMode.ALIGN_BEGIN:
+		AlignMode.ALIGN_BEGIN, AlignMode.ALIGN_SPREAD:
 			start = 0
 		AlignMode.ALIGN_CENTER:
 			start = max(0, selfSize.packedDir/2 - szNeeded.packedDir/2)
 		AlignMode.ALIGN_END:
 			start = max(0, selfSize.packedDir - szNeeded.packedDir)
 
+	var activeChildren = _getActiveChildren()
+
+	var spacing = self.spacing
+	var extraSpacingLeftOver = 0
+	if alignment == AlignMode.ALIGN_SPREAD:
+		spacing = ((selfSize.packedDir - szNeeded.packedDir) / (activeChildren.size() - 1)) as int
+		extraSpacingLeftOver = ((selfSize.packedDir - szNeeded.packedDir) % (activeChildren.size() - 1))
+
+		
 	var pos = _hvVector()
 	pos.packedDir = start
-	for child in get_children():
-		if child.is_queued_for_deletion():
-			continue
-		if not child.is_visible_in_tree():
-			continue
+		
+		# for child in get_children():
+		# 	if child.is_queued_for_deletion():
+		# 		continue
+		# 	if not child.is_visible_in_tree():
+		# 		continue
+	for child in activeChildren:
 		child.setCharPos(pos.vec2())
 		if _orientation == HORIZONTAL:
 			child.setCharHeight(selfSize.tanDir)
@@ -86,18 +101,32 @@ func _onRefresh():
 			child.setCharWidth(selfSize.tanDir)
 		pos.packedDir += _hvVector(child.charSize).packedDir
 		pos.packedDir += spacing
+		if extraSpacingLeftOver > 0:
+			pos.packedDir += 1
+			extraSpacingLeftOver -= 1
 
-		
-
-func getMinCharSize():
-	var minSz = _hvVector()
-	var first = true
-
+	
+func _getActiveChildren():
+	var ac = []
 	for child in get_children():
 		if child.is_queued_for_deletion():
 			continue
 		if not child.is_visible_in_tree():
 			continue
+		ac.append(child)
+	return ac
+
+
+func getMinCharSize():
+	var minSz = _hvVector()
+	var first = true
+
+	# for child in get_children():
+	# 	if child.is_queued_for_deletion():
+	# 		continue
+	# 	if not child.is_visible_in_tree():
+	# 		continue
+	for child in _getActiveChildren():
 		if first:
 			first = false
 		else:

@@ -34,7 +34,7 @@ var _lastPressOwner = null
 var _mouseCCoordOwner = null
 var _mouseDown = false
 
-var _refreshInProgress = false
+# var _refreshInProgress = false
 
 
 class CharData:
@@ -122,17 +122,17 @@ func _drawableElements():
 
 
 func onNeedRedraw():
-	if not _refreshInProgress:
+	# if not _refreshInProgress:
 		set_process(true)
 			
 
 func _process(_delta):
 	set_process(false)
 
-	_refreshInProgress = true
+	# _refreshInProgress = true
 	$'/root/Game'.propagate_call("refreshCharSize", [false])
 	$'/root/Game'.propagate_call("_onRefresh")
-	_refreshInProgress = false
+	# _refreshInProgress = false
 	
 	_clear()
 

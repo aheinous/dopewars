@@ -168,8 +168,8 @@ var drugs = [
 
 
 var places = [
-	# PlaceConfig.new("Bronx", 7, 13, 10),
-	PlaceConfig.new("Bronx", 13, 13, 10),
+	PlaceConfig.new("Bronx", 7, 13, 10),
+	# PlaceConfig.new("Bronx", 13, 13, 10),
 		
 		PlaceConfig.new("Ghetto", 8, 13, 5),
 		PlaceConfig.new("Central Park", 6, 13, 15),

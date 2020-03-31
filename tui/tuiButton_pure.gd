@@ -24,7 +24,9 @@ onready var _sounds = {
 	Sounds.error : $errorSound
 } 
 
-
+#func _onRefresh():
+#	if get_path() as String == '/root/Game/tuiCenter/tuiVBox/tuiVBox/jetButton':
+#		print(get_path())
 
 func _onSelfPressed():
 	print('button "', text, '" pressed')
