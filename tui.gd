@@ -165,7 +165,7 @@ func _onMouseRelease(cCoords):
 		owner.emit_signal("pressed")
 	_lastPressOwner = null
 	onNeedRedraw()
-	print('(%s, %s) -> (%s, %s)' % [minCol, minLn, maxCol, maxLn])
+	# print('(%s, %s) -> (%s, %s)' % [minCol, minLn, maxCol, maxLn])
 
 func _onMouseMove(cCoords):
 	# var owner = dataGrid[cCoords.y][cCoords.x].owner

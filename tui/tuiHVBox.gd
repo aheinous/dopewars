@@ -57,10 +57,6 @@ func _onChildCharSizeChanged():
 
 
 func _onRefresh():
-	
-	if get_path() as String == '/root/Game/tuiCenter/tuiVBox/tuiVBox/tuiHBox':
-		print (get_path())
-	
 	refreshCharSize(false)
 
 	var szNeeded = _hvVector(getMinCharSize())
@@ -88,11 +84,6 @@ func _onRefresh():
 	var pos = _hvVector()
 	pos.packedDir = start
 		
-		# for child in get_children():
-		# 	if child.is_queued_for_deletion():
-		# 		continue
-		# 	if not child.is_visible_in_tree():
-		# 		continue
 	for child in activeChildren:
 		child.setCharPos(pos.vec2())
 		if _orientation == HORIZONTAL:

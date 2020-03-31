@@ -28,8 +28,6 @@ func _ready():
 	gameModel.connect('stateChanged', self, '_onStateChanged')
 
 func _onStateChanged(prev, cur):
-	print('state changed: ', prev, ' ', cur)
-	
 	if (prev == gameModel.State.COP_FIGHT and cur != gameModel.State.COP_FIGHT) \
 	or prev == gameModel.State.DRUG_MENU and cur != gameModel.State.COP_FIGHT:
 		if jetSoundEnabled:
@@ -44,8 +42,6 @@ func sellDrug(drug):
 	buySellDropPopup.setupAndShow("Sell", drug)
 
 func _on_drugList_itemButtonPressed(drug):
-	print("_on_list_drugButtonPressed(%s)" % [drug])
-
 	if gameModel.canBuyDrug(drug) and not gameModel.canSellDrug(drug):
 		buyDrug(drug)
 	elif not gameModel.canBuyDrug(drug) and gameModel.canSellDrug(drug):
