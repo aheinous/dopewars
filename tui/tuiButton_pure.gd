@@ -70,7 +70,7 @@ func is_disabled():
 
 
 func _input(event):
-	if not is_visible_in_tree() or not TUI._inActiveSubtree(self):
+	if not is_visible_in_tree() or not TUI._inActiveSubtree(self) or disabled:
 		return
 	if pressTriggerAction.length() > 0 and event.is_action_pressed(pressTriggerAction):
 		emit_signal('pressed')

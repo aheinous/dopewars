@@ -18,7 +18,7 @@ onready var bankChoosePopup = $bankChoosePopup
 onready var gunStorePopup = $gunStorePopup
 onready var highscoresPopup = $highscoresPopup
 onready var fightPopup = $fightPopup
-
+onready var infoPopup = $tuiInfoPopup
 onready var msgPopup = $tuiMsgPopup
 
 
@@ -148,3 +148,11 @@ func _on_bankChoosePopup_despositPressed():
 
 func _on_bankChoosePopup_cancelPressed():
 	gameModel.leaveBank()
+
+
+func _on_GuideButton_pressed():
+	infoPopup.setupAndShow()
+
+
+func _on_AbandonButton_pressed():
+	pass # Replace with function body.

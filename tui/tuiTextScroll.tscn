@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://tui/tuiLabel_pure.tscn" type="PackedScene" id=1]
+[ext_resource path="res://tui/tuiButton_pure.tscn" type="PackedScene" id=2]
+[ext_resource path="res://tui/tuiHBox.tscn" type="PackedScene" id=3]
+[ext_resource path="res://tui/tuiVBox.tscn" type="PackedScene" id=4]
+[ext_resource path="res://tui/tuiPopup.tscn" type="PackedScene" id=5]
+[ext_resource path="res://tui/tuiTextScroll.gd" type="Script" id=6]
+
+[node name="tuiTextScroll" instance=ExtResource( 5 )]
+script = ExtResource( 6 )
+
+[node name="tuiVBox" parent="Panel" index="0" instance=ExtResource( 4 )]
+
+[node name="tuiLabel_pure" parent="Panel/tuiVBox" index="0" instance=ExtResource( 1 )]
+numColumns = 32
+mode = 4
+
+[node name="tuiHBox" parent="Panel/tuiVBox" index="1" instance=ExtResource( 3 )]
+alignment = 1
+
+[node name="prevButton" parent="Panel/tuiVBox/tuiHBox" index="0" instance=ExtResource( 2 )]
+text = " ↑ "
+pressTriggerAction = "ui_up"
+
+[node name="nextButton" parent="Panel/tuiVBox/tuiHBox" index="1" instance=ExtResource( 2 )]
+text = " ↓ "
+pressTriggerAction = "ui_down"
+
+[node name="doneButton" parent="Panel/tuiVBox/tuiHBox" index="2" instance=ExtResource( 2 )]
+text = "Done"
+pressTriggerAction = "ui_accept"
+[connection signal="pressed" from="Panel/tuiVBox/tuiHBox/prevButton" to="." method="_on_prevButton_pressed"]
+[connection signal="pressed" from="Panel/tuiVBox/tuiHBox/nextButton" to="." method="_on_nextButton_pressed"]
+[connection signal="pressed" from="Panel/tuiVBox/tuiHBox/doneButton" to="." method="_on_doneButton_pressed"]

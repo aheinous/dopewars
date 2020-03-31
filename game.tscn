@@ -1,5 +1,6 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=23 format=2]
 
+[ext_resource path="res://tui/tuiInfoPopup.tscn" type="PackedScene" id=1]
 [ext_resource path="res://game.gd" type="Script" id=2]
 [ext_resource path="res://tui/tuiStats.tscn" type="PackedScene" id=3]
 [ext_resource path="res://tui/tuiCenter.tscn" type="PackedScene" id=4]
@@ -15,6 +16,7 @@
 [ext_resource path="res://bankChoosePopup.tscn" type="PackedScene" id=14]
 [ext_resource path="res://gunStorePopup.tscn" type="PackedScene" id=15]
 [ext_resource path="res://sounds/19.5degs/train.wav" type="AudioStream" id=16]
+[ext_resource path="res://tui/tuiHBox.tscn" type="PackedScene" id=17]
 [ext_resource path="res://TUI_Overlay.gd" type="Script" id=18]
 [ext_resource path="res://tui/tuiVBox.tscn" type="PackedScene" id=19]
 [ext_resource path="res://tui/tuiNumEnter.tscn" type="PackedScene" id=20]
@@ -62,6 +64,23 @@ margin_right = 320.0
 margin_bottom = 65.0
 text = "Jet"
 
+[node name="tuiHBox" parent="tuiCenter/tuiVBox" instance=ExtResource( 17 )]
+alignment = 1
+
+[node name="GuideButton" parent="tuiCenter/tuiVBox/tuiHBox" instance=ExtResource( 6 )]
+margin_left = 320.0
+margin_top = 65.0
+margin_right = 320.0
+margin_bottom = 65.0
+text = "Guide"
+
+[node name="AbandonButton" parent="tuiCenter/tuiVBox/tuiHBox" instance=ExtResource( 6 )]
+margin_left = 320.0
+margin_top = 65.0
+margin_right = 320.0
+margin_bottom = 65.0
+text = "Abandon"
+
 [node name="tuiNumEnter" parent="." instance=ExtResource( 20 )]
 visible = false
 
@@ -93,8 +112,15 @@ visible = false
 visible = false
 
 [node name="highscoresPopup" parent="." instance=ExtResource( 13 )]
+visible = false
 
 [node name="fightPopup" parent="." instance=ExtResource( 10 )]
+visible = false
+
+[node name="tuiInfoPopup" parent="." instance=ExtResource( 1 )]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
 
 [node name="TUI_Overlay" type="Control" parent="."]
 anchor_right = 1.0
@@ -109,6 +135,8 @@ stream = ExtResource( 16 )
 volume_db = 10.0
 [connection signal="itemButtonPressed" from="tuiCenter/tuiVBox/drugList" to="." method="_on_drugList_itemButtonPressed"]
 [connection signal="pressed" from="tuiCenter/tuiVBox/jetButton" to="." method="_on_jetButton_pressed"]
+[connection signal="pressed" from="tuiCenter/tuiVBox/tuiHBox/GuideButton" to="." method="_on_GuideButton_pressed"]
+[connection signal="pressed" from="tuiCenter/tuiVBox/tuiHBox/AbandonButton" to="." method="_on_AbandonButton_pressed"]
 [connection signal="placeButtonPressed" from="tuiJetPopup" to="." method="_on_tuiJetPopup_placeButtonPressed"]
 [connection signal="done" from="tuiMsgPopup" to="." method="_on_popupDone"]
 [connection signal="okayPressed" from="tuiMsgPopup" to="." method="_on_msgPopup_okayPressed"]
