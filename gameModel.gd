@@ -457,6 +457,9 @@ func _visitDoctor(price):
 ########### General
 
 
+func abandon():
+	_pushChoice("Abandon current game?", funcref(self, 'reset'))
+
 func gameFinished():
 	return _gameFinished
 

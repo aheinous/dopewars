@@ -22,15 +22,20 @@ onready var infoPopup = $tuiInfoPopup
 onready var msgPopup = $tuiMsgPopup
 
 
+var jetSoundEnabled = false
+
 func _ready():
 	gameModel.connect('stateChanged', self, '_onStateChanged')
 
 func _onStateChanged(prev, cur):
 	print('state changed: ', prev, ' ', cur)
-	if prev == gameModel.State.COP_FIGHT and cur != gameModel.State.COP_FIGHT:
-		$"JetSound".play()
-	if prev == gameModel.State.DRUG_MENU and cur != gameModel.State.COP_FIGHT:
-		$"JetSound".play()
+	
+	if (prev == gameModel.State.COP_FIGHT and cur != gameModel.State.COP_FIGHT) \
+	or prev == gameModel.State.DRUG_MENU and cur != gameModel.State.COP_FIGHT:
+		if jetSoundEnabled:
+			$"JetSound".play()
+			jetSoundEnabled = false
+
 
 func buyDrug(drug):
 	buySellDropPopup.setupAndShow("Buy", drug)
@@ -130,6 +135,7 @@ func _on_choicePopup_yesPressed():
 
 
 func _on_tuiJetPopup_placeButtonPressed(place):
+	jetSoundEnabled = true
 	gameModel.jet(place)
 	set_process(true)
 
@@ -155,4 +161,5 @@ func _on_GuideButton_pressed():
 
 
 func _on_AbandonButton_pressed():
-	pass # Replace with function body.
+	gameModel.abandon()
+	set_process(true)
