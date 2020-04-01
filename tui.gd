@@ -10,6 +10,7 @@ const Colors = {
 const  DRAW_DEBUG_PATTERN = false
 
 var _overlay = null
+var _crtOverlay = null
 
 
 var cWidth := 0
@@ -60,6 +61,9 @@ func _ready():
 func setOverlay(olay):
 	_overlay = olay
 	_onOlayResized()
+	
+func setCRTOverlay(olay):
+	_crtOverlay = olay
 
 
 func pixelCoordsToCharCoords(pCoords):
@@ -137,6 +141,8 @@ func _process(_delta):
 		child.tuiDraw(self)
 	if _overlay != null:
 		_overlay.update()
+	if _crtOverlay != null:
+		_crtOverlay.update()
 
 
 func _getCharOwner(cCoords):

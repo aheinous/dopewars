@@ -3,7 +3,9 @@ extends Control
 
 const DEBUG_PRINT = false
 
-var _lastMouseCCoords = null
+#var _lastMouseCCoords = null
+
+export (Texture) var  texture
 
 func _ready():
 	connect("resized", TUI, "_onOlayResized")
@@ -23,29 +25,30 @@ func _drawChar(var linenum, var colnum):
 
 
 func _draw():
+	draw_texture(texture, Vector2())
 	draw_rect(Rect2(Vector2(), rect_size), Color(0,0,0))
-
+#
 	for linenum in range(TUI.nLines):
 
 		for colnum in range(TUI.nCols):
 			_drawChar(linenum, colnum)
+#
+#		if DEBUG_PRINT:
+#			print(TUI.lines[linenum])
 
-		if DEBUG_PRINT:
-			print(TUI.lines[linenum])
 
-
-func _input(event):
-	if event is InputEventMouseMotion:
-		var cCoords = TUI.pixelCoordsToCharCoords(event.position)
-		if cCoords != _lastMouseCCoords:
-			TUI._onMouseMove(cCoords)
-
-	if event is InputEventMouseButton and event.button_index==BUTTON_LEFT:
-		var cCoords = TUI.pixelCoordsToCharCoords(event.position)
-		if event.pressed:
-			TUI._onMousePress(cCoords)
-		elif  not event.pressed:
-			TUI._onMouseRelease(cCoords)
+#func _input(event):
+#	if event is InputEventMouseMotion:
+#		var cCoords = TUI.pixelCoordsToCharCoords(event.position)
+#		if cCoords != _lastMouseCCoords:
+#			TUI._onMouseMove(cCoords)
+#
+#	if event is InputEventMouseButton and event.button_index==BUTTON_LEFT:
+#		var cCoords = TUI.pixelCoordsToCharCoords(event.position)
+#		if event.pressed:
+#			TUI._onMousePress(cCoords)
+#		elif  not event.pressed:
+#			TUI._onMouseRelease(cCoords)
 
 
 

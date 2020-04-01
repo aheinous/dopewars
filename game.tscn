@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://tui/tuiInfoPopup.tscn" type="PackedScene" id=1]
 [ext_resource path="res://game.gd" type="Script" id=2]
@@ -22,6 +22,12 @@
 [ext_resource path="res://tui/tuiNumEnter.tscn" type="PackedScene" id=20]
 [ext_resource path="res://tui/tuiBuySellDropPopup.tscn" type="PackedScene" id=21]
 [ext_resource path="res://tui/tuiLoansharkPopup.tscn" type="PackedScene" id=22]
+[ext_resource path="res://crt.shader" type="Shader" id=23]
+[ext_resource path="res://CRT_Overlay.gd" type="Script" id=24]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 23 )
+shader_param/iResolution = Vector2( 204, 350 )
 
 [node name="Game" type="Control"]
 anchor_right = 1.0
@@ -121,10 +127,19 @@ visible = false
 
 [node name="tuiInfoPopup" parent="." instance=ExtResource( 1 )]
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
 
-[node name="TUI_Overlay" type="Control" parent="."]
+[node name="CRT_Overlay" type="Control" parent="."]
+material = SubResource( 1 )
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 24 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="CRT_Overlay"]
+
+[node name="TUI_Overlay" type="Control" parent="CRT_Overlay/Viewport"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 18 )
